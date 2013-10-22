@@ -1,4 +1,5 @@
 Trio::Application.routes.draw do
+  devise_for :users
   get "static_pages/home"
   get "static_pages/help"
   # The priority is based upon order of creation: first created -> highest priority.
@@ -55,4 +56,5 @@ Trio::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  root :to => "static_pages#home"
 end

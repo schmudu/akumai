@@ -2,6 +2,7 @@
 1) To set up Postgres include in the Gemfile the following line:
     gem 'pg', '0.17.0'
 2) Create a 'ruby_user' account in Postgres
+
 3) Log into postgres and create a database with the line:
     CREATE DATABASE trio_dev;
 4) Install Postgres and set the owner of the database to be ruby_user by running the line:

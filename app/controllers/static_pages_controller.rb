@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  before_filter :authenticate_user!, :only => [:help]
+  #before_filter :authenticate_user!, :only => [:help]
   def home
   end
 

@@ -17,6 +17,14 @@ def logout(user, options={})
   if options[:no_capybara]
     cookies.delete(:remember_token)
   else
-    delete destroy_user_session_path
+    visit root_path
+    click_link "Logout"
+  end
+end
+
+# custom matchers
+RSpec::Matchers.define :have_error_message do |message|
+  match do |page|
+    expect(page).to have_selector('div.alert.alert-error', text: message)
   end
 end

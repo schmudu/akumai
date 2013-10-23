@@ -8,5 +8,20 @@ describe User do
   subject { @user }
 
   it { should respond_to(:email) }
-  #it { should respond_to(:type) }
+  it { should respond_to(:superuser) }
+
+  # user types
+  it { should respond_to(:is_superuser?) }
+
+  describe "after creation should be student by default" do
+    its(:is_superuser?) { should eq(false) }
+  end
+
+  describe "set type to staff should equal staff" do
+    before do 
+      @user.superuser = true 
+      @user.save
+    end
+    its(:is_superuser?) { should eq(true) }
+  end
 end

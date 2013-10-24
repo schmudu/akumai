@@ -8,8 +8,11 @@ class User < ActiveRecord::Base
   # do not modify this array unless modifying the types of users
   TYPES = {:superuser => 3, :admin => 2, :staff => 1, :student => 0}.freeze
   def is_superuser?
+=begin
     return true if (superuser == true) 
     false
+=end
+    (superuser == true) ? true : false
   end
 
 =begin

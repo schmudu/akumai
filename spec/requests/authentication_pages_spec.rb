@@ -13,14 +13,11 @@ describe "AuthenticationPages" do
       let(:user) { FactoryGirl.create(:user) }
       before do 
         login user
-        visit root_path 
       end
       
-      #it { should have_content('Edit profile') }
-      #it { should have_content('Logout') }
       it { should have_link('Logout', href: destroy_user_session_path) }
       it { should have_link('Edit profile', href: edit_user_registration_path) }
-
+      it { should have_title(full_title('User Dashboard')) }
     end
 
     describe "with signing in and signing out" do
@@ -31,8 +28,8 @@ describe "AuthenticationPages" do
         visit root_path 
       end
       
-      it { should have_content('Sign up') }
-      it { should have_content('Login') }
+      it { should have_link('Sign up', href: new_user_registration_path) }
+      it { should have_link('Login', href: new_user_session_path) }
     end
   end
 end

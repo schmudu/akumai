@@ -17,7 +17,7 @@ describe User do
     its(:is_superuser?) { should eq(false) }
   end
 
-  describe "set type to staff should equal staff" do
+  describe "set superuser to true" do
     before do 
       @user.superuser = true 
       @user.save

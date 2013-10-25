@@ -5,4 +5,9 @@ FactoryGirl.define do
     password_confirmation "foobar123"
     superuser false
   end
+
+  factory :program do
+    name    "TRIO Program UCSD"
+    code    "A12345678"
+  end
 end

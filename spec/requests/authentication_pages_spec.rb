@@ -15,8 +15,15 @@ describe "AuthenticationPages" do
         login user
       end
       
+      describe "should have sign out link" do
+        before { click_link "#{user.email}"}
+        it { should have_link('Sign out', href: destroy_user_session_path) }
+        it { should have_link('Edit profile', href: edit_user_registration_path) }
+      end
+=begin
       it { should have_link('Logout', href: destroy_user_session_path) }
       it { should have_link('Edit profile', href: edit_user_registration_path) }
+=end
       it { should have_title(full_title('User Dashboard')) }
     end
 

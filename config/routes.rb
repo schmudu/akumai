@@ -1,4 +1,6 @@
 Trio::Application.routes.draw do
+  resources :programs
+
   match '/dashboard',   to: 'users#dashboard',   via: 'get'
   devise_for :users
   match '/about',   to: 'static_pages#about',   via: 'get'

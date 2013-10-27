@@ -8,6 +8,5 @@ FactoryGirl.define do
 
   factory :program do
     name    "TRIO Program UCSD"
-    code    "A12345678"
   end
 end

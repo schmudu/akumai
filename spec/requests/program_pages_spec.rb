@@ -1,11 +1,18 @@
 require 'spec_helper'
 
 describe "ProgramPages" do
-  describe "GET /program_pages" do
-    it "works! (now write some real specs)" do
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      get program_pages_index_path
-      response.status.should be(200)
+  let(:user) { FactoryGirl.create(:user) }
+  subject { page }
+  describe "without logging in" do
+    before { visit root_path }
+    it { should_not have_link("Create Programs", new_program_path) }
+  end
+
+  describe "after logging in" do
+    before do 
+      login user
+      visit root_path 
     end
+    it { should have_link("Create Programs", new_program_path) }
   end
 end

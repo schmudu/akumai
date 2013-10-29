@@ -1,6 +1,7 @@
 <% provide(:title, "Programs") %>
 <h1>Listing programs</h1>
 
+
 <table>
   <thead>
     <tr>
@@ -11,6 +12,7 @@
     </tr>
   </thead>
 
+<%= will_paginate %>
   <tbody>
     <% @programs.each do |program| %>
       <tr>
@@ -21,7 +23,9 @@
       </tr>
     <% end %>
   </tbody>
+<%= will_paginate %>
 </table>
+
 
 <br>
 

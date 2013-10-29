@@ -16,6 +16,7 @@ group :test do
   gem 'selenium-webdriver', '2.37.0'
   gem 'capybara', '2.1.0'
   gem 'factory_girl_rails', '4.2.1'
+  gem 'launchy', '2.3.0'
 end
 
 gem 'sass-rails', '4.0.1'
@@ -27,6 +28,8 @@ gem 'turbolinks', '1.3.0'
 gem 'jbuilder', '1.5.2'
 gem 'devise', '3.1.1'
 gem 'faker', '1.2.0'
+gem 'will_paginate', '3.0.5'
+gem 'bootstrap-will_paginate', '0.0.10'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

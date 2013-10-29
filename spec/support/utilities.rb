@@ -18,10 +18,8 @@ def logout(user, options={})
     cookies.delete(:remember_token)
   else
     visit root_path
-    #click_link "Logout"
     click_link "#{user.email}"
     click_link "Sign out"
-    #page.find(:xpath, "//a[@href='/users/sign_out']").click
   end
 end
 

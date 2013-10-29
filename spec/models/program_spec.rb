@@ -21,6 +21,11 @@ describe Program do
       it { should_not be_valid }
     end
 
+    describe "should be valid with underline" do
+      before { @program.name = "_ABC123456" }
+      it { should be_valid }
+    end
+
     describe "should not be valid with exclamation point" do
       before { @program.name = "!ABC123456" }
       it { should_not be_valid }

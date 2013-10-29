@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "ProgramPages" do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user, superuser: true) }
   subject { page }
   describe "without logging in" do
     before { visit root_path }
@@ -13,6 +13,10 @@ describe "ProgramPages" do
       login user
       visit root_path 
     end
-    it { should have_link("Create Programs", new_program_path) }
+    it { should have_link("Programs", programs_path) }
+    it "should go to the programs pages" do
+      click_link "Programs"
+      expect(page).to have_title(full_title('Programs'))
+    end
   end
 end

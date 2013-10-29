@@ -11,5 +11,9 @@ namespace :db do
                    password: password,
                    password_confirmation: password)
     end
+    99.times do |n|
+      name = "Program#{n}"
+      Program.create!(name:name)
+    end
   end
 end

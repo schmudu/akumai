@@ -18,9 +18,7 @@ describe "StaticPages" do
   end
 
   describe "Help page" do
-    #let (:user) { FactoryGirl.create(:user) }
     before do
-      #login user
       visit help_path
     end
 
@@ -31,7 +29,6 @@ describe "StaticPages" do
   describe "Home page" do
     before { visit root_path }
 
-    it { should have_content("Home") }
     it { should have_title(full_title("Home")) }
   end
 
@@ -43,7 +40,5 @@ describe "StaticPages" do
     expect(page).to have_title(full_title('Help'))
     click_link "Contact"
     expect(page).to have_title(full_title('Contact'))
-    click_link "Home"
-    expect(page).to have_title(full_title('Home'))
   end
 end

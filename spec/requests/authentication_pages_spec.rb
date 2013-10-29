@@ -19,9 +19,21 @@ describe "AuthenticationPages" do
         before { click_link "#{user.email}"}
         it { should have_link('Sign out', href: destroy_user_session_path) }
         it { should have_link('Edit profile', href: edit_user_registration_path) }
+        it { should have_title(full_title('User Dashboard')) }
       end
       
-      it { should have_title(full_title('User Dashboard')) }
+      describe "with superuser" do
+        let(:user_superuser) { FactoryGirl.create(:user, superuser: true) }
+
+        describe "should have all dashboard links" do
+          it { should have_link('Dashboard', href: '#') }
+          it { should have_link('Dashboard Home', href: dashboard_path) }
+          it { should have_link('Programs', href: programs_path) }
+          it { should have_link('Admin', href: "#") }
+          it { should have_link('Staff', href: "#") }
+          it { should have_link('Students', href: "#") }
+        end
+      end
     end
 
     describe "with signing in and signing out" do

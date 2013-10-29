@@ -1,9 +1,9 @@
+<% provide(:title, "Programs") %>
 <h1>Listing programs</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Code</th>
       <th>Name</th>
       <th></th>
       <th></th>
@@ -14,7 +14,6 @@
   <tbody>
     <% @programs.each do |program| %>
       <tr>
-        <td><%= program.code %></td>
         <td><%= program.name %></td>
         <td><%= link_to 'Show', program %></td>
         <td><%= link_to 'Edit', edit_program_path(program) %></td>

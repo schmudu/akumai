@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   # redefine sign in path
   def after_sign_in_path_for(resource)
-    dashboard_path(resource)
+    return dashboard_path(resource) if (session[:user_return_to]).nil?
+    session[:user_return_to]
   end
 end

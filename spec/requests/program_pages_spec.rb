@@ -12,44 +12,45 @@ describe "ProgramPages" do
 
   describe "after logging in" do
     before(:each) do 
+      visit programs_path 
+      login user
+    end
+
+    it "should forward to programs path" do
+      current_path.should == programs_path
+    end
+  end
+
+  describe "with logging in" do
+    before(:each) do 
       login user
       visit root_path 
     end
-    it { should have_link("Programs", programs_path) }
-    it "should go to the programs pages" do
-      click_link "Programs"
-      expect(page).to have_title(full_title('Programs'))
+
+    describe "menu options" do
+      it { should have_link("Programs", programs_path) }
+      it "should go to the programs pages" do
+        click_link "Programs"
+        expect(page).to have_title(full_title('Programs'))
+      end
     end
 
-  end
+    describe "on index page" do
+      describe "pagination" do
+        before do
+          31.times { FactoryGirl.create(:program) }
+          visit programs_path
+        end
+        after(:all) { Program.delete_all }
 
-  describe "pagination" do
-    #let(:other_user) { FactoryGirl.create(:user, superuser: true) }
-    #before(:each) do
-    before do
-      31.times { FactoryGirl.create(:program) }
-      login user
-      visit programs_path
-    end
-    after(:all) { Program.delete_all }
-=begin
-    before(:all) {30.times { FactoryGirl.create(:program) }}
-    after(:all) { Program.delete_all }
-=end
+        it { should have_selector('div.pagination') }
+        it { should have_title(full_title('Programs')) }
 
-    it "test count" do
-      expect(Program.count).should eq(31)
-    end
-
-    it do 
-      #save_and_open_page
-      should have_selector('div.pagination')
-    end 
-    it { should have_title(full_title('Programs')) }
-
-    it "should list each program" do
-      Program.paginate(page: 1).each do |program|
-        expect(page).to have_selector('td', text: program.name)
+        it "should list each program" do
+          Program.paginate(page: 1).each do |program|
+            expect(page).to have_selector('td', text: program.name)
+          end
+        end
       end
     end
   end

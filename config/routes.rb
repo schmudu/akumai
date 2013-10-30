@@ -1,11 +1,13 @@
 Trio::Application.routes.draw do
   resources :programs
-
   match '/dashboard',   to: 'users#dashboard',   via: 'get'
   devise_for :users
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'  
   match '/help',    to: 'static_pages#help',    via: 'get'
+
+  match '/invite_users', to: 'invitations#invite', via: 'get'
+  #invitations
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

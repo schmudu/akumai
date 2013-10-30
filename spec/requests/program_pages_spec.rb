@@ -54,5 +54,13 @@ describe "ProgramPages" do
         end
       end
     end
+
+    describe "on show page" do
+      let(:program) { FactoryGirl.create(:program) }
+      before { visit program_path(program) } 
+
+      it { should have_title(full_title(program.name)) }
+      it { should have_link("Invite Users", invite_users_path(program.id)) }
+    end
   end
 end

@@ -116,3 +116,8 @@ footer {
   margin-top: 45px;
   @include box_sizing;
 }
+
+/* forms */
+.control-label{
+  padding-right: 50px;
+}

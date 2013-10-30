@@ -26,14 +26,59 @@ describe Program do
       it { should be_valid }
     end
 
+    describe "should be valid with lower and uppercase letters and numbers" do
+      before { @program.name = "abcDEF123" }
+      it { should be_valid }
+    end
+
+    describe "should be valid with quotation mark" do
+      before { @program.name = "Patrick's Program" }
+      it { should be_valid }
+    end
+
+    describe "should be valid with and symbol" do
+      before { @program.name = "Mary & William" }
+      it { should be_valid }
+    end
+
+    describe "should be valid with parenthesis" do
+      before { @program.name = "UC (San Diego)" }
+      it { should be_valid }
+    end
+
+    describe "should be valid with colon" do
+      before { @program.name = "UC :: San Diego" }
+      it { should be_valid }
+    end
+
     describe "should not be valid with exclamation point" do
       before { @program.name = "!ABC123456" }
       it { should_not be_valid }
     end
 
-    describe "should be valid with lower and uppercase letters and numbers" do
-      before { @program.name = "abcDEF123" }
-      it { should be_valid }
+    describe "should not be valid with at symbol" do
+      before { @program.name = "@ABC123456" }
+      it { should_not be_valid }
+    end
+
+    describe "should not be valid with dollar symbol" do
+      before { @program.name = "$ABC123456" }
+      it { should_not be_valid }
+    end
+
+    describe "should not be valid with percent sign" do
+      before { @program.name = "%ABC123456" }
+      it { should_not be_valid }
+    end
+
+    describe "should not be valid with carat symbol" do
+      before { @program.name = "^ABC123456" }
+      it { should_not be_valid }
+    end
+
+    describe "should not be valid with star symbol" do
+      before { @program.name = "*ABC123456" }
+      it { should_not be_valid }
     end
   end
 end

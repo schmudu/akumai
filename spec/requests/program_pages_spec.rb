@@ -45,10 +45,11 @@ describe "ProgramPages" do
 
         it { should have_selector('div.pagination') }
         it { should have_title(full_title('Programs')) }
+        it { should have_link("Create Program", new_program_path) }
 
         it "should list each program" do
           Program.paginate(page: 1).each do |program|
-            expect(page).to have_selector('td', text: program.name)
+            expect(page).to have_selector('li', text: program.name)
           end
         end
       end

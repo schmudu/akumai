@@ -121,3 +121,9 @@ footer {
 .control-label{
   padding-right: 50px;
 }
+
+form#invite_users{
+  input[type="submit"]{
+    margin-left: 210px;
+  }
+}

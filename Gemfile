@@ -30,6 +30,7 @@ gem 'devise', '3.1.1'
 gem 'faker', '1.2.0'
 gem 'will_paginate', '3.0.5'
 gem 'bootstrap-will_paginate', '0.0.10'
+gem 'friendly_id', '5.0.1'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

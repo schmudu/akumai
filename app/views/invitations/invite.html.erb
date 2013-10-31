@@ -7,19 +7,20 @@
   </div>
   <div class="control-group">
     <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>
-    <%= label_tag(:invitation_type_admin, "Admin") %>
-    <%= radio_button_tag(:invitation_type_admin, "Admin") %>
-    <%= label_tag(:invitation_type_staff, "Staff") %>
-    <%= radio_button_tag(:invitation_type_staff, "Staff") %>
-    <%= label_tag(:invitation_type_student, "Student") %>
-    <%= radio_button_tag(:invitation_type_student, "Student") %>
+    <label class="radio inline">
+      <input name="invitation_type_admin" value="admin" type="radio"> Admin
+    </label>
+    <label class="radio inline">
+      <input name="invitation_type_staff" value="staff" type="radio"> Staff
+    </label>
+    <label class="radio inline">
+      <input name="invitation_type_student" value="staff" type="radio"> Student
+    </label>
   </div>
-
-
-  <div class="btn-group" data-toggle="buttons-radio">
-  <%= radio_button_tag :brand, "ABC", :id=>"first", :style=>"display:none;" %>
-  <label class="btn btn-primary">First</label>
-
+  <div class="control-group">
+    <%= label_tag(:email_addresses, "Email Addresses", :class => 'control-label') %>
+    <%= text_area_tag(:email_addresses, "Enter emails here", size: "30x10") %>
+  </div>
 </div>
 
 <% end %>

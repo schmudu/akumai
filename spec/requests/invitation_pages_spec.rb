@@ -7,6 +7,10 @@ describe "InvitationPages" do
   subject { page }
   describe "without logging in" do
     before { visit invite_users_path(program.id) }
+
+    it "path should go to invite users path" do
+      current_path.should == invite_users_path(program.id)
+    end
     #it { should_not have_link("Create Programs", new_program_path) }
     it { should have_title(full_title('Invite Users')) }
   end

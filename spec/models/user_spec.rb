@@ -9,6 +9,8 @@ describe User do
 
   it { should respond_to(:email) }
   it { should respond_to(:superuser) }
+  it { should respond_to(:roles) }
+  it { should respond_to(:programs) }
 
   # user types
   it { should respond_to(:is_superuser?) }
@@ -23,5 +25,17 @@ describe User do
       @user.save
     end
     its(:is_superuser?) { should eq(true) }
+  end
+
+  describe "roles and programs" do
+    subject do
+      lambda do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id)
+      end
+    end
+
+    it { should change(@user.roles, :count).from(0).to(1) }
+    it { should change(@user.programs, :count).from(0).to(1) }
   end
 end

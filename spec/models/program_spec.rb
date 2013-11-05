@@ -8,6 +8,9 @@ describe Program do
   subject { @program }
 
   it { should respond_to(:name) }
+  it { should respond_to(:users) }
+  it { should respond_to(:roles) }
+
   it { should be_valid }
 
   describe "name validations" do
@@ -81,4 +84,17 @@ describe Program do
       it { should_not be_valid }
     end
   end
+
+  describe "roles and programs" do
+    subject do
+      lambda do
+        @user = FactoryGirl.create(:user)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id)
+      end
+    end
+
+    it { should change(@program.roles, :count).from(0).to(1) }
+    it { should change(@program.users, :count).from(0).to(1) }
+  end
+
 end

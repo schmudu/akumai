@@ -3,7 +3,9 @@ require_relative '../../app/helpers/constants_helper'
 
 describe Role do
   before do
-    @role = FactoryGirl.create(:role, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+    @user = FactoryGirl.create(:user)
+    @program = FactoryGirl.create(:program)
+    @role = FactoryGirl.create(:role, :user_id => @user.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
   end
 
   subject { @role }
@@ -41,6 +43,20 @@ describe Role do
         describe "is nil" do
           before { @role.program_id = nil}
           it { should_not be_valid }
+        end
+
+        describe "does not reference valid program" do
+          before { @role.program_id = -99}
+          it { should_not be_valid }
+        end
+      end
+
+      describe "unique program and user id" do
+        it "should not allow duplicate program and user id" do
+          @first_role = Role.create(:user_id => @user.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+          expect(@first_role).to be_valid
+          @another_role = Role.new(:user_id => @user.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+          expect(@another_role).to_not be_valid
         end
       end
 

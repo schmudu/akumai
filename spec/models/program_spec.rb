@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../../app/helpers/constants_helper'
 
 describe Program do
   before do
@@ -89,7 +90,7 @@ describe Program do
     subject do
       lambda do
         @user = FactoryGirl.create(:user)
-        @role = Role.create(:program_id => @program.id, :user_id => @user.id)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
       end
     end
 

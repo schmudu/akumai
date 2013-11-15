@@ -1,3 +1,5 @@
+require_relative '../app/helpers/constants_helper'
+
 FactoryGirl.define do
   factory :user do
     sequence(:email) { |n| "michael_#{n}@example.com"}
@@ -9,7 +11,7 @@ FactoryGirl.define do
   factory :role do
     program_id 1
     user_id 1
-    level 0
+    level ConstantsHelper::ROLE_LEVEL_STUDENT 
   end
 
   factory :program do

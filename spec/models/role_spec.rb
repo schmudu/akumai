@@ -55,7 +55,7 @@ describe Role do
         it "should not allow duplicate program and user id" do
           @first_role = Role.create(:user_id => @user.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
           expect(@first_role).to be_valid
-          @another_role = Role.new(:user_id => @user.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+          @another_role = Role.new(:user_id => @role.user_id, :program_id => @role.program_id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
           expect(@another_role).to_not be_valid
         end
       end

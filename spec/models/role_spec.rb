@@ -65,6 +65,16 @@ describe Role do
           before { @role.level = nil}
           it { should_not be_valid }
         end
+
+        describe "should not allow level below student" do
+          before { @role.level = ConstantsHelper::ROLE_LEVEL_STUDENT - 1}
+          it { should_not be_valid }
+        end
+
+        describe "should not allow level above superuser" do
+          before { @role.level = ConstantsHelper::ROLE_LEVEL_SUPERUSER + 1}
+          it { should_not be_valid }
+        end
       end
     end
   end

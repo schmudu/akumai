@@ -8,10 +8,6 @@ class User < ActiveRecord::Base
   has_many :roles
   has_many :programs, through: :roles
 
-
-  # user types
-  # do not modify this array unless modifying the types of users
-  TYPES = {:superuser => 3, :admin => 2, :staff => 1, :student => 0}.freeze
   def is_superuser?
     (superuser == true) ? true : false
   end

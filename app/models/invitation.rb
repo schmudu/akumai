@@ -1,15 +1,17 @@
 class Invitation < ActiveRecord::Base
   attr_accessor :recipient_email
 
-  belongs_to :user
-  has_one :recipient, class_name: "User", foreign_key: "invitation_recipient_id"
+  belongs_to :sender, class_name: "User", foreign_key: "sender_id"
+  belongs_to :recipient, class_name: "User", foreign_key: "recipient_id"
 
-  validates :user_id, presence: true
-  validate :presence_of_email_or_recipient
+  validates :sender_id, presence: true
+  validates :recipient_id, presence: true
+  #validate :presence_of_email_or_recipient
 
-  after_save :save_recipient_reference
+  #after_save :save_recipient_reference
 
   private
+=begin
     def presence_of_email_or_recipient
       user_recipient = User.find_by_email(recipient_email)
       errors.add(:email, "email or recipient must be set") if ((user_recipient.nil?) && (email.blank?))
@@ -23,4 +25,5 @@ class Invitation < ActiveRecord::Base
       user_recipient.invitation_recipient_id = self.id
       user_recipient.save
     end
+=end
 end

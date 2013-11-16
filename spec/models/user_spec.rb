@@ -12,17 +12,13 @@ describe User do
   it { should respond_to(:superuser) }
   it { should respond_to(:roles) }
   it { should respond_to(:programs) }
-  it { should respond_to(:registered) }
+  it { should respond_to(:invitations) }
 
   # user types
   it { should respond_to(:is_superuser?) }
 
   describe "after creation should be student by default" do
     its(:is_superuser?) { should eq(false) }
-  end
-
-  describe "after creation should not be registered default" do
-    its(:registered?) { should eq(false) }
   end
 
   describe "set superuser to true" do

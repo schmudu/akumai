@@ -8,6 +8,10 @@ FactoryGirl.define do
     superuser false
   end
 
+  factory :invitation do
+    sequence(:email) { |n| "recipient_#{n}@example.com"}
+  end
+
   factory :role do
     program_id 1
     user_id 1

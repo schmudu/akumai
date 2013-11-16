@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :roles
   has_many :programs, through: :roles
+  has_many :invitations
+  belongs_to :invitation, foreign_key: "invitation_recipient_id"
 
   def is_superuser?
     (superuser == true) ? true : false

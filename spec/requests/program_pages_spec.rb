@@ -60,7 +60,7 @@ describe "ProgramPages" do
       before { visit program_path(program) } 
 
       it { should have_title(full_title(program.name)) }
-      it { should have_link("Invite Users", invite_users_path(program.id)) }
+      it { should have_link("Invite Users", invitations_path(program.id)) }
     end
   end
 end

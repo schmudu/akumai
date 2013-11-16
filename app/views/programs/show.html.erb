@@ -8,5 +8,5 @@
   <%= @program.name %>
 </p>
 <br /><br />
-<%= link_to 'Invite Users', invite_users_path(id: @program.slug), class:'btn btn-info' %>
+<%= link_to 'Invite Users', invitations_path(id: @program.slug), class:'btn btn-info' %>
 

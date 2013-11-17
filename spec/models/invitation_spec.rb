@@ -5,16 +5,26 @@ describe Invitation do
   before do
     @user = FactoryGirl.create(:user)
     @another_user = FactoryGirl.create(:user)
-    @invitation = FactoryGirl.create(:invitation, :sender_id => @user.id, :recipient_id => @another_user.id, :email => nil)
+    @invitation = FactoryGirl.create(:invitation, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
   end
 
   subject { @invitation }
 
-  it { should respond_to(:email) }
+  it { should respond_to(:recipient_email) }
 
   it { should be_valid }
 
   describe "invalid information" do
+    describe "program id is not set" do
+      before { @invitation.program_id = nil }
+      it { should_not be_valid }
+    end
+
+    describe "non-existent program id" do
+      before { @invitation.program_id = -99 }
+      it { should_not be_valid }
+    end
+
     describe "user id is not set" do
       before { @invitation.sender_id = nil }
       it { should_not be_valid }
@@ -23,41 +33,41 @@ describe Invitation do
     describe "recipient id and email is not set" do
       before do 
         @invitation.recipient_id = nil
-        @invitation.email = nil
+        @invitation.recipient_email = nil
       end 
       it { should_not be_valid }
     end
 
-    describe "recipient id and email is blank" do
+    describe "recipient id and reipient_email is blank" do
       before do 
         @invitation.recipient_id = ""
-        @invitation.email = nil
+        @invitation.recipient_email = nil
       end 
       it { should_not be_valid }
     end
 
-    describe "recipient id and email are both set" do
+    describe "recipient id and reipient_email are both set" do
       before do 
         @invitation.recipient_id = @another_user.id 
-        @invitation.email = "abc@abc.com"
+        @invitation.recipient_email = "abc@abc.com"
       end 
       it { should_not be_valid }
     end
   end
 
   describe "valid information" do
-    describe "should be valid with only email" do
+    describe "should be valid with only recipient_email" do
       before do 
         @invitation.recipient_id = nil
-        @invitation.email = "abc@abc.com" 
+        @invitation.recipient_email = "abc@abc.com" 
       end
       it { should be_valid }
     end
 
-    describe "should be valid with only recipient id" do
+    describe "should be valid ith only recipient id" do
       before do 
         @invitation.recipient_id = @another_user.id
-        @invitation.email = nil
+        @invitation.recipient_email = nil
       end
       it { should be_valid }
     end

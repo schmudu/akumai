@@ -9,7 +9,8 @@ FactoryGirl.define do
   end
 
   factory :invitation do
-    sequence(:email) { |n| "recipient_#{n}@example.com"}
+    sequence(:recipient_email) { |n| "recipient_#{n}@example.com"}
+    program_id 1
   end
 
   factory :role do

@@ -11,7 +11,7 @@ describe Program do
   it { should respond_to(:name) }
   it { should respond_to(:users) }
   it { should respond_to(:roles) }
-  #it { should respond_to(:invitations) }
+  it { should respond_to(:invitations) }
 
   it { should be_valid }
 

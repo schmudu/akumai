@@ -2,6 +2,8 @@ require_relative '../helpers/constants_helper'
 
 class Invitation < ActiveRecord::Base
   #attr_accessor :recipient_email
+  extend FriendlyId
+  friendly_id :sender_id, use: :slugged
 
   belongs_to :program
   belongs_to :sender, class_name: "User", foreign_key: "sender_id"
@@ -14,6 +16,12 @@ class Invitation < ActiveRecord::Base
   def recipient
     return recipient_email unless recipient_email.blank?
     user = User.find_by_id(recipient_id)
+  end
+
+  # Friendly_Id code to only update the url for new records
+  def should_generate_new_friendly_id?
+    #new_record? || slug.blank?
+    true
   end
 
   private

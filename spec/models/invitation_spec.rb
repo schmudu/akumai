@@ -5,12 +5,15 @@ describe Invitation do
   before do
     @user = FactoryGirl.create(:user)
     @another_user = FactoryGirl.create(:user)
-    @invitation = FactoryGirl.create(:invitation, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
+    @program = FactoryGirl.create(:program)
+    @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
   end
 
   subject { @invitation }
 
   it { should respond_to(:recipient_email) }
+  it { should respond_to(:recipient) }
+  it { should respond_to(:user_level) }
 
   it { should be_valid }
 
@@ -51,6 +54,21 @@ describe Invitation do
         @invitation.recipient_id = @another_user.id 
         @invitation.recipient_email = "abc@abc.com"
       end 
+      it { should_not be_valid }
+    end
+
+    describe "user_level is not set" do
+      before { @invitation.user_level = nil }
+      it { should_not be_valid }
+    end
+
+    describe "user_level is less than student" do
+      before { @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT - 1 }
+      it { should_not be_valid }
+    end
+
+    describe "user_level is more than superuser" do
+      before { @invitation.user_level = ConstantsHelper::ROLE_LEVEL_SUPERUSER + 1 }
       it { should_not be_valid }
     end
   end

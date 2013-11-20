@@ -8,4 +8,11 @@ module ApplicationHelper
       "#{base_title} | #{page_title}"
     end
   end 
+
+=begin
+  def generate_hash
+    o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+    return (0...50).map{ o[rand(o.length)] }.join
+  end
+=end
 end

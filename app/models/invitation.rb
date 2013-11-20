@@ -3,7 +3,7 @@ require_relative '../helpers/constants_helper'
 class Invitation < ActiveRecord::Base
   #attr_accessor :recipient_email
   extend FriendlyId
-  friendly_id :sender_id, use: :slugged
+  friendly_id :ticket, use: :slugged
 
   belongs_to :program
   belongs_to :sender, class_name: "User", foreign_key: "sender_id"
@@ -12,6 +12,9 @@ class Invitation < ActiveRecord::Base
   validates :program_id, presence: true
   validates :user_level, presence: true
   validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value
+
+  #callbacks
+  after_validation :create_ticket
 
   def recipient
     return recipient_email unless recipient_email.blank?
@@ -25,6 +28,11 @@ class Invitation < ActiveRecord::Base
   end
 
   private
+    def create_ticket
+      o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+      self.ticket = (0...50).map{ o[rand(o.length)] }.join
+    end
+
     def user_level_value
       errors.add(:user_level, "is not a valid value") if ((!user_level.nil?) && ((user_level < ConstantsHelper::ROLE_LEVEL_STUDENT) || (user_level > ConstantsHelper::ROLE_LEVEL_SUPERUSER)))
     end

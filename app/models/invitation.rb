@@ -14,7 +14,7 @@ class Invitation < ActiveRecord::Base
   validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value
 
   #callbacks
-  after_validation :create_ticket
+  before_create :create_ticket
 
   def recipient
     return recipient_email unless recipient_email.blank?
@@ -23,8 +23,8 @@ class Invitation < ActiveRecord::Base
 
   # Friendly_Id code to only update the url for new records
   def should_generate_new_friendly_id?
-    #new_record? || slug.blank?
-    true
+    #self.ticket_changed?
+    self.new_record?
   end
 
   private

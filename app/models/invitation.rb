@@ -28,19 +28,6 @@ class Invitation < ActiveRecord::Base
 
   private
     def create_code
-=begin
-      begin
-        o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
-        code = (0...50).map{ o[rand(o.length)] }.join
-        code = Invitation.code(code)
-      end while !code.nil?
-      self.code = code
-=end
-      #self.code = generate_code
-=begin
-      o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
-      self.code = (0...50).map{ o[rand(o.length)] }.join
-=end
       self.code = generate_code
     end
 

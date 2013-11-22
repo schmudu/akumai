@@ -2,6 +2,7 @@ Trio::Application.routes.draw do
   resources :invitations
   resources :programs
   match '/dashboard',   to: 'users#dashboard',   via: 'get'
+  match '/invite_users',   to: 'invitations#invite',   via: 'get'
   devise_for :users
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'  

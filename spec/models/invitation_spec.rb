@@ -14,7 +14,7 @@ describe Invitation do
   it { should respond_to(:recipient_email) }
   it { should respond_to(:recipient) }
   it { should respond_to(:user_level) }
-  it { should respond_to(:ticket) }
+  it { should respond_to(:code) }
 
   it { should be_valid }
 
@@ -75,8 +75,8 @@ describe Invitation do
   end
 
   describe "valid information" do
-    it "ticket should not be nil" do
-      expect(@invitation.ticket).should_not eq(nil)
+    it "code should not be nil" do
+      expect(@invitation.code).not_to eq(nil)
     end
 
     describe "should be valid with only recipient_email" do

@@ -3,7 +3,7 @@ require_relative '../helpers/constants_helper'
 class Invitation < ActiveRecord::Base
   #attr_accessor :recipient_email
   extend FriendlyId
-  friendly_id :ticket, use: :slugged
+  friendly_id :code, use: :slugged
 
   belongs_to :program
   belongs_to :sender, class_name: "User", foreign_key: "sender_id"
@@ -14,7 +14,7 @@ class Invitation < ActiveRecord::Base
   validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value
 
   #callbacks
-  before_create :create_ticket
+  after_validation :create_code
 
   def recipient
     return recipient_email unless recipient_email.blank?
@@ -23,14 +23,30 @@ class Invitation < ActiveRecord::Base
 
   # Friendly_Id code to only update the url for new records
   def should_generate_new_friendly_id?
-    #self.ticket_changed?
     self.new_record?
   end
 
   private
-    def create_ticket
+    def create_code
+=begin
+      begin
+        o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+        code = (0...50).map{ o[rand(o.length)] }.join
+        code = Invitation.code(code)
+      end while !code.nil?
+      self.code = code
+=end
+      #self.code = generate_code
+=begin
       o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
-      self.ticket = (0...50).map{ o[rand(o.length)] }.join
+      self.code = (0...50).map{ o[rand(o.length)] }.join
+=end
+      self.code = generate_code
+    end
+
+    def generate_code
+      o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+      (0...10).map{ o[rand(o.length)] }.join
     end
 
     def user_level_value

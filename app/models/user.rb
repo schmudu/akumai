@@ -1,3 +1,5 @@
+require_relative '../../app/helpers/constants_helper'
+
 class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :email, use: :slugged
@@ -12,5 +14,11 @@ class User < ActiveRecord::Base
 
   def is_superuser?
     (superuser == true) ? true : false
+  end
+
+  def staff_level_programs
+    #roles = Role.where("user_id = ? and level >= ?", self.id, ConstantsHelper::ROLE_LEVEL_STAFF)
+    user_level_range = ConstantsHelper::ROLE_LEVEL_STAFF..ConstantsHelper::ROLE_LEVEL_SUPERUSER
+    Program.joins(:roles).where(roles: {user_id: self.id, level:user_level_range}).to_a
   end
 end

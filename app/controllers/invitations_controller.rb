@@ -4,6 +4,9 @@ class InvitationsController < ApplicationController
 
   def invite
   end
+
+  def review_invitations
+  end
   
   # GET /invitations
   # GET /invitations.json

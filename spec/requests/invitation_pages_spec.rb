@@ -8,7 +8,7 @@ describe "InvitationPages" do
   describe "without logging in" do
     before do   
       logout user
-      visit invitations_path
+      visit invite_users_path
     end 
 
     it "path should go to invite users path" do
@@ -18,11 +18,16 @@ describe "InvitationPages" do
 
   describe "with logging in" do
     before do   
-      visit invitations_path
+      visit invite_users_path
     end 
 
     it "path should go to invite users path" do
-      current_path.should == invitations_path
+      current_path.should == invite_users_path
+    end
+
+    describe "should have appropriate controls" do
+      it { should have_selector("label", :text => "Program") }
+      it { should have_selector("input", :text => "Student") }
     end
   end
 end

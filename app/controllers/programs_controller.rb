@@ -2,6 +2,14 @@ class ProgramsController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_program, only: [:show, :edit, :update, :destroy]
 
+  def user_level
+    #render :json => "test patrick"
+    respond_to do |format|
+      msg = { :message => "Sucess!" }
+      format.json { render :json => msg }
+    end
+  end
+
   # GET /programs
   # GET /programs.json
   def index

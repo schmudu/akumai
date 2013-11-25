@@ -45,13 +45,26 @@ describe User do
 
     end
     describe "staff level programs" do
-      before do
-        @program = FactoryGirl.create(:program)
-        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
+      describe "one staff level program" do
+        before do
+          @program = FactoryGirl.create(:program)
+          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        end
+
+        it "program staff_level count" do
+          expect(@user.staff_level_programs.count).to eq(0)
+        end
       end
 
-      it "program staff_level count" do
-        expect(@user.staff_level_programs.count).to eq(1)
+      describe "one staff level program" do
+        before do
+          @program = FactoryGirl.create(:program)
+          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
+        end
+
+        it "program staff_level count" do
+          expect(@user.staff_level_programs.count).to eq(1)
+        end
       end
     end
   end

@@ -1,6 +1,7 @@
 Trio::Application.routes.draw do
   resources :invitations
   resources :programs
+  match '/program_user_level', to:'programs#user_level', via: 'get'
   match '/dashboard',   to: 'users#dashboard',   via: 'get'
   match '/invite_users',   to: 'invitations#invite',   via: 'get'
   devise_for :users

@@ -3,9 +3,9 @@ class ProgramsController < ApplicationController
   before_action :set_program, only: [:show, :edit, :update, :destroy]
 
   def user_level
-    #render :json => "test patrick"
+    #render :json => dd"test patrick"
     respond_to do |format|
-      msg = { :message => "Sucess!" }
+      msg = { :message => "Success! name:#{params[:name]}" }
       format.json { render :json => msg }
     end
   end

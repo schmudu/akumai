@@ -3,6 +3,7 @@ class InvitationsController < ApplicationController
   before_action :set_invitation, only: [:show, :edit, :update, :destroy]
 
   def invite
+    @programs = current_user.staff_level_programs
   end
 
   def review_invitations

@@ -5,7 +5,7 @@
 <%= form_tag({},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
   <div class="control-group">
     <%= label_tag(:program, "Program", :class => 'control-label') %>
-    <%= select_tag(:program_id, options_for_select([['Lisbon', 1], ['Madrid', 2]])) %>
+    <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] })) %>
   </div>
   <div class="control-group">
     <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>

@@ -3,9 +3,10 @@ class ProgramsController < ApplicationController
   before_action :set_program, only: [:show, :edit, :update, :destroy]
 
   def user_level
-    #render :json => dd"test patrick"
+    program = current_user.programs.find_by_slug(params[:program])
+    user_level = program.roles.find_by_user_id(current_user.id).level
     respond_to do |format|
-      msg = { :message => "Success! name:#{params[:name]}" }
+      msg = { :message => "Success! level:#{user_level}" }
       format.json { render :json => msg }
     end
   end

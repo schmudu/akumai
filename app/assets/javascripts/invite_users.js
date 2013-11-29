@@ -1,6 +1,7 @@
 $(document).ready(function(){
   $("#program_id").change(function(){
-    $.get("/program_user_level.json", { name:"Patrick" })
+    //alert("program selected: " + $(this).val());
+    $.get("/program_user_level.json", { program:$(this).val() })
       .done( function( data ){
         alert("done: " + data.message);
       });

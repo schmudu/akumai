@@ -1,8 +1,9 @@
 require 'spec_helper'
+require_relative '../../app/helpers/constants_helper'
 
 describe "InvitationPages" do
   let(:user) { FactoryGirl.create(:user, superuser: true) }
-  let(:program) { FactoryGirl.create(:program) }
+  let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
   before(:each) { login user }
   subject { page }
   describe "without logging in" do
@@ -18,6 +19,7 @@ describe "InvitationPages" do
 
   describe "with logging in" do
     before do   
+      FactoryGirl.create(:role, user_id:user.id, program_id:program.id, level:ConstantsHelper::ROLE_LEVEL_SUPERUSER)
       visit invite_users_path
     end 
 
@@ -27,7 +29,8 @@ describe "InvitationPages" do
 
     describe "should have appropriate controls" do
       it { should have_selector("label", :text => "Program") }
-      it { should have_selector("input", :text => "Student") }
+      it { should have_selector("label", :text => "Student") }
+      it { should have_selector("option", :text => "Program_Name") }
     end
   end
 end

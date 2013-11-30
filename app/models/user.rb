@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
   end
 
   def staff_level_programs
+    # return all program if superuser
+    return Program.all.to_a if self.is_superuser?
+
+    # only return staff level programs
     user_level_range = ConstantsHelper::ROLE_LEVEL_STAFF..ConstantsHelper::ROLE_LEVEL_SUPERUSER
     Program.joins(:roles).where(roles: {user_id: self.id, level:user_level_range}).to_a
   end

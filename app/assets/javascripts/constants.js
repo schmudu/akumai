@@ -1,0 +1,5 @@
+// any changes here means changes to ConstantsHelper.rb
+var LEVEL_ROLE_SUPERUSER=3;
+var LEVEL_ROLE_ADMIN=2;
+var LEVEL_ROLE_STAFF=1;
+var LEVEL_ROLE_STUDENT=0;

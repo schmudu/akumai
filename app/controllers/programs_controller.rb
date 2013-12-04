@@ -3,10 +3,15 @@ class ProgramsController < ApplicationController
   before_action :set_program, only: [:show, :edit, :update, :destroy]
 
   def user_level
-    program = current_user.programs.find_by_slug(params[:program])
-    user_level = program.roles.find_by_user_id(current_user.id).level
+    if current_user.is_superuser?
+      user_level = ConstantsHelper::ROLE_LEVEL_SUPERUSER
+    else
+      program = current_user.programs.find_by_slug(params[:program])
+      user_level = program.roles.find_by_user_id(current_user.id).level
+    end
+
     respond_to do |format|
-      msg = { :message => "Success! level:#{user_level}" }
+      msg = { :level => "#{user_level}" }
       format.json { render :json => msg }
     end
   end

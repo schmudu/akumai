@@ -41,6 +41,46 @@ describe "InvitationPages" do
       it { should_not have_selector("option", :text => "Program_Student") }
     end
 
+    describe "user level types should be modified based on the program selected" do
+      describe "select admin program" do
+        before do
+          select('Program_Admin', from: 'program_id')
+        end
+
+        it { should_not have_css('input#level_admin.disabled')}
+        it { should_not have_css('input#level_staff.disabled')}
+        it { should_not have_css('input#level_student.disabled')}
+      end
+
+      describe "select staff program" do
+        pending "need to add tests for ajax request"
+=begin
+        before do
+        #within "#invite_users" do
+          select('Program_Staff', from: 'program_id')
+          #fill_in "email_addresses", :with => "Are you sure?"
+          #expect(page).to have_content("Are you sure?")
+        end
+
+        #it { should have_css('input#level_admin.disabled', :visible => true)}
+        #it { should have_css('input#level_staff.disabled')}
+        #it { should_not have_css('input#level_student.disabled')}
+        it "should alter input" do
+          page.find("#label_admin").should have_selector('input#level_admin.disabled')
+          #print page.html
+          #save_and_open_page
+          #expect(page).to have_selector('input#level_admin.disabled')
+          #expect(page).to have_selector('input#level_admin')
+          #page.should have_xpath("//input[@type='radio' and @id='level_admin']")
+          #page.should have_xpath("//input[@type='radio' and @id='level_admin' and @class='disabled']")
+          #page.should have_xpath("//input[@type='radio' and @id='level_admin']", :class => "disabled")
+          #page.should have_select(:xpath, "//input[@type='radio' and @id='level_staff' and @class='disabled']")
+          #page.should have_no_select(:xpath, "//input[@type='radio' and @id='level_student' and @class='disabled']")
+        end
+=end
+      end
+    end
+
     describe "superuser should have all programs" do
       let(:superuser) { FactoryGirl.create(:user, superuser: true) }
       subject { page }

@@ -1,21 +1,26 @@
 $(document).ready(function(){
   function enableAllUserLevels(){
-    admin_check = $("#level_admin").is(':checked');
-    alert("admin check: " + admin_check);
     $("#level_admin").removeClass("disabled");
     $("#level_staff").removeClass("disabled");
     $("#level_student").removeClass("disabled");
   }
 
   function enableOnlyStudent(){
-    alert("only student");
+    //admin_check = $("#level_admin").is(':checked');
+    if($("#level_admin").is(':checked') == true)
+      $("#level_admin").prop('checked', false);
+
+    if($("#level_staff").is(':checked') == true)
+      $("#level_staff").prop('checked', false);
+
+    //alert("only student");
     $("#level_admin").addClass("disabled");
     $("#level_staff").addClass("disabled");
     $("#level_student").removeClass("disabled");
   }
 
   function disableAllUserLevels(){
-    alert("disable all users");
+    //alert("disable all users");
     $("#level_admin").addClass("disabled");
     $("#level_staff").addClass("disabled");
     $("#level_student").addClass("disabled");

@@ -9,19 +9,19 @@
   </div>
   <div class="control-group">
     <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>
-    <label class="radio inline">
-      <input id="level_student" name="invitation_type" value="staff" type="radio"> Student
+    <label class="radio inline student">
+      <input class="student" name="invitation_type" value="staff" type="radio"> Student
     </label>
-    <label class="radio inline">
-      <input id="level_staff" name="invitation_type" value="staff" type="radio"> Staff
+    <label class="radio inline staff">
+      <input class="staff" name="invitation_type" value="staff" type="radio"> Staff
     </label>
-    <label class="radio inline" id="label_admin">
-      <input id="level_admin" class="patrick2" name="invitation_type" value="admin" type="radio"> Admin
+    <label class="radio inline admin" id="label_admin">
+      <input class="admin" name="invitation_type" value="admin" type="radio"> Admin
     </label>
   </div>
   <div class="control-group">
     <%= label_tag(:email_addresses, "Email Addresses", :class => 'control-label') %>
-    <%= text_area_tag(:email_addresses, "Enter emails here", size: "70x10") %>
+    <%= text_area_tag(:email_addresses, "pat@abc.com, richard@def.com", size: "70x10") %>
   </div>
   <%= submit_tag("Review Invitations", :id => '') %>
 <% end %>

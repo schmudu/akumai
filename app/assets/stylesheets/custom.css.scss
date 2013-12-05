@@ -107,6 +107,7 @@ footer {
   }
 }
 
+
 /* miscellaneous */
 
 .debug_dump {
@@ -120,6 +121,14 @@ footer {
 /* forms */
 .control-label{
   padding-right: 50px;
+}
+
+.disabled{
+  color: $grayMediumLight;
+}
+
+.form_default_entry{
+  color: $grayLight;
 }
 
 form#invite_users{

@@ -97,5 +97,18 @@ describe "InvitationPages" do
         it { should have_selector("option", :text => "Program_Student") }
       end
     end
+
+    describe "filling out valid information" do
+      before do
+        select('Program_Staff', from: 'program_id')
+        choose('radio_student')
+        fill_in "email_addresses", :with => "patrick@abc.com"
+        click_button "Review Invitations"
+      end
+
+      it "should go to review invitations path" do
+        current_path.should == review_invitations_path
+      end
+    end
   end
 end

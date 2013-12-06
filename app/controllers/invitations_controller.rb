@@ -7,7 +7,6 @@ class InvitationsController < ApplicationController
   end
 
   def review_invitations
-    render :text => "Review invitation"
   end
 
   # GET /invitations

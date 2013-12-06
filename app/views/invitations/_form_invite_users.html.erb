@@ -1,0 +1,28 @@
+<% provide(:title, "Invite Users (Step 1 of 3)") %>
+<%= javascript_include_tag "form_utilities" %>
+<%= javascript_include_tag "invite_users" %>
+
+<h2>Send Invitations (Step 1 of 3)</h2>
+<%= form_tag({:action => "review_invitations", :controller => "invitations", :method => "post"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
+  <div class="control-group">
+    <%= label_tag(:program, "Program", :class => 'control-label') %>
+    <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"))) %>
+  </div>
+  <div class="control-group">
+    <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>
+    <label class="radio inline student">
+      <input id="radio_student" class="student" name="invitation_type" value="staff" type="radio"> Student
+    </label>
+    <label class="radio inline staff">
+      <input id="radio_staff" class="staff" name="invitation_type" value="staff" type="radio"> Staff
+    </label>
+    <label class="radio inline admin" id="label_admin">
+      <input cid="radio_admin" lass="admin" name="invitation_type" value="admin" type="radio"> Admin
+    </label>
+  </div>
+  <div class="control-group">
+    <%= label_tag(:email_addresses, "Email Addresses", :class => 'control-label') %>
+    <%= text_area_tag(:email_addresses, "pat@abc.com, richard@def.com", size: "70x10") %>
+  </div>
+  <%= submit_tag("Review Invitations", :id => '') %>
+<% end %>

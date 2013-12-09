@@ -1,8 +1,8 @@
-<% provide(:title, "Invite Users (Step 1 of 3)") %>
+<% provide(:title, "Invite Users (Step 1 of 2)") %>
 <%= javascript_include_tag "form_utilities" %>
 <%= javascript_include_tag "invite_users" %>
 
-<h2>Send Invitations (Step 1 of 3)</h2>
+<h2>Send Invitations (Step 1 of 2)</h2>
 <%= form_tag({:action => "review_invitations", :controller => "invitations", :method => "post"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
   <div class="control-group">
     <%= label_tag(:program, "Program", :class => 'control-label') %>

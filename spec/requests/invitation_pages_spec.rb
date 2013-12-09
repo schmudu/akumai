@@ -6,108 +6,117 @@ describe "InvitationPages" do
   let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
   before(:each) { login user }
   subject { page }
-  describe "without logging in" do
-    before do   
-      logout user
-      visit invite_users_path
-    end 
-
-    it "path should go to invite users path" do
-      current_path.should == new_user_session_path
-    end
-  end
-
-  describe "with logging in" do
-    let (:program_admin) { FactoryGirl.create(:program, name:"Program_Admin")}
-    let (:program_staff) { FactoryGirl.create(:program, name:"Program_Staff")}
-    let (:program_student) { FactoryGirl.create(:program, name:"Program_Student")}
-
-    before do   
-      FactoryGirl.create(:role, user_id:user.id, program_id:program_admin.id, level:ConstantsHelper::ROLE_LEVEL_ADMIN)
-      FactoryGirl.create(:role, user_id:user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STAFF)
-      FactoryGirl.create(:role, user_id:user.id, program_id:program_student.id, level:ConstantsHelper::ROLE_LEVEL_STUDENT)
-      visit invite_users_path
-    end 
-
-    it "path should go to invite users path" do
-      current_path.should == invite_users_path
-    end
-
-    describe "should have appropriate controls" do
-      it { should have_selector("label", :text => "Program") }
-      it { should have_selector("label", :text => "Student") }
-      it { should have_selector("option", :text => "Program_Admin") }
-      it { should have_selector("option", :text => "Program_Staff") }
-      it { should_not have_selector("option", :text => "Program_Student") }
-    end
-
-    describe "user level types should be modified based on the program selected" do
-      describe "select admin program" do
-        before do
-          select('Program_Admin', from: 'program_id')
-        end
-
-        it { should_not have_css('input#level_admin.disabled')}
-        it { should_not have_css('input#level_staff.disabled')}
-        it { should_not have_css('input#level_student.disabled')}
-      end
-
-      describe "select staff program" do
-        pending "need to add tests for ajax request"
-=begin
-        before do
-        #within "#invite_users" do
-          select('Program_Staff', from: 'program_id')
-          #fill_in "email_addresses", :with => "Are you sure?"
-          #expect(page).to have_content("Are you sure?")
-        end
-
-        #it { should have_css('input#level_admin.disabled', :visible => true)}
-        #it { should have_css('input#level_staff.disabled')}
-        #it { should_not have_css('input#level_student.disabled')}
-        it "should alter input" do
-          page.find("#label_admin").should have_selector('input#level_admin.disabled')
-          #print page.html
-          #save_and_open_page
-          #expect(page).to have_selector('input#level_admin.disabled')
-          #expect(page).to have_selector('input#level_admin')
-          #page.should have_xpath("//input[@type='radio' and @id='level_admin']")
-          #page.should have_xpath("//input[@type='radio' and @id='level_admin' and @class='disabled']")
-          #page.should have_xpath("//input[@type='radio' and @id='level_admin']", :class => "disabled")
-          #page.should have_select(:xpath, "//input[@type='radio' and @id='level_staff' and @class='disabled']")
-          #page.should have_no_select(:xpath, "//input[@type='radio' and @id='level_student' and @class='disabled']")
-        end
-=end
-      end
-    end
-
-    describe "superuser should have all programs" do
-      let(:superuser) { FactoryGirl.create(:user, superuser: true) }
-      subject { page }
-
-      before do
+  describe "invite users" do
+    describe "without logging in" do
+      before do   
         logout user
-        login superuser
         visit invite_users_path
+      end 
+
+      it "path should go to invite users path" do
+        current_path.should == new_user_session_path
+      end
+    end
+
+    describe "with logging in" do
+      let (:program_admin) { FactoryGirl.create(:program, name:"Program_Admin")}
+      let (:program_staff) { FactoryGirl.create(:program, name:"Program_Staff")}
+      let (:program_student) { FactoryGirl.create(:program, name:"Program_Student")}
+
+      before do   
+        FactoryGirl.create(:role, user_id:user.id, program_id:program_admin.id, level:ConstantsHelper::ROLE_LEVEL_ADMIN)
+        FactoryGirl.create(:role, user_id:user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STAFF)
+        FactoryGirl.create(:role, user_id:user.id, program_id:program_student.id, level:ConstantsHelper::ROLE_LEVEL_STUDENT)
+        visit invite_users_path
+      end 
+
+      it "path should go to invite users path" do
+        current_path.should == invite_users_path
       end
 
       describe "should have appropriate controls" do
+        it { should have_selector("label", :text => "Program") }
+        it { should have_selector("label", :text => "Student") }
         it { should have_selector("option", :text => "Program_Admin") }
         it { should have_selector("option", :text => "Program_Staff") }
-        it { should have_selector("option", :text => "Program_Student") }
-      end
-    end
-
-    describe "filling out valid information" do
-      before do
-        select('Program_Staff', from: 'program_id')
-        choose('radio_student')
-        fill_in "email_addresses", :with => "patrick@abc.com"
-        click_button "Review Invitations"
+        it { should_not have_selector("option", :text => "Program_Student") }
       end
 
-      it "should go to review invitations path" do
-        current_path.should == review_invitations_path
+      describe "user level types should be modified based on the program selected" do
+        describe "select admin program" do
+          before do
+            select('Program_Admin', from: 'program_id')
+          end
+
+          it { should_not have_css('input#level_admin.disabled')}
+          it { should_not have_css('input#level_staff.disabled')}
+          it { should_not have_css('input#level_student.disabled')}
+        end
+
+        describe "select staff program" do
+          pending "need to add tests for ajax request"
+=begin
+          before do
+          #within "#invite_users" do
+            select('Program_Staff', from: 'program_id')
+            #fill_in "email_addresses", :with => "Are you sure?"
+            #expect(page).to have_content("Are you sure?")
+          end
+
+          #it { should have_css('input#level_admin.disabled', :visible => true)}
+          #it { should have_css('input#level_staff.disabled')}
+          #it { should_not have_css('input#level_student.disabled')}
+          it "should alter input" do
+            page.find("#label_admin").should have_selector('input#level_admin.disabled')
+            #print page.html
+            #save_and_open_page
+            #expect(page).to have_selector('input#level_admin.disabled')
+            #expect(page).to have_selector('input#level_admin')
+            #page.should have_xpath("//input[@type='radio' and @id='level_admin']")
+            #page.should have_xpath("//input[@type='radio' and @id='level_admin' and @class='disabled']")
+            #page.should have_xpath("//input[@type='radio' and @id='level_admin']", :class => "disabled")
+            #page.should have_select(:xpath, "//input[@type='radio' and @id='level_staff' and @class='disabled']")
+            #page.should have_no_select(:xpath, "//input[@type='radio' and @id='level_student' and @class='disabled']")
+          end
+=end
+        end
+      end
+
+      describe "superuser should have all programs" do
+        let(:superuser) { FactoryGirl.create(:user, superuser: true) }
+        subject { page }
+
+        before do
+          logout user
+          login superuser
+          visit invite_users_path
+        end
+
+        describe "should have appropriate controls" do
+          it { should have_selector("option", :text => "Program_Admin") }
+          it { should have_selector("option", :text => "Program_Staff") }
+          it { should have_selector("option", :text => "Program_Student") }
+        end
+      end
+
+      describe "submitting invitation" do
+        describe "filling out valid information" do
+          before do
+            select('Program_Staff', from: 'program_id')
+            choose('radio_student')
+            fill_in "email_addresses", :with => "patrick@abc.com"
+            click_button "Review Invitations"
+          end
+
+          it "should go to review invitations path" do
+            current_path.should == review_invitations_path
+          end
+
+          it { should have_content("Step 2 of 2") }
+        end
+
+        describe "filling out with invalid information" do
+        end
       end
     end
   end

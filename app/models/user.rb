@@ -24,4 +24,55 @@ class User < ActiveRecord::Base
     user_level_range = ConstantsHelper::ROLE_LEVEL_STAFF..ConstantsHelper::ROLE_LEVEL_SUPERUSER
     Program.joins(:roles).where(roles: {user_id: self.id, level:user_level_range}).to_a
   end
+
+  # params program_slug - program that user will be invited to
+  #        invitation_level - level of invitation
+  # returns a hash of valid and if there is a error on invitation level   
+  def valid_invitation?(program_slug, invitation_level)
+    result={}
+
+    # superuser
+    if self.is_superuser?
+      result[:valid] = true
+      return result
+    end
+
+    #find staff level for proram
+    program=Program.friendly.find(program_slug)
+    matches = Role.where("program_id = ? and user_id = ?", program.id, self.id)
+
+    if matches.empty?
+      # no matches
+      result[:valid]=false
+      result[:invitation_level]="You do not have the privileges to add users to this program."
+    else
+      user_level = matches.first.level
+      if (user_level == ConstantsHelper::ROLE_LEVEL_ADMIN)
+        if ((invitation_level == ConstantsHelper::ROLE_LEVEL_STUDENT) ||
+          (invitation_level == ConstantsHelper::ROLE_LEVEL_STAFF) ||
+          (invitation_level == ConstantsHelper::ROLE_LEVEL_ADMIN))
+          result[:valid] = true
+        else
+          result[:valid] = false
+          result[:invitation_level]="You do not have the privileges to add superusers." if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
+        end
+      elsif (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
+        if (invitation_level == ConstantsHelper::ROLE_LEVEL_STUDENT)
+          result[:valid] = true
+        else
+          result[:valid] = false
+          result[:invitation_level]="You do not have the privileges to add superusers." if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
+          result[:invitation_level]="You do not have the privileges to add administrators." if invitation_level == ConstantsHelper::ROLE_LEVEL_ADMIN
+          result[:invitation_level]="You do not have the privileges to add staff." if invitation_level == ConstantsHelper::ROLE_LEVEL_STAFF
+        end
+      elsif (user_level == ConstantsHelper::ROLE_LEVEL_STUDENT)
+          result[:valid] = false
+          result[:invitation_level]="You do not have the privileges to add superusers." if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
+          result[:invitation_level]="You do not have the privileges to add administrators." if invitation_level == ConstantsHelper::ROLE_LEVEL_ADMIN
+          result[:invitation_level]="You do not have the privileges to add staff." if invitation_level == ConstantsHelper::ROLE_LEVEL_STAFF
+          result[:invitation_level]="You do not have the privileges to add students." if invitation_level == ConstantsHelper::ROLE_LEVEL_STUDENT
+      end
+    end
+    return result
+  end
 end

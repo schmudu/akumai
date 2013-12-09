@@ -7,6 +7,9 @@ class InvitationsController < ApplicationController
   end
 
   def review_invitations
+    # temp for now
+    @programs = current_user.staff_level_programs
+    #render :text => "Hello"
   end
 
   # GET /invitations

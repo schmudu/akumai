@@ -15,6 +15,8 @@ describe User do
   it { should respond_to(:sent_invitations) }
   it { should respond_to(:received_invitations) }
   it { should respond_to(:staff_level_programs) }
+  it { should respond_to(:staff_level_programs) }
+  it { should respond_to(:valid_invitation?) }
 
   # user types
   it { should respond_to(:is_superuser?) }
@@ -65,6 +67,155 @@ describe User do
         it "program staff_level count" do
           expect(@user.staff_level_programs.count).to eq(1)
         end
+      end
+    end
+  end
+
+  describe "valid invitations?" do
+    before do
+      @superuser = FactoryGirl.create(:user, superuser: true)
+    end
+
+    describe "with invalid info" do
+      describe "with no role in program" do
+        it "sending out admin invite should return error" do
+          @program = FactoryGirl.create(:program)
+          result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
+          result[:valid].should eq(false)
+          result[:invitation_level].should eq("You do not have the privileges to add users to this program.")
+        end
+
+        it "sending out admin invite should return error" do
+          @program = FactoryGirl.create(:program)
+          result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
+          result[:valid].should eq(false)
+          result[:invitation_level].should eq("You do not have the privileges to add users to this program.")
+        end
+
+        it "sending out admin invite should return error" do
+          @program = FactoryGirl.create(:program)
+          result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
+          result[:valid].should eq(false)
+          result[:invitation_level].should eq("You do not have the privileges to add users to this program.")
+        end
+      end
+    end
+
+    describe "as a superuser" do
+      it "sending out admin invite should be valid" do
+        @program = FactoryGirl.create(:program)
+        result=@superuser.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result[:valid].should eq(true)
+      end
+
+      it "sending out admin invite should be valid" do
+        @program = FactoryGirl.create(:program)
+        result=@superuser.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
+        result[:valid].should eq(true)
+      end
+
+      it "sending out admin invite should be valid" do
+        @program = FactoryGirl.create(:program)
+        result=@superuser.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result[:valid].should eq(true)
+      end
+    end
+
+    describe "as an admin member" do
+      it "sending out superuser invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_SUPERUSER)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add superusers.")
+      end
+
+      it "sending out admin invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result[:valid].should eq(true)
+      end
+
+      it "sending out staff invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
+        result[:valid].should eq(true)
+      end
+
+      it "sending out student invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result[:valid].should eq(true)
+      end
+    end
+
+    describe "as a staff member" do
+      it "sending out superuser invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_SUPERUSER)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add superusers.")
+      end
+
+      it "sending out admin invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add administrators.")
+      end
+
+      it "sending out staff invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add staff.")
+      end
+
+      it "sending out student invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result[:valid].should eq(true)
+      end
+    end
+
+    describe "as a student member" do
+      it "sending out superuser invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_SUPERUSER)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add superusers.")
+      end
+
+      it "sending out admin invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add administrators.")
+      end
+
+      it "sending out staff invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add staff.")
+      end
+
+      it "sending out student invite should return error" do
+        @program = FactoryGirl.create(:program)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result=@user.valid_invitation?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
+        result[:valid].should eq(false)
+        result[:invitation_level].should eq("You do not have the privileges to add students.")
       end
     end
   end

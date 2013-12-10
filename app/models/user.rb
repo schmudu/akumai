@@ -38,9 +38,10 @@ class User < ActiveRecord::Base
     end
 
     # no program selected
-    if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == ConstantsHelper::USER_INVITATION_PROGRAM_DEFAULT))
+    if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == ConstantsHelper::USER_INVITATION_PROGRAM_DEFAULT_SELECTION) || (invitation_level.nil?) || (invitation_level.blank?))
       result[:valid] = false
-      result[:program_id] = ConstantsHelper::USER_INVITATION_PROGRAM_DEFAULT
+      result[:invitation_level]="You must select a invitation type." if (invitation_level.nil? || invitation_level.blank?)
+      result[:program_id] = ConstantsHelper::USER_INVITATION_PROGRAM_DEFAULT if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == ConstantsHelper::USER_INVITATION_PROGRAM_DEFAULT_SELECTION))
       return result
     end
 

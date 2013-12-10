@@ -116,6 +116,16 @@ describe "InvitationPages" do
         end
 
         describe "filling out with invalid information" do
+          describe "leave out program id" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              #choose('radio_student')
+              fill_in "email_addresses", :with => "patrick@abc.com"
+              click_button "Review Invitations"
+            end
+
+            it { should have_content("You must select an invitation type.")}
+          end
         end
       end
     end

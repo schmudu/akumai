@@ -4,6 +4,7 @@ class InvitationsController < ApplicationController
   before_action :set_invitation, only: [:show, :edit, :update, :destroy]
 
   def invite
+    @errors = {}
     @programs = current_user.staff_level_programs
   end
 
@@ -11,14 +12,18 @@ class InvitationsController < ApplicationController
     program_id = params[:program_id]
     invitation_level = params[:invitation_type]
     emails = params[:email_addresses]
+    @errors = {}
 
     invitation_validation = current_user.valid_invitation?(program_id, invitation_level)
     email_validation = valid_email_addresses?(emails)
 
     if ((invitation_validation[:valid] == true) && (email_validation[:valid] == true))
-      render :text => "another form"
+      #temporary
+      # TODO - add a lot more error messages in integration tests and move all messages to constants file
+      @programs = current_user.staff_level_programs
     else
       # errors
+      @errors = invitation_validation.merge(email_validation)
       @programs = current_user.staff_level_programs
     end
   end

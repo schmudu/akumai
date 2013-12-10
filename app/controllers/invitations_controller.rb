@@ -1,4 +1,5 @@
 class InvitationsController < ApplicationController
+  include UsersHelper
   before_filter :authenticate_user!
   before_action :set_invitation, only: [:show, :edit, :update, :destroy]
 
@@ -7,9 +8,19 @@ class InvitationsController < ApplicationController
   end
 
   def review_invitations
-    # temp for now
-    @programs = current_user.staff_level_programs
-    #render :text => "Hello"
+    program_id = params[:program_id]
+    invitation_level = params[:invitation_type]
+    emails = params[:email_addresses]
+
+    invitation_validation = current_user.valid_invitation?(program_id, invitation_level)
+    email_validation = valid_email_addresses?(emails)
+
+    if ((invitation_validation[:valid] == true) && (email_validation[:valid] == true))
+      render :text => "another form"
+    else
+      # errors
+      @programs = current_user.staff_level_programs
+    end
   end
 
   # GET /invitations

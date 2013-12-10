@@ -37,6 +37,18 @@ class User < ActiveRecord::Base
       return result
     end
 
+    # no program selected
+    if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == ConstantsHelper::USER_INVITATION_PROGRAM_DEFAULT))
+      result[:valid] = false
+      result[:program_id] = ConstantsHelper::USER_INVITATION_PROGRAM_DEFAULT
+      return result
+    end
+
+    # convert invitation_level
+    if (!invitation_level.nil?)
+      invitation_level = invitation_level.to_i 
+    end
+
     #find staff level for proram
     program=Program.friendly.find(program_slug)
     matches = Role.where("program_id = ? and user_id = ?", program.id, self.id)

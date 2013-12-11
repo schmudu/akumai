@@ -116,7 +116,19 @@ describe "InvitationPages" do
         end
 
         describe "filling out with invalid information" do
-          describe "leave out invitation type id" do
+          describe "do not select a program" do
+            before do
+              #select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "patrick@abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.program')}
+
+          end
+
+          describe "do not select an invitation type" do
             before do
               select('Program_Staff', from: 'program_id')
               #choose('radio_student')
@@ -124,8 +136,41 @@ describe "InvitationPages" do
               click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
-            it { should have_content(I18n.t 'invitations.form.errors.invitation_type')}
+            it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
+          end
 
+          describe "do not enter an email address" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => ""
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+          end
+
+          describe "do not enter an email address" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.email_format')}
+          end
+
+          describe "do not enter any information" do
+            before do
+              fill_in "email_addresses", :with => ""
+
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+            it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
+            it { should have_content(I18n.t 'invitations.form.errors.program')}
           end
         end
       end

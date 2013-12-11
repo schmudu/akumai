@@ -18,9 +18,6 @@ class InvitationsController < ApplicationController
     email_validation = valid_email_addresses?(emails)
 
     if ((invitation_validation[:valid] == true) && (email_validation[:valid] == true))
-      #temporary
-      # TODO - add a lot more error messages in integration tests and move all messages to constants file
-      @programs = current_user.staff_level_programs
     else
       # errors
       @errors = invitation_validation.merge(email_validation)

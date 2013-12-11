@@ -1,1 +1,5 @@
-<%= render 'form_invite_users' %>
+<% if @errors.empty? %>
+  <%= render 'form_review_invitations' %>
+<% else %>
+  <%= render 'form_invite_users' %>
+<% end %>

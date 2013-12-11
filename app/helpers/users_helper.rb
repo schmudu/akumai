@@ -4,9 +4,9 @@ module UsersHelper
     result={}
 
     # nil or empty
-    if ((email_addresses.nil?) || (email_addresses.empty?))
+    if ((email_addresses.nil?) || (email_addresses.blank?))
       result[:valid]=false
-      result[:email]="Please enter email addresses."
+      result[:email]=I18n.t('invitations.form.errors.email_blank')
       return result
     end
 
@@ -14,7 +14,7 @@ module UsersHelper
     split_email_addresses.each do |email|
       unless valid_email?(email)
         result[:valid]=false
-        result[:email]="Please verify the format of the email addresses."
+        result[:email]=I18n.t('invitations.form.errors.email_format')
         return result
       end
     end

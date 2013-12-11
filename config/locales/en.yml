@@ -20,4 +20,15 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  invitations:
+    form:
+      buttons:
+        review_invitations: "Review Invitations"
+      errors:
+        invitation_type_invalid: "You do not have the privileges to add users to this program."
+        invitation_type_none: "You must select an invitation type."
+        privileges_administrators: "You do not have the privileges to add administrators."
+        privileges_staff: "You do not have the privileges to add staff."
+        privileges_students: "You do not have the privileges to add students."
+        privileges_superusers: "You do not have the privileges to add superusers."
+        program: "Please select a program."

@@ -105,7 +105,7 @@ describe "InvitationPages" do
             select('Program_Staff', from: 'program_id')
             choose('radio_student')
             fill_in "email_addresses", :with => "patrick@abc.com"
-            click_button "Review Invitations"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
           end
 
           it "should go to review invitations path" do
@@ -116,15 +116,16 @@ describe "InvitationPages" do
         end
 
         describe "filling out with invalid information" do
-          describe "leave out program id" do
+          describe "leave out invitation type id" do
             before do
               select('Program_Staff', from: 'program_id')
               #choose('radio_student')
               fill_in "email_addresses", :with => "patrick@abc.com"
-              click_button "Review Invitations"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
-            it { should have_content("You must select an invitation type.")}
+            it { should have_content(I18n.t 'invitations.form.errors.invitation_type')}
+
           end
         end
       end

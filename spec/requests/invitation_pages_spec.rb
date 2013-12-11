@@ -125,6 +125,7 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.program')}
+            it { should have_selector('div#program_group.error') }
             it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
 
           end
@@ -138,6 +139,7 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
+            it { should have_selector('div#invitation_group.error') }
             it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
 
@@ -150,6 +152,7 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+            it { should have_selector('div#email_group.error') }
             it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
             it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
@@ -163,6 +166,7 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+            it { should have_selector('div#email_group.error') }
             it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
             it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
@@ -176,6 +180,7 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_format')}
+            it { should have_selector('div#email_group.error') }
             it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
             it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
@@ -190,6 +195,9 @@ describe "InvitationPages" do
             it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
             it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
             it { should have_content(I18n.t 'invitations.form.errors.program')}
+            it { should have_selector('div#email_group.error') }
+            it { should have_selector('div#invitation_group.error') }
+            it { should have_selector('div#program_group.error') }
           end
         end
       end

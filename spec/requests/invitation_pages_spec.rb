@@ -183,6 +183,7 @@ describe "InvitationPages" do
             it { should have_selector('div#email_group.error') }
             it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
             it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
+            it { should have_selector("textarea", :text => "abc.com") }
           end
 
           describe "do not enter any information" do

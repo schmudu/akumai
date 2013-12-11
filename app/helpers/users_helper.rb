@@ -4,7 +4,7 @@ module UsersHelper
     result={}
 
     # nil or empty
-    if ((email_addresses.nil?) || (email_addresses.blank?))
+    if ((email_addresses == I18n.t('invitations.form.prompt.default_email')) || (email_addresses.nil?) || (email_addresses.blank?))
       result[:valid]=false
       result[:email]=I18n.t('invitations.form.errors.email_blank')
       return result

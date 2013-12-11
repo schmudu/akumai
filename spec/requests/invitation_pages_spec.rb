@@ -125,6 +125,7 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.program')}
+            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
 
           end
 
@@ -137,6 +138,7 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
+            it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
 
           describe "do not enter an email address" do
@@ -148,9 +150,24 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
+            it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
 
-          describe "do not enter an email address" do
+          describe "do nothing with email" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => I18n.t('invitations.form.prompt.default_email')
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
+            it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
+          end
+
+          describe "enter an invalid email" do
             before do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
@@ -159,6 +176,8 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_format')}
+            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
+            it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
 
           describe "do not enter any information" do

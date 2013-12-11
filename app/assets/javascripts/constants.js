@@ -5,4 +5,4 @@ var LEVEL_ROLE_STAFF=1;
 var LEVEL_ROLE_STUDENT=0;
 
 // INVITATIONS
-var EMAIL_ADDRESSES_DEFAULT = "pat@abc.com, richard@def.com";
+var EMAIL_ADDRESSES_DEFAULT = "brian@yahoo.com, samantha@gmail.com";

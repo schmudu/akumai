@@ -6,16 +6,17 @@ class InvitationsController < ApplicationController
   def invite
     @errors = {}
     @programs = current_user.staff_level_programs
+    #@program_id = nil
   end
 
   def review_invitations
-    program_id = params[:program_id]
-    invitation_level = params[:invitation_type]
-    emails = params[:email_addresses]
+    @program_id = params[:program_id]
+    @invitation_level = params[:invitation_type]
+    @emails = params[:email_addresses]
     @errors = {}
 
-    invitation_validation = current_user.valid_invitation?(program_id, invitation_level)
-    email_validation = valid_email_addresses?(emails)
+    invitation_validation = current_user.valid_invitation?(@program_id, @invitation_level)
+    email_validation = valid_email_addresses?(@emails)
 
     if ((invitation_validation[:valid] == true) && (email_validation[:valid] == true))
     else

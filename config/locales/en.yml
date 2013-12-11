@@ -24,6 +24,7 @@ en:
     form:
       prompt:
         select_program: "Select Program"
+        default_email: "brian@yahoo.com, samantha@gmail.com"
       buttons:
         review_invitations: "Review Invitations"
       errors:

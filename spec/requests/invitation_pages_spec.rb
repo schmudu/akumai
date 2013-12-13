@@ -201,6 +201,21 @@ describe "InvitationPages" do
             it { should have_selector('div#program_group.error') }
           end
         end
+
+        describe "on review invitations page" do
+          before do
+            select('Program_Staff', from: 'program_id')
+            choose('radio_student')
+            fill_in "email_addresses", :with => "patrick@abc.com"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+          end
+
+          it "should go to review invitations path" do
+            current_path.should == review_invitations_path
+          end
+
+          it { should have_content("Step 2 of 2") }
+        end
       end
     end
   end

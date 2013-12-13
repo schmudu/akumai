@@ -18,13 +18,9 @@
 #
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
-
 en:
   invitations:
     form:
-      prompt:
-        select_program: "Select Program"
-        default_email: "brian@yahoo.com, samantha@gmail.com"
       buttons:
         review_invitations: "Review Invitations"
       errors:
@@ -37,3 +33,10 @@ en:
         privileges_students: "You do not have the privileges to add students."
         privileges_superusers: "You do not have the privileges to add superusers."
         program: "Please select a program."
+      prompt:
+        select_program: "Select Program"
+        default_email: "brian@yahoo.com, samantha@gmail.com"
+      review:
+        invitations:
+          one: "one invitation"
+          other: "%{count} invitations"

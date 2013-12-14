@@ -8,7 +8,7 @@
   <div>
     <ul>
       <% @errors.each do |key, value| %>
-        <% if(key.to_s!="valid") %>
+        <% if((key.to_s!="valid") && (key.to_s!="emails")) %>
           <li><%= value %></li>
         <% end %>
       <% end %>
@@ -24,7 +24,7 @@
     <div id="program_group" class="error control-group">
   <% end %>
     <%= label_tag(:program, "Program", :class => 'control-label') %>
-    <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: @program_id)) %>
+    <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: @program_friendly)) %>
   </div>
 
   <!-- INVITATION -->
@@ -36,7 +36,7 @@
     <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>
     <label class="radio inline student">
 
-      <% if(@invitation_level=="0")%>
+      <% if(@invitation_type=="0")%>
         <input id="radio_student" checked="checked" class="student" name="invitation_type" value="0" type="radio"> 
       <% else %>
         <input id="radio_student" class="student" name="invitation_type" value="0" type="radio"> 
@@ -45,7 +45,7 @@
       Student
     </label>
     <label class="radio inline staff">
-      <% if(@invitation_level=="1")%>
+      <% if(@invitation_type=="1")%>
         <input id="radio_staff" checked="checked" class="staff" name="invitation_type" value="1" type="radio"> 
       <% else %>
         <input id="radio_staff" class="staff" name="invitation_type" value="1" type="radio"> 
@@ -53,7 +53,7 @@
       Staff
     </label>
     <label class="radio inline admin" id="label_admin">
-      <% if(@invitation_level=="2")%>
+      <% if(@invitation_type=="2")%>
         <input id="radio_admin" class="admin" checked="checked" name="invitation_type" value="2" type="radio"> 
       <% else %>
         <input id="radio_admin" class="admin" name="invitation_type" value="2" type="radio"> 
@@ -61,6 +61,8 @@
       Admin
     </label>
   </div>
+
+  <!-- EMAIL -->
   <% if @errors[:email].nil? %>
     <div id="email_group" class="control-group">
   <% else %>

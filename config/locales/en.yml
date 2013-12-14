@@ -19,6 +19,11 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 en:
+  user_level:
+    superuser: "Superuser"
+    admin: "Admin"
+    staff: "Staff"
+    student: "Student"
   invitations:
     form:
       buttons:
@@ -37,6 +42,9 @@ en:
         select_program: "Select Program"
         default_email: "brian@yahoo.com, samantha@gmail.com"
       review:
+        users:
+          one: "%{count} user"
+          other: "%{count} users"
         invitations:
-          one: "one invitation"
-          other: "%{count} invitations"
+          one: "Review the invitation details and press 'Send Invitation' to send out it on their way."
+          other: "Review the invitation details and press 'Send Invitations' to send out them on their way."

@@ -1,5 +1,6 @@
 $(document).ready(function(){
   function enableAllUserLevels(){
+    $("#invitation_group").removeClass("error");
     $(".admin").removeClass("disabled");
     $(".staff").removeClass("disabled");
     $(".student").removeClass("disabled");
@@ -9,6 +10,7 @@ $(document).ready(function(){
     uncheckRadioButton("input.admin");
     uncheckRadioButton("input.staff");
 
+    $("#invitation_group").removeClass("error");
     $(".admin").addClass("disabled");
     $(".staff").addClass("disabled");
     $(".student").removeClass("disabled");
@@ -20,6 +22,7 @@ $(document).ready(function(){
     uncheckRadioButton("input.student");
 
     //alert("disable all users");
+    $("#invitation_group").removeClass("error");
     $(".admin").addClass("disabled");
     $(".staff").addClass("disabled");
     $(".student").addClass("disabled");

@@ -45,6 +45,9 @@ describe InvitationsController do
         @params[:email_addresses]="abc@abc.com"
         post :review_invitations, @params 
         assigns[:programs].should be_nil
+        assigns[:program].should_not be_nil
+        assigns[:invitation_level].should eq("student")
+        assigns[:emails].should_not be_nil
       end
     end
   end

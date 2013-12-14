@@ -6,24 +6,30 @@ class InvitationsController < ApplicationController
   def invite
     @errors = {}
     @programs = current_user.staff_level_programs
-    #@program_id = nil
   end
 
   def review_invitations
-    @program_id = params[:program_id]
-    @invitation_level = params[:invitation_type]
+    @program_friendly = params[:program_id]
+    @invitation_type = params[:invitation_type]
     @emails = params[:email_addresses]
     @errors = {}
 
-    invitation_validation = current_user.valid_invitation?(@program_id, @invitation_level)
+    invitation_validation = current_user.valid_invitation?(@program_friendly, @invitation_type)
     email_validation = valid_email_addresses?(@emails)
 
     if ((invitation_validation[:valid] == true) && (email_validation[:valid] == true))
+      @program = Program.friendly.find(@program_friendly)
+      @invitation_level = user_level(@invitation_type)
+      @emails = email_validation[:emails]
     else
       # errors
       @errors = invitation_validation.merge(email_validation)
       @programs = current_user.staff_level_programs
     end
+  end
+
+  def submit_invitations
+    render :text => "Submit Invitations"
   end
 
   # GET /invitations

@@ -101,18 +101,33 @@ describe "InvitationPages" do
 
       describe "submitting invitation" do
         describe "filling out valid information" do
-          before do
-            select('Program_Staff', from: 'program_id')
-            choose('radio_student')
-            fill_in "email_addresses", :with => "patrick@abc.com"
-            click_button I18n.t('invitations.form.buttons.review_invitations')
+          describe "with one email address" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "patrick@abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it "should go to review invitations path" do
+              current_path.should == review_invitations_path
+            end
+
+            it { should have_content("Step 2 of 2") }
           end
 
-          it "should go to review invitations path" do
-            current_path.should == review_invitations_path
-          end
+          describe "with two email addresses" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "patrick@abc.com, jeremy@yikes.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
 
-          it { should have_content("Step 2 of 2") }
+            it "should go to review invitations path" do
+              current_path.should == review_invitations_path
+            end
+          end
         end
 
         describe "filling out with invalid information" do
@@ -215,6 +230,10 @@ describe "InvitationPages" do
           end
 
           it { should have_content("Step 2 of 2") }
+          it { should have_content(I18n.t('invitations.form.review.invitations', count:1)) }
+          it { should have_content("Program_Staff") }
+          it { should have_content("patrick@abc.com") }
+          it { should have_content(I18n.t('user_level.student')) }
         end
       end
     end

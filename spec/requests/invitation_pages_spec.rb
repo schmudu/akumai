@@ -127,6 +127,9 @@ describe "InvitationPages" do
             it "should go to review invitations path" do
               current_path.should == review_invitations_path
             end
+
+            it { should have_content("patrick@abc.com") }
+            it { should have_content("jeremy@yikes.com") }
           end
         end
 

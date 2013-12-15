@@ -11,7 +11,8 @@ module UsersHelper
     end
 
     # clear newlines
-    email_addresses.sub!("\r\n", "")
+    email_addresses.gsub!("\r\n", "")
+    email_addresses.gsub!(" ", "")
     logger.info("\nEmails:#{email_addresses}")
     split_email_addresses = email_addresses.split(",")
     split_email_addresses.each do |email|

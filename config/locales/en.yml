@@ -46,5 +46,5 @@ en:
           one: "%{count} user"
           other: "%{count} users"
         invitations:
-          one: "Review the invitation details and press 'Send Invitation' to send out it on their way."
-          other: "Review the invitation details and press 'Send Invitations' to send out them on their way."
+          one: "Review the invitation details and press 'Send Invitation' to when you are ready."
+          other: "Review the invitation details and press 'Send Invitations' to when you are ready."

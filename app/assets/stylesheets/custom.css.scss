@@ -136,3 +136,16 @@ form#invite_users{
     margin-left: 210px;
   }
 }
+
+div.form-label{
+  text-align: right;
+  font-weight: bold;
+}
+
+form div.row{
+  margin-bottom: 20px;
+}
+
+form div#email_group ul{
+  list-style-type: none;
+}

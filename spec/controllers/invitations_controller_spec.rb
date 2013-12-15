@@ -46,7 +46,7 @@ describe InvitationsController do
         post :review_invitations, @params 
         assigns[:programs].should be_nil
         assigns[:program].should_not be_nil
-        assigns[:invitation_level].should eq("student")
+        assigns[:invitation_level].should eq("Student")
         assigns[:emails].should_not be_nil
       end
     end

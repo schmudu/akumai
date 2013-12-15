@@ -4,27 +4,40 @@
 <h2>Review Invitations (Step 2 of 2)</h2>
 
 <%= t('invitations.form.review.invitations', count:1) %>
-
+<br/><br/>
 <%= form_tag({:action => "submit_invitations", :controller => "invitations"},{:class => 'form-horizontal', :id => 'submit_invitations'}) do %>
   <!-- PROGRAM -->
-  <div id="program_group" class="control-group">
-    <label class="inline">Program:</label>
-    <%= @program.name %>
+  <div id="program_group" class="row">
+    <div class="span4 form-label">
+      <span class="form-label text-info">Program:</span>
+    </div>
+    <div class="span8">
+      <span><%= @program.name %></span>
+    </div>
   </div>
 
   <!-- INVITATION -->
-  <div id="invitation_group" class="control-group">
-    <label class="inline">Invitation Type:</label>
-    <%= @Invitation_level %>
+  <div id="invitation_group" class="row">
+    <div class="span4 form-label">
+      <span class="form-label text-info">Invitation Type:</span>
+    </div>
+    <div class="span8">
+      <span><%= @invitation_level %></span>
+    </div>
   </div>
 
   <!-- EMAIL -->
-  <div id="email_group" class="control-group">
-    <ul>
-      <% @emails.each do |email| %>
-        <li><%= email %></li>
-      <% end %>
-    </ul>
+  <div id="email_group" class="row">
+    <div class="span4 form-label">
+      <span class="form-label text-info">Emails:</span>
+    </div>
+    <div class="span8">
+      <ul>
+        <% @emails.each do |email| %>
+          <li><%= email %></li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-  <%= submit_tag("Submit Invitations", :id => '') %>
+  <%= submit_tag("Send Invitations", :id => '') %>
 <% end %>

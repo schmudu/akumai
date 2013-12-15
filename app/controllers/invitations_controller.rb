@@ -22,7 +22,7 @@ class InvitationsController < ApplicationController
       @invitation_level = user_level(@invitation_type)
       @emails = email_validation[:emails]
     else
-      # errors
+      # error with input
       @errors = invitation_validation.merge(email_validation)
       @programs = current_user.staff_level_programs
     end

@@ -1,15 +1,17 @@
 <% provide(:title, "Review Invitations (Step 2 of 2)") %>
 <%= javascript_include_tag "form_utilities" %>
 
-<h2>Review Invitations (Step 2 of 2)</h2>
+<h2>Review Invitations ( Step 2 of 2 )</h2>
 
-<%= t('invitations.form.review.invitations', count:1) %>
+<div class="row" id="review_instructions">
+  <%= t('invitations.form.review.invitations', count:1) %>
+</div>
 <br/><br/>
-<%= form_tag({:action => "submit_invitations", :controller => "invitations"},{:class => 'form-horizontal', :id => 'submit_invitations'}) do %>
+<%= form_tag({:action => "send_invitations", :controller => "invitations"},{:class => 'form-horizontal', :id => 'review_invitations'}) do %>
   <!-- PROGRAM -->
   <div id="program_group" class="row">
     <div class="span4 form-label">
-      <span class="form-label text-info">Program:</span>
+      <span class="form-label text-info"><%= t('terms.program') %>:</span>
     </div>
     <div class="span8">
       <span><%= @program.name %></span>
@@ -19,17 +21,27 @@
   <!-- INVITATION -->
   <div id="invitation_group" class="row">
     <div class="span4 form-label">
-      <span class="form-label text-info">Invitation Type:</span>
+      <span class="form-label text-info"><%= t('terms.invitation_type') %>:</span>
     </div>
     <div class="span8">
       <span><%= @invitation_level %></span>
     </div>
   </div>
 
+  <!-- NUMBER OF INVITATION -->
+  <div id="no_invitation_group" class="row">
+    <div class="span4 form-label">
+      <span class="form-label text-info"><%= t('terms.number_of_invitations') %>:</span>
+    </div>
+    <div class="span8">
+      <span><%= @emails.count %></span>
+    </div>
+  </div>
+
   <!-- EMAIL -->
   <div id="email_group" class="row">
     <div class="span4 form-label">
-      <span class="form-label text-info">Emails:</span>
+      <span class="form-label text-info"><%= t('terms.email_addresses')%>:</span>
     </div>
     <div class="span8">
       <ul>
@@ -39,5 +51,15 @@
       </ul>
     </div>
   </div>
-  <%= submit_tag("Send Invitations", :id => '') %>
+  <div class="row">
+    <div class="span2">
+    </div>
+    <div class="span4">
+      <%= link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn") %>
+    </div>
+    <div class="span6">
+      <%= link_to(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path, :class => "btn") %>
+      <%= submit_tag(I18n.t('invitations.form.buttons.send_invitations'), :class => 'btn btn-success') %>
+    </div>
+  </div>
 <% end %>

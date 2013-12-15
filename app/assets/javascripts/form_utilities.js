@@ -6,7 +6,6 @@
       // default entry, set class
       $(input_id).val('');
       $(input_id).removeClass("form_default_entry");
-      alert("setting to blank.");
     }
   }
 

@@ -1,6 +1,6 @@
 Trio::Application.routes.draw do
   match '/review_invitations',   to: 'invitations#review_invitations',   via: 'post'
-  match '/submit_invitations',   to: 'invitations#submit_invitations',   via: 'post'
+  match '/send_invitations',   to: 'invitations#send_invitations',   via: 'post'
   resources :invitations
   resources :programs
   match '/program_user_level', to:'programs#user_level', via: 'get'

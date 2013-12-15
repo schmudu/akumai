@@ -19,6 +19,9 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 en:
+  forms: 
+    buttons:
+      cancel: "Cancel"
   user_level:
     superuser: "Superuser"
     admin: "Admin"
@@ -27,7 +30,9 @@ en:
   invitations:
     form:
       buttons:
+        edit_invitation: "Edit Invitation"
         review_invitations: "Review Invitations"
+        send_invitations: "Send Invitations"
       errors:
         email_blank: "Please enter an email address for the invitation."
         email_format: "Please verify the format of the email addresses."
@@ -39,8 +44,8 @@ en:
         privileges_superusers: "You do not have the privileges to add superusers."
         program: "Please select a program."
       prompt:
-        select_program: "Select Program"
         default_email: "brian@yahoo.com, samantha@gmail.com"
+        select_program: "Select Program"
       review:
         users:
           one: "%{count} user"
@@ -48,3 +53,9 @@ en:
         invitations:
           one: "Review the invitation details and press 'Send Invitation' to when you are ready."
           other: "Review the invitation details and press 'Send Invitations' to when you are ready."
+  terms:
+    email_addresses: "Email Addresses"
+    invitation_type: "Invitation Type"
+    number_of_invitations: "Number of invitations"
+    program: "Program"
+

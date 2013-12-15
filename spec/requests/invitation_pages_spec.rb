@@ -228,15 +228,21 @@ describe "InvitationPages" do
             click_button I18n.t('invitations.form.buttons.review_invitations')
           end
 
-          it "should go to review invitations path" do
-            current_path.should == review_invitations_path
-          end
+          describe "content on page" do
+            it "should go to review invitations path" do
+              current_path.should == review_invitations_path
+            end
 
-          it { should have_content("Step 2 of 2") }
-          it { should have_content(I18n.t('invitations.form.review.invitations', count:1)) }
-          it { should have_content("Program_Staff") }
-          it { should have_content("patrick@abc.com") }
-          it { should have_content(I18n.t('user_level.student')) }
+            it { should have_content("Step 2 of 2") }
+            it { should have_content(I18n.t('invitations.form.review.invitations', count:1)) }
+            it { should have_content("Program_Staff") }
+            it { should have_content("patrick@abc.com") }
+            it { should have_content(I18n.t('user_level.student')) }
+            it { should have_content(I18n.t('terms.number_of_invitations')) }
+            it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
+            it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path) }
+            it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
+          end
         end
       end
     end

@@ -1,3 +1,18 @@
 // Place all the styles related to the Invitations controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+form#review_invitations{
+  div#email_group{
+    ul{
+      margin: 0 0 0 20px;
+    }
+    div.span8{
+      margin-left: 0px;
+    }
+  }
+}
+
+div#review_instructions{
+  text-align: center;
+  font-weight: bold;
+}

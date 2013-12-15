@@ -28,8 +28,8 @@ class InvitationsController < ApplicationController
     end
   end
 
-  def submit_invitations
-    render :text => "Submit Invitations"
+  def send_invitations
+    render :text => "Send Invitations"
   end
 
   # GET /invitations

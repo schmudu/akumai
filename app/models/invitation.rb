@@ -11,7 +11,7 @@ class Invitation < ActiveRecord::Base
   validates :sender_id, presence: true
   validates :program_id, presence: true
   validates :user_level, presence: true
-  validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value
+  validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value, :user_does_not_have_role_in_program
 
   #callbacks
   after_validation :create_code
@@ -48,5 +48,29 @@ class Invitation < ActiveRecord::Base
     def presence_of_email_or_recipient
       errors.add(:recipient_email, "recipient_email and recipient id cannot both be set") if ((!recipient_id.nil?) && (!recipient_email.blank?))
       errors.add(:recipient_email, "recipient_email or recipient id must be set") if ((recipient.nil?) && (recipient_email.blank?))
+    end
+
+    def user_does_not_have_role_in_program
+      # validate params
+      return if program_id.nil?
+      return if (((recipient_id.nil?) || (recipient_id.blank?)) && ((recipient_email.nil?) || (recipient_email.blank?)))
+
+      # validate program param
+      program = Program.find_by_id(self.program_id)
+      return if program.nil?
+
+      if ((!self.recipient_email.nil?) && (!self.recipient_email.blank?))
+        # user is not registered
+        user = User.where("email = ?", self.recipient_email)
+        return if user.empty?
+        errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: user.first.email, program_name: program.name)
+      else
+        # reference by recipient_id
+        role = Role.where("program_id = ? and user_id = ?", self.program_id, recipient_id)
+        user = User.find_by_id(self.recipient_id)
+        unless role.empty?
+          errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: user.email, program_name: program.name)
+        end
+      end
     end
 end

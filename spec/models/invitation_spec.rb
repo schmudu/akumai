@@ -5,8 +5,10 @@ describe Invitation do
   before do
     @user = FactoryGirl.create(:user)
     @another_user = FactoryGirl.create(:user)
+    @user_in_program = FactoryGirl.create(:user)
     @program = FactoryGirl.create(:program)
     @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
+    @role = FactoryGirl.create(:role, :user_id => @user_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
   end
 
   subject { @invitation }
@@ -15,8 +17,10 @@ describe Invitation do
   it { should respond_to(:recipient) }
   it { should respond_to(:user_level) }
   it { should respond_to(:code) }
+  it { should respond_to(:status) }
 
   it { should be_valid }
+  its(:status) { should eq(0) }
 
   describe "invalid information" do
     describe "program id is not set" do
@@ -71,6 +75,28 @@ describe Invitation do
     describe "user_level is more than superuser" do
       before { @invitation.user_level = ConstantsHelper::ROLE_LEVEL_SUPERUSER + 1 }
       it { should_not be_valid }
+    end
+
+    it "should not be valid if the program and the user id are the same for the second invitation and the status is SENT" do
+      @first_invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil, :status => ConstantsHelper::INVITATION_STATUS_SENT)
+      @second_invitation = FactoryGirl.build(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
+      @second_invitation.should_not be_valid
+    end
+
+    it "should not be valid if the program and the user email are the same for the second invitaiton and the status is SENT" do
+      @first_invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => nil, :recipient_email => @another_user.email, :status => ConstantsHelper::INVITATION_STATUS_SENT)
+      @second_invitation = FactoryGirl.build(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => nil, :recipient_email => @another_user.email)
+      @second_invitation.should_not be_valid
+    end
+
+    it "should not be valid if the user already has a role in the program" do
+      @invitation = FactoryGirl.build(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => nil, :recipient_email => @user_in_program.email)
+      @invitation.should_not be_valid
+    end
+
+    it "should not be valid if the user already has a role in the program" do
+      @invitation = FactoryGirl.build(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @user_in_program.id, :recipient_email => nil)
+      @invitation.should_not be_valid
     end
   end
 

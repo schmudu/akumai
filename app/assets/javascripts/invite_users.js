@@ -1,8 +1,11 @@
 $(document).ready(function(){
   function enableAllUserLevels(){
     $(".admin").removeClass("disabled");
+    $("#radio_admin").attr("disabled", false);
     $(".staff").removeClass("disabled");
+    $("#radio_staff").attr("disabled", false);
     $(".student").removeClass("disabled");
+    $("#radio_student").attr("disabled", false);
   }
 
   function enableOnlyStudent(){
@@ -10,8 +13,11 @@ $(document).ready(function(){
     uncheckRadioButton("input.staff");
 
     $(".admin").addClass("disabled");
+    $("#radio_admin").attr("disabled", true);
     $(".staff").addClass("disabled");
+    $("#radio_staff").attr("disabled", true);
     $(".student").removeClass("disabled");
+    $("#radio_student").attr("disabled", false);
   }
 
   function disableAllUserLevels(){
@@ -20,8 +26,11 @@ $(document).ready(function(){
     uncheckRadioButton("input.student");
 
     $(".admin").addClass("disabled");
+    $("#radio_admin").attr("disabled", true);
     $(".staff").addClass("disabled");
+    $("#radio_staff").attr("disabled", true);
     $(".student").addClass("disabled");
+    $("#radio_student").attr("disabled", true);
   }
 
   $("#program_id").change(function(){

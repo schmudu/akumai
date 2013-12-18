@@ -59,13 +59,17 @@ class Invitation < ActiveRecord::Base
       program = Program.find_by_id(self.program_id)
       return if program.nil?
 
-      if ((!self.recipient_email.nil?) && (!self.recipient_email.blank?))
-        # user is not registered
+      puts("\nvalidation check email:#{self.recipient_email} id:#{self.recipient_id}\n")
+      if (self.recipient_id.nil?)
+        puts("going to check recipient_email")
+        # check invitation by email
         user = User.where("email = ?", self.recipient_email)
         return if user.empty?
-        errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: user.first.email, program_name: program.name)
+        role = Role.where("program_id = ? and user_id = ?", self.program_id, user.first.id)
+        errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: user.first.email, program_name: program.name) unless role.empty?
       else
-        # reference by recipient_id
+        puts("going to check recipient_id:#{self.recipient_id}:")
+        # check invitation by recipient_id
         role = Role.where("program_id = ? and user_id = ?", self.program_id, recipient_id)
         user = User.find_by_id(self.recipient_id)
         unless role.empty?

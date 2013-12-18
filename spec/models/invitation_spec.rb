@@ -4,8 +4,8 @@ require_relative '../../app/helpers/constants_helper'
 describe Invitation do
   before do
     @user = FactoryGirl.create(:user)
-    @another_user = FactoryGirl.create(:user)
-    @user_in_program = FactoryGirl.create(:user)
+    @another_user = FactoryGirl.create(:user, :email => "another_user@abc.com")
+    @user_in_program = FactoryGirl.create(:user, :email => "user_in_program@example.com")
     @program = FactoryGirl.create(:program)
     @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
     @role = FactoryGirl.create(:role, :user_id => @user_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
@@ -83,18 +83,18 @@ describe Invitation do
       @second_invitation.should_not be_valid
     end
 
-    it "should not be valid if the program and the user email are the same for the second invitaiton and the status is SENT" do
+    it "should not be valid if the program and the user email are the same for the second invitation and the status is SENT" do
       @first_invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => nil, :recipient_email => @another_user.email, :status => ConstantsHelper::INVITATION_STATUS_SENT)
       @second_invitation = FactoryGirl.build(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => nil, :recipient_email => @another_user.email)
       @second_invitation.should_not be_valid
     end
 
-    it "should not be valid if the user already has a role in the program" do
+    it "should not be valid if the user already has a role in the program by email" do
       @invitation = FactoryGirl.build(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => nil, :recipient_email => @user_in_program.email)
       @invitation.should_not be_valid
     end
 
-    it "should not be valid if the user already has a role in the program" do
+    it "should not be valid if the user already has a role in the program by id" do
       @invitation = FactoryGirl.build(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @user_in_program.id, :recipient_email => nil)
       @invitation.should_not be_valid
     end

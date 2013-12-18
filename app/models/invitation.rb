@@ -11,7 +11,7 @@ class Invitation < ActiveRecord::Base
   validates :sender_id, presence: true
   validates :program_id, presence: true
   validates :user_level, presence: true
-  validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value, :user_does_not_have_role_in_program
+  validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value, :user_does_not_have_role_in_program, :user_does_not_have_duplicate_invitation
 
   #callbacks
   after_validation :create_code
@@ -59,22 +59,39 @@ class Invitation < ActiveRecord::Base
       program = Program.find_by_id(self.program_id)
       return if program.nil?
 
-      puts("\nvalidation check email:#{self.recipient_email} id:#{self.recipient_id}\n")
       if (self.recipient_id.nil?)
-        puts("going to check recipient_email")
         # check invitation by email
-        user = User.where("email = ?", self.recipient_email)
-        return if user.empty?
-        role = Role.where("program_id = ? and user_id = ?", self.program_id, user.first.id)
-        errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: user.first.email, program_name: program.name) unless role.empty?
+        users = User.where("email = ?", self.recipient_email)
+        return if users.empty?
+        roles = Role.where("program_id = ? and user_id = ?", self.program_id, users.first.id)
       else
-        puts("going to check recipient_id:#{self.recipient_id}:")
         # check invitation by recipient_id
-        role = Role.where("program_id = ? and user_id = ?", self.program_id, recipient_id)
-        user = User.find_by_id(self.recipient_id)
-        unless role.empty?
-          errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: user.email, program_name: program.name)
-        end
+        roles = Role.where("program_id = ? and user_id = ?", self.program_id, recipient_id)
+        users = User.where("id = ?", self.recipient_id)
       end
+
+      errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: users.first.email, program_name: program.name) unless roles.empty?
+    end
+
+    def user_does_not_have_duplicate_invitation
+      # return error if user already has an outstanding invitation to program
+      return if program_id.nil?
+      return if (((recipient_id.nil?) || (recipient_id.blank?)) && ((recipient_email.nil?) || (recipient_email.blank?)))
+
+      # validate program param
+      program = Program.find_by_id(self.program_id)
+      return if program.nil?
+
+      if (recipient_id.nil?)
+        # check invitations by email
+        invitations = Invitation.where("program_id = ? and recipient_email = ? and status = ?", program_id, self.recipient_email, ConstantsHelper::INVITATION_STATUS_SENT)
+        user_email = recipient_email
+      else
+        # check invitations by id
+        invitations = Invitation.where("program_id = ? and recipient_id = ? and status = ?", program_id, self.recipient_id, ConstantsHelper::INVITATION_STATUS_SENT)
+        user_email = User.where("id=?", self.recipient_id).first.email
+      end
+
+      errors[:duplicate_invitation] = I18n.t('invitations.form.errors.duplicate_invitation', email:user_email, program_name: program.name) unless invitations.empty?
     end
 end

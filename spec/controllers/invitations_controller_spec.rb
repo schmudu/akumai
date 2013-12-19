@@ -3,6 +3,7 @@ require 'spec_helper'
 describe InvitationsController do
   before(:each) do
     @user=FactoryGirl.create(:user)
+    @another_user=FactoryGirl.create(:user)
     @program=FactoryGirl.create(:program)
     @role=FactoryGirl.create(:role, user_id:@user.id, program_id:@program.id, level:ConstantsHelper::ROLE_LEVEL_STAFF)
     sign_in @user
@@ -36,6 +37,33 @@ describe InvitationsController do
         post :review_invitations, @params 
         assigns[:programs].should_not be_nil
       end
+
+      it "with a user that already has a role" do
+        FactoryGirl.create(:role, :user_id => @another_user.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        @params[:program_id] = @program.slug
+        @params[:invitation_type]="0"
+        @params[:email_addresses]=@another_user.email
+        post :review_invitations, @params 
+        assigns[:errors].should_not be_empty
+      end
+
+      it "with a user id that already has an invitation with a sent status" do
+        FactoryGirl.create(:invitation, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil, :program_id => @program.id, :user_level => ConstantsHelper::ROLE_LEVEL_STUDENT, :status => ConstantsHelper::INVITATION_STATUS_SENT)
+        @params[:program_id] = @program.slug
+        @params[:invitation_type]="0"
+        @params[:email_addresses]=@another_user.email
+        post :review_invitations, @params 
+        assigns[:errors].should_not be_empty
+      end
+
+      it "with a user email that already has an invitation with a sent status" do
+        FactoryGirl.create(:invitation, :sender_id => @user.id, :recipient_id => nil, :recipient_email => @another_user.email, :program_id => @program.id, :user_level => ConstantsHelper::ROLE_LEVEL_STUDENT, :status => ConstantsHelper::INVITATION_STATUS_SENT)
+        @params[:program_id] = @program.slug
+        @params[:invitation_type]="0"
+        @params[:email_addresses]=@another_user.email
+        post :review_invitations, @params 
+        assigns[:errors].should_not be_empty
+      end
     end
 
     describe "with valid params" do
@@ -48,6 +76,7 @@ describe InvitationsController do
         assigns[:program].should_not be_nil
         assigns[:invitation_level].should eq("Student")
         assigns[:emails].should_not be_nil
+        assigns[:errors].should be_empty
       end
     end
   end

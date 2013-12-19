@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   # params program_slug - program that user will be invited to
   #        invitation_level - level of invitation
   # returns a hash of valid and if there is a error on invitation level   
-  def valid_invitation?(program_slug, invitation_level)
+  def valid_invitation_sender?(program_slug, invitation_level)
     result={}
 
     # superuser
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
       invitation_level = invitation_level.to_i 
     end
 
-    #find staff level for proram
+    # verify that this user has proper permissions for sending out invitation
     program=Program.friendly.find(program_slug)
     matches = Role.where("program_id = ? and user_id = ?", program.id, self.id)
 

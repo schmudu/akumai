@@ -14,16 +14,17 @@ class InvitationsController < ApplicationController
     @emails = params[:email_addresses]
     @errors = {}
 
-    invitation_validation = current_user.valid_invitation?(@program_friendly, @invitation_type)
+    invitation_sender_validation = current_user.valid_invitation_sender?(@program_friendly, @invitation_type)
+    # TODO validate recipients
     email_validation = valid_email_addresses?(@emails)
 
-    if ((invitation_validation[:valid] == true) && (email_validation[:valid] == true))
+    if ((invitation_sender_validation[:valid] == true) && (email_validation[:valid] == true))
       @program = Program.friendly.find(@program_friendly)
       @invitation_level = user_level(@invitation_type)
       @emails = email_validation[:emails]
     else
       # error with input
-      @errors = invitation_validation.merge(email_validation)
+      @errors = invitation_sender_validation.merge(email_validation)
       @programs = current_user.staff_level_programs
     end
   end

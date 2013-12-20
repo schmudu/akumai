@@ -39,7 +39,6 @@ class User < ActiveRecord::Base
 
     # no program selected
     if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == I18n.t('invitations.form.prompt.select_program')) || (invitation_level.nil?) || (invitation_level.blank?))
-      puts "\n no program selected."
       result[:valid] = false
       result[:invitation_level]=I18n.t('invitations.form.errors.invitation_type_none') if (invitation_level.nil? || invitation_level.blank?)
       result[:program_id] = I18n.t('invitations.form.errors.program') if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == I18n.t('invitations.form.prompt.select_program')))

@@ -37,7 +37,7 @@ class Invitation < ActiveRecord::Base
     end
 
     def user_level_value
-      errors.add(:user_level, "is not a valid value") if ((!user_level.nil?) && ((user_level < ConstantsHelper::ROLE_LEVEL_STUDENT) || (user_level > ConstantsHelper::ROLE_LEVEL_SUPERUSER)))
+      errors.add(:user_level, "is not a valid value") if ((!user_level.nil?) && ((user_level < ConstantsHelper::ROLE_LEVEL_STUDENT) || (user_level > ConstantsHelper::ROLE_LEVEL_ADMIN)))
     end
 
     def existence_of_program
@@ -92,6 +92,6 @@ class Invitation < ActiveRecord::Base
         user_email = User.where("id=?", self.recipient_id).first.email
       end
 
-      errors[:duplicate_invitation] = I18n.t('invitations.form.errors.duplicate_invitation', email:user_email, program_name: program.name) unless invitations.empty?
+      errors[:duplicate_invitation] = "true" unless invitations.empty?
     end
 end

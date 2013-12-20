@@ -114,7 +114,6 @@ class InvitationsController < ApplicationController
       return results if ((program_slug.nil?) || (program_slug.blank?))
 
       cleaned_emails = clean_and_split_email_address_to_a(emails)
-      #program = Program.friendly.find(program_slug)
       programs = Program.where("slug=?", program_slug)
       return results if programs.empty?
       program = programs.first
@@ -129,7 +128,7 @@ class InvitationsController < ApplicationController
         end
 
         unless invitation.valid?
-          unless invitation.errors[:duplicate_invitation].empty?
+          unless invitation.errors[:duplicate_invitation].nil?
             results[:duplicate_invitation] = {} if results[:duplicate_invitation].nil?
             results[:duplicate_invitation][email_address.parameterize.to_sym] = email_address
           end

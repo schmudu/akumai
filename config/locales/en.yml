@@ -34,7 +34,9 @@ en:
         review_invitations: "Review Invitations"
         send_invitations: "Send Invitations"
       errors:
-        duplicate_invitation: "The email %{email} already has an invitation to %{program_name}."
+        duplicate_invitation: 
+          one: "The following email address already has an invitation to %{program_name}."
+          other: "The email addresses already has an invitation to %{program_name}."
         email_blank: "Please enter an email address for the invitation."
         email_format: "Please verify the format of the email addresses."
         invalid_role_level: "ERROR: INV00 - Invalid value in invitation level."

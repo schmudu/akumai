@@ -14,6 +14,7 @@ describe Invitation do
   subject { @invitation }
 
   it { should respond_to(:recipient_email) }
+  it { should respond_to(:recipient_id) }
   it { should respond_to(:recipient) }
   it { should respond_to(:user_level) }
   it { should respond_to(:code) }
@@ -72,8 +73,8 @@ describe Invitation do
       it { should_not be_valid }
     end
 
-    describe "user_level is more than superuser" do
-      before { @invitation.user_level = ConstantsHelper::ROLE_LEVEL_SUPERUSER + 1 }
+    describe "user_level is more than admin" do
+      before { @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN + 1 }
       it { should_not be_valid }
     end
 

@@ -218,6 +218,34 @@ describe "InvitationPages" do
             it { should have_selector('div#invitation_group.error') }
             it { should have_selector('div#program_group.error') }
           end
+
+          describe "enter an email that already has an invitation to a program" do
+            # TODO
+            before do
+              # create an invitations
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.program', count: 1)}
+            it { should have_selector('div#email_group.error') }
+          end
+
+          describe "enter an email of a registered that already has an invitation to a program" do
+            # TODO
+            before do
+              # create an invitations
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.program', count: 1)}
+            it { should have_selector('div#email_group.error') }
+          end
         end
 
         describe "on review invitations page" do

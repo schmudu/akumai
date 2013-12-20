@@ -1,5 +1,6 @@
 <% if @errors.empty? %>
   <%= render 'form_review_invitations' %>
 <% else %>
+  <%= @errors.inspect %>
   <%= render 'form_invite_users' %>
 <% end %>

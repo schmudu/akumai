@@ -10,8 +10,9 @@ module UsersHelper
       return result
     end
 
-    clean_emails(email_addresses)
-    split_email_addresses = email_addresses.split(",")
+    #clean_emails(email_addresses)
+    #split_email_addresses = email_addresses.split(",")
+    split_email_addresses = clean_and_split_email_address_to_a(email_addresses)
     split_email_addresses.each do |email|
       unless valid_email?(email)
         result[:valid]=false
@@ -41,5 +42,10 @@ module UsersHelper
   def clean_emails email_addresses
     email_addresses.gsub!("\r\n", "")
     email_addresses.gsub!(" ", "")
+  end
+
+  def clean_and_split_email_address_to_a email_addresses
+    clean_emails email_addresses
+    split_email_addresses = email_addresses.split(",")
   end
 end

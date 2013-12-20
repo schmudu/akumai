@@ -83,12 +83,12 @@ class Invitation < ActiveRecord::Base
       return if program.nil?
 
       if (recipient_id.nil?)
-        # check invitations by email
-        invitations = Invitation.where("program_id = ? and recipient_email = ? and status = ?", program_id, self.recipient_email, ConstantsHelper::INVITATION_STATUS_SENT)
+        # check invitations by email (i.e. emails that haven't been registered)
+        invitations = Invitation.where("program_id = ? and recipient_email = ? and status = ?", program_id, recipient_email, ConstantsHelper::INVITATION_STATUS_SENT)
         user_email = recipient_email
       else
         # check invitations by id
-        invitations = Invitation.where("program_id = ? and recipient_id = ? and status = ?", program_id, self.recipient_id, ConstantsHelper::INVITATION_STATUS_SENT)
+        invitations = Invitation.where("program_id = ? and recipient_id = ? and status = ?", program_id, recipient_id, ConstantsHelper::INVITATION_STATUS_SENT)
         user_email = User.where("id=?", self.recipient_id).first.email
       end
 

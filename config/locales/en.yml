@@ -46,7 +46,7 @@ en:
         program: "Please select a program."
         user_already_in_program: "The email %{email} is already registered with the %{program_name}."
       prompt:
-        default_email: "brian@yahoo.com, samantha@gmail.com"
+        default_email: "brian@yahoo.com,samantha@gmail.com"
         select_program: "Select Program"
         email_addresses: "Email Addresses (separate with commas)"
       review:

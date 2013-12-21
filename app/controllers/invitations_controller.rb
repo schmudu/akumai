@@ -18,8 +18,8 @@ class InvitationsController < ApplicationController
     validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails, @program_friendly, @invitation_type)
     validation_email = valid_email_addresses?(@emails)
 
+    @program = Program.friendly.find(@program_friendly)
     if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
-      @program = Program.friendly.find(@program_friendly)
       @invitation_level = user_level(@invitation_type)
       @emails = validation_email[:emails]
     else

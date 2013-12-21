@@ -221,18 +221,17 @@ describe "InvitationPages" do
           end
 
           describe "enter an email that is registered that already has an invitation to a program" do
-            # TODO
             before do
-              # create an invitations
-              FactoryGirl.create(:invitation, :program_id => program.id, :sender_id => user.id, :recipient_id => another_user.id, :recipient_email => nil, :status => ConstantsHelper::INVITATION_STATUS_SENT)
-              select('Program_Staff', from: 'program_id')
+              FactoryGirl.create(:invitation, :program_id => program_staff.id, :sender_id => user.id, :recipient_id => another_user.id, :recipient_email => nil, :status => ConstantsHelper::INVITATION_STATUS_SENT)
+              select(program_staff.name, from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => another_user.email
               click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
-            it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program.name)}
+            it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
             it { should have_selector('div#email_group.error') }
+            it { should have_xpath("//ul[@class='errors_emails' and ./li[contains(.,'#{another_user.email}')]]") }
           end
         end
 

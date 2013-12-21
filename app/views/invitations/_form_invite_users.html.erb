@@ -13,6 +13,14 @@
         <% end %>
       <% end %>
     </ul>
+    <% unless @errors[:duplicate_invitation].empty? %>
+      <%= t('invitations.form.errors.duplicate_invitation', count:@errors[:duplicate_invitation].count, program_name: @program.name) %>
+      <ul class="errors_emails">
+        <% @errors[:emails].each do |email| %>
+          <li><%= email %></li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 <% end %>
 
@@ -63,7 +71,7 @@
   </div>
 
   <!-- EMAIL -->
-  <% if @errors[:email].nil? %>
+  <% if (@errors[:email].nil? && @errors[:duplicate_invitation].nil?) %>
     <div id="email_group" class="control-group">
   <% else %>
     <div id="email_group" class="error control-group">

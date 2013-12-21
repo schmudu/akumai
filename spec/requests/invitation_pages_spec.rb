@@ -3,6 +3,7 @@ require_relative '../../app/helpers/constants_helper'
 
 describe "InvitationPages" do
   let(:user) { FactoryGirl.create(:user, superuser: false) }
+  let(:another_user) { FactoryGirl.create(:user, email: "another_user@abc.com", superuser: false) }
   let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
   before(:each) { login user }
   subject { page }
@@ -219,31 +220,18 @@ describe "InvitationPages" do
             it { should have_selector('div#program_group.error') }
           end
 
-          describe "enter an email that already has an invitation to a program" do
+          describe "enter an email that is registered that already has an invitation to a program" do
             # TODO
             before do
               # create an invitations
+              FactoryGirl.create(:invitation, :program_id => program.id, :sender_id => user.id, :recipient_id => another_user.id, :recipient_email => nil, :status => ConstantsHelper::INVITATION_STATUS_SENT)
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
-              fill_in "email_addresses", :with => "abc.com"
+              fill_in "email_addresses", :with => another_user.email
               click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
-            it { should have_content(I18n.t 'invitations.form.errors.program', count: 1)}
-            it { should have_selector('div#email_group.error') }
-          end
-
-          describe "enter an email of a registered that already has an invitation to a program" do
-            # TODO
-            before do
-              # create an invitations
-              select('Program_Staff', from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => "abc.com"
-              click_button I18n.t('invitations.form.buttons.review_invitations')
-            end
-
-            it { should have_content(I18n.t 'invitations.form.errors.program', count: 1)}
+            it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program.name)}
             it { should have_selector('div#email_group.error') }
           end
         end

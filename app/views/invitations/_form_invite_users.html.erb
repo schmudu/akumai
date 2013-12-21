@@ -8,7 +8,7 @@
   <div>
     <ul>
       <% @errors.each do |key, value| %>
-        <% if((key.to_s!="valid") && (key.to_s!="emails")) %>
+        <% if((key.to_s!="valid") && (key.to_s!="emails") && (key.to_s!="duplicate_invitation")) %>
           <li><%= value %></li>
         <% end %>
       <% end %>

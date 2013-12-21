@@ -18,7 +18,11 @@ class InvitationsController < ApplicationController
     validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails, @program_friendly, @invitation_type)
     validation_email = valid_email_addresses?(@emails)
 
-    @program = Program.friendly.find(@program_friendly)
+    unless @program_friendly.nil?
+      programs = Program.where("slug=?",@program_friendly) 
+      @program = programs.first unless programs.empty?
+    end
+    
     if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
       @invitation_level = user_level(@invitation_type)
       @emails = validation_email[:emails]

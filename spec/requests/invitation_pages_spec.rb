@@ -227,11 +227,26 @@ describe "InvitationPages" do
               choose('radio_student')
               fill_in "email_addresses", :with => another_user.email
               click_button I18n.t('invitations.form.buttons.review_invitations')
+              save_and_open_page
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
             it { should have_selector('div#email_group.error') }
             it { should have_xpath("//ul[@class='errors_emails' and ./li[contains(.,'#{another_user.email}')]]") }
+          end
+
+          describe "enter an email that is not registered that already has an invitation to a program" do
+            before do
+              FactoryGirl.create(:invitation, :program_id => program_staff.id, :sender_id => user.id, :recipient_id => nil, :recipient_email => "random_user@abc.com", :status => ConstantsHelper::INVITATION_STATUS_SENT)
+              select(program_staff.name, from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "random_user@abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
+            it { should have_selector('div#email_group.error') }
+            it { should have_xpath("//ul[@class='errors_emails' and ./li[contains(.,'random_user@abc.com')]]") }
           end
         end
 

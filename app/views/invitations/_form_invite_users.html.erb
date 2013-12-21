@@ -13,7 +13,7 @@
         <% end %>
       <% end %>
     </ul>
-    <% unless @errors[:duplicate_invitation].empty? %>
+    <% unless @errors[:duplicate_invitation].nil? %>
       <%= t('invitations.form.errors.duplicate_invitation', count:@errors[:duplicate_invitation].count, program_name: @program.name) %>
       <ul class="errors_emails">
         <% @errors[:emails].each do |email| %>

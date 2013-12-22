@@ -267,27 +267,53 @@ describe "InvitationPages" do
         end
 
         describe "on review invitations page" do
-          before do
-            select('Program_Staff', from: 'program_id')
-            choose('radio_student')
-            fill_in "email_addresses", :with => "patrick@abc.com"
-            click_button I18n.t('invitations.form.buttons.review_invitations')
-          end
-
-          describe "content on page" do
-            it "should go to review invitations path" do
-              current_path.should == review_invitations_path
+          describe "invite student user" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => "patrick@abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
-            it { should have_content("Step 2 of 2") }
-            it { should have_content(I18n.t('invitations.form.review.invitations', count:1)) }
-            it { should have_content("Program_Staff") }
-            it { should have_content("patrick@abc.com") }
-            it { should have_content(I18n.t('user_level.student')) }
-            it { should have_content(I18n.t('terms.number_of_invitations')) }
-            it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
-            it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path) }
-            it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
+            describe "content on page" do
+              it "should go to review invitations path" do
+                current_path.should == review_invitations_path
+              end
+
+              it { should have_content("Step 2 of 2") }
+              it { should have_content(I18n.t('invitations.form.review.invitations', count:1)) }
+              it { should have_content("Program_Staff") }
+              it { should have_content("patrick@abc.com") }
+              it { should have_content(I18n.t('user_level.student')) }
+              it { should have_content(I18n.t('terms.number_of_invitations')) }
+              it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
+              it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path) }
+              it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
+            end
+          end
+
+          describe "invite admin user" do
+            let (:admin_user) { FactoryGirl.create(:user, email: 'admin_user@abc.com') }
+            before do
+              # create role for admin user
+              FactoryGirl.create(:role, user_id:admin_user.id, program_id:program_admin.id, level:ConstantsHelper::ROLE_LEVEL_ADMIN)
+              logout user
+              login admin_user
+              visit invite_users_path
+              select(program_admin.name, from: 'program_id')
+              choose('radio_admin')
+              fill_in "email_addresses", :with => "patrick@abc.com"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            describe "inviting admins should display warning" do
+              it "should go to review invitations path" do
+                current_path.should == review_invitations_path
+              end
+
+              # test that warning message shows up
+              it { should have_content(I18n.t('invitations.form.warnings.admin_invitations')) }
+            end
           end
         end
 

@@ -65,7 +65,7 @@
       <%= t('user_level.student') %>
     </label>
     <label class="radio inline staff">
-      <% if(@invitation_type=="1")%>
+      <% if((@invitation_type=="1") || (params[:invitation_level] == '1'))%>
         <input id="radio_staff" checked="checked" class="staff" name="invitation_type" value="1" type="radio"> 
       <% else %>
         <input id="radio_staff" class="staff" name="invitation_type" value="1" type="radio"> 
@@ -73,7 +73,7 @@
       <%= t('user_level.staff') %>
     </label>
     <label class="radio inline admin" id="label_admin">
-      <% if(@invitation_type=="2")%>
+      <% if((@invitation_type=="2") || (params[:invitation_level] == '2'))%>
         <input id="radio_admin" class="admin" checked="checked" name="invitation_type" value="2" type="radio"> 
       <% else %>
         <input id="radio_admin" class="admin" name="invitation_type" value="2" type="radio"> 

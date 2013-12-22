@@ -33,9 +33,9 @@ module UsersHelper
 
   def user_level user_level_constant
     # returns the user level in the form of a string
-    return "Superuser" if user_level_constant == ConstantsHelper::ROLE_LEVEL_SUPERUSER
-    return "Admin" if user_level_constant == ConstantsHelper::ROLE_LEVEL_ADMIN
-    return "Staff" if user_level_constant == ConstantsHelper::ROLE_LEVEL_STAFF
+    return "Superuser" if user_level_constant == ConstantsHelper::ROLE_LEVEL_SUPERUSER.to_s
+    return "Admin" if user_level_constant == ConstantsHelper::ROLE_LEVEL_ADMIN.to_s
+    return "Staff" if user_level_constant == ConstantsHelper::ROLE_LEVEL_STAFF.to_s
     return "Student"
   end
 

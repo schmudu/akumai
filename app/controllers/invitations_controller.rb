@@ -24,7 +24,7 @@ class InvitationsController < ApplicationController
     end
     
     if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
-      @invitation_level = user_level(@invitation_type)
+      @invitation_level = user_level(@invitation_type.to_s)
       @emails = validation_email[:emails]
     else
       # error with input

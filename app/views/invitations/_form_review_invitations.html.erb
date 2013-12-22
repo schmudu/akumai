@@ -6,6 +6,16 @@
 <div class="row" id="review_instructions">
   <%= t('invitations.form.review.invitations', count:1) %>
 </div>
+
+<% if(@invitation_type == ConstantsHelper::ROLE_LEVEL_ADMIN.to_s) %>
+  <br/><br/>
+  <div class="row label label-warning">
+    <div class="span12">
+      <h5><%= t('invitations.form.warnings.admin_invitations') %></h5>
+    </div>
+  </div>
+<% end %>
+
 <br/><br/>
 <%= form_tag({:action => "send_invitations", :controller => "invitations"},{:class => 'form-horizontal', :id => 'review_invitations'}) do %>
   <!-- PROGRAM -->

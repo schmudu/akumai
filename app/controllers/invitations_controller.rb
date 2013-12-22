@@ -11,12 +11,12 @@ class InvitationsController < ApplicationController
   def review_invitations
     @program_friendly = params[:program_id]
     @invitation_type = params[:invitation_type]
-    @emails = params[:email_addresses]
+    @emails_param = params[:email_addresses]
     @errors = {}
 
     validation_invitation_sender = current_user.valid_invitation_sender?(@program_friendly, @invitation_type)
-    validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails, @program_friendly, @invitation_type)
-    validation_email = valid_email_addresses?(@emails)
+    validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails_param, @program_friendly, @invitation_type)
+    validation_email = valid_email_addresses?(@emails_param)
 
     unless @program_friendly.nil?
       programs = Program.where("slug=?",@program_friendly) 
@@ -132,7 +132,7 @@ class InvitationsController < ApplicationController
         end
 
         unless invitation.valid?
-          unless invitation.errors[:duplicate_invitation].nil?
+          unless invitation.errors[:duplicate_invitation].empty?
             results[:duplicate_invitation] = {} if results[:duplicate_invitation].nil?
             results[:duplicate_invitation][email_address.parameterize.to_sym] = email_address
           end

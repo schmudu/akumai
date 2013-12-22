@@ -4,6 +4,7 @@ require_relative '../../app/helpers/constants_helper'
 describe "InvitationPages" do
   let(:user) { FactoryGirl.create(:user, superuser: false) }
   let(:another_user) { FactoryGirl.create(:user, email: "another_user@abc.com", superuser: false) }
+  let(:student_user) { FactoryGirl.create(:user, superuser: false) }
   let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
   before(:each) { login user }
   subject { page }
@@ -227,12 +228,11 @@ describe "InvitationPages" do
               choose('radio_student')
               fill_in "email_addresses", :with => another_user.email
               click_button I18n.t('invitations.form.buttons.review_invitations')
-              save_and_open_page
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
             it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//ul[@class='errors_emails' and ./li[contains(.,'#{another_user.email}')]]") }
+            it { should have_xpath("//ul[@class='errors_duplicate_invitation' and ./li[contains(.,'#{another_user.email}')]]") }
           end
 
           describe "enter an email that is not registered that already has an invitation to a program" do
@@ -245,8 +245,24 @@ describe "InvitationPages" do
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
+            it { should_not have_content(I18n.t 'invitations.form.errors.user_already_in_program', count: 1, program_name:program_staff.name)}
             it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//ul[@class='errors_emails' and ./li[contains(.,'random_user@abc.com')]]") }
+            it { should have_xpath("//ul[@class='errors_duplicate_invitation' and ./li[contains(.,'random_user@abc.com')]]") }
+          end
+
+          describe "enter an email that is already has a role in the program" do
+            before do
+              FactoryGirl.create(:role, user_id:student_user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STUDENT)
+              select(program_staff.name, from: 'program_id')
+              choose('radio_student')
+              fill_in "email_addresses", :with => student_user.email
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it { should_not have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
+            it { should have_content(I18n.t 'invitations.form.errors.user_already_in_program', count: 1, program_name:program_staff.name)}
+            it { should have_selector('div#email_group.error') }
+            it { should have_xpath("//ul[@class='errors_role_in_program' and ./li[contains(.,'#{student_user.email}')]]") }
           end
         end
 
@@ -272,6 +288,29 @@ describe "InvitationPages" do
             it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
             it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path) }
             it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
+          end
+        end
+
+        describe "user clicks on 'edit invitation' button" do
+          before do
+            select('Program_Staff', from: 'program_id')
+            choose('radio_student')
+            fill_in "email_addresses", :with => "patrick@abc.com"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+            click_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path)
+          end
+
+          describe "content on page" do
+            it "should go to invite users path" do
+              current_path.should == invite_users_path
+            end
+
+            it { should have_content("Step 1 of 2") }
+            it { should have_content("Program_Staff") }
+            it { should have_xpath("//option[@selected='selected' and contains(.,'Program_Staff')]") }
+            it { should have_xpath("//label[./input[@checked='checked'] and contains(.,'#{I18n.t('user_level.student')}')]") }
+            it { should have_content("patrick@abc.com") }
+            it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
           end
         end
       end

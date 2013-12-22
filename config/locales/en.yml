@@ -47,7 +47,9 @@ en:
         privileges_students: "You do not have the privileges to add students."
         privileges_superusers: "You do not have the privileges to add superusers."
         program: "Please select a program."
-        user_already_in_program: "The email %{email} is already registered with the %{program_name}."
+        user_already_in_program: 
+          one: "The following email address is already registered with the %{program_name}."
+          other: "The following email addresses is already registered with the %{program_name}."
       prompt:
         default_email: "brian@yahoo.com,samantha@gmail.com"
         select_program: "Select Program"

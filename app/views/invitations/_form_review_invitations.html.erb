@@ -58,7 +58,7 @@
       <%= link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn") %>
     </div>
     <div class="span6">
-      <%= link_to(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path, :class => "btn") %>
+      <%= link_to(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path(:program_friendly => @program_friendly, :invitation_level => @invitation_type, :emails => @emails_param), :class => "btn") %>
       <%= submit_tag(I18n.t('invitations.form.buttons.send_invitations'), :class => 'btn btn-success') %>
     </div>
   </div>

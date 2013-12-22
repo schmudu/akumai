@@ -8,15 +8,23 @@
   <div>
     <ul>
       <% @errors.each do |key, value| %>
-        <% if((key.to_s!="valid") && (key.to_s!="emails") && (key.to_s!="duplicate_invitation")) %>
+        <% if((key.to_s!="valid") && (key.to_s!="emails") && (key.to_s!="duplicate_invitation") && (key.to_s!="role_in_program")) %>
           <li><%= value %></li>
         <% end %>
       <% end %>
     </ul>
     <% unless @errors[:duplicate_invitation].nil? %>
       <%= t('invitations.form.errors.duplicate_invitation', count:@errors[:duplicate_invitation].count, program_name: @program.name) %>
-      <ul class="errors_emails">
-        <% @errors[:emails].each do |email| %>
+      <ul class="errors_duplicate_invitation">
+        <% @errors[:duplicate_invitation].each_value do |email| %>
+          <li><%= email %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <% unless @errors[:role_in_program].nil? %>
+      <%= t('invitations.form.errors.user_already_in_program', count:@errors[:role_in_program].count, program_name: @program.name) %>
+      <ul class="errors_role_in_program">
+        <% @errors[:role_in_program].each_value do |email| %>
           <li><%= email %></li>
         <% end %>
       </ul>
@@ -32,7 +40,11 @@
     <div id="program_group" class="error control-group">
   <% end %>
     <%= label_tag(:program, "Program", :class => 'control-label') %>
-    <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: @program_friendly)) %>
+    <% unless params[:program_friendly].nil? %>
+      <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: params[:program_friendly])) %>
+    <% else %>
+      <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: @program_friendly)) %>
+    <% end %>
   </div>
 
   <!-- INVITATION -->
@@ -44,13 +56,13 @@
     <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>
     <label class="radio inline student">
 
-      <% if(@invitation_type=="0")%>
+      <% if((@invitation_type=="0") || (params[:invitation_level] == '0'))%>
         <input id="radio_student" checked="checked" class="student" name="invitation_type" value="0" type="radio"> 
       <% else %>
         <input id="radio_student" class="student" name="invitation_type" value="0" type="radio"> 
       <% end %>
 
-      Student
+      <%= t('user_level.student') %>
     </label>
     <label class="radio inline staff">
       <% if(@invitation_type=="1")%>
@@ -58,7 +70,7 @@
       <% else %>
         <input id="radio_staff" class="staff" name="invitation_type" value="1" type="radio"> 
       <% end %>
-      Staff
+      <%= t('user_level.staff') %>
     </label>
     <label class="radio inline admin" id="label_admin">
       <% if(@invitation_type=="2")%>
@@ -66,21 +78,23 @@
       <% else %>
         <input id="radio_admin" class="admin" name="invitation_type" value="2" type="radio"> 
       <% end %>
-      Admin
+      <%= t('user_level.admin') %>
     </label>
   </div>
 
   <!-- EMAIL -->
-  <% if (@errors[:email].nil? && @errors[:duplicate_invitation].nil?) %>
+  <% if (@errors[:email].nil? && @errors[:duplicate_invitation].nil? && @errors[:role_in_program].nil?) %>
     <div id="email_group" class="control-group">
   <% else %>
     <div id="email_group" class="error control-group">
   <% end %>
     <%= label_tag(:email_addresses, "Email Addresses", :class => 'control-label') %>
-    <% if ((@emails.nil?) || (@emails.blank?)) %>
-      <%= text_area_tag(:email_addresses, t('invitations.form.prompt.default_email'), size: "70x10") %>
+    <% if !params[:emails].nil? %>
+      <%= text_area_tag(:email_addresses, params[:emails], size: "70x10") %>
+    <% elsif (!@emails_param.nil?) %>
+      <%= text_area_tag(:email_addresses, @emails_param, size: "70x10") %>
     <% else %>
-      <%= text_area_tag(:email_addresses, @emails, size: "70x10") %>
+      <%= text_area_tag(:email_addresses, t('invitations.form.prompt.default_email'), size: "70x10") %>
     <% end %>
   </div>
   <%= submit_tag("Review Invitations", :id => '') %>

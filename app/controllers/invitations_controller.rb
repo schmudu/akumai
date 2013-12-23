@@ -48,7 +48,6 @@ class InvitationsController < ApplicationController
       programs = Program.where("slug=?",@program_friendly) 
       @program = programs.first unless programs.empty?
     end
-    
     if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
       # send out email
     else

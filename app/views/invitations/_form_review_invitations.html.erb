@@ -63,6 +63,10 @@
   </div>
   <div class="row">
     <div class="span2">
+      <!-- HIDDEN TAGS -->
+      <%= hidden_field_tag(:program_friendly, @program_friendly) %>
+      <%= hidden_field_tag(:invitation_type, @invitation_type) %>
+      <%= hidden_field_tag(:email_addresses, @emails_param) %>
     </div>
     <div class="span4">
       <%= link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn") %>

@@ -35,7 +35,28 @@ class InvitationsController < ApplicationController
   end
 
   def send_invitations
-    render :text => "Send Invitations"
+    @program_friendly = params[:program_id]
+    @invitation_type = params[:invitation_type]
+    @emails_param = params[:email_addresses]
+    @errors = {}
+
+    validation_invitation_sender = current_user.valid_invitation_sender?(@program_friendly, @invitation_type)
+    validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails_param, @program_friendly, @invitation_type)
+    validation_email = valid_email_addresses?(@emails_param)
+
+    unless @program_friendly.nil?
+      programs = Program.where("slug=?",@program_friendly) 
+      @program = programs.first unless programs.empty?
+    end
+    
+    if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
+      # send out email
+    else
+      # error with input
+      @errors = validation_invitation_sender.merge(validation_email)
+      @errors = @errors.merge(validation_invitation_recipient)
+      @programs = current_user.staff_level_programs
+    end
   end
 
   # GET /invitations

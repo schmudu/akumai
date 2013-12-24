@@ -33,7 +33,6 @@ describe InvitationMailer do
     end
 
     it "should have the correct content" do
-      last_delivery = ActionMailer::Base.deliveries.last.body
       expect(@email_content[:html]).to include("Hello")
       pending
     end

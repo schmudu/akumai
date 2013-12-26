@@ -28,6 +28,9 @@ en:
     staff: "Staff"
     student: "Student"
   invitations:
+    email:
+      title:
+        invitation: "TRIOS Invitation"
     form:
       buttons:
         edit_invitation: "Edit Invitation"

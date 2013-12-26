@@ -49,7 +49,26 @@ class InvitationsController < ApplicationController
       @program = programs.first unless programs.empty?
     end
     if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
-      # send out email
+      #create invitations for all the users in validation_email[:emails]
+      validation_email[:emails].each do |email_address|
+        # search for the email
+        emails = User.where("email = ?", email_address)
+
+        if emails.empty?
+          # new user
+          invitation = Invitation.create(:sender_id => current_user.id, :recipient_email => email_address, :program_id => @program.id, :user_level => @invitation_type.to_s)
+          puts "\n1: INVITATION CODE:#{invitation.code}"
+          InvitationMailer.invitation_email_new_user(current_user.email, invitation.code, invitation.slug).deliver
+          #puts "\n 1:invitation:#{invitation.valid?}"
+        else
+          # registered user
+          invitation = Invitation.create(:sender_id => current_user.id, :recipient_id => emails.first.id, :program_id => @program.id, :user_level => @invitation_type.to_s)
+          puts "\nINVITATION CODE:#{invitation.code}"
+          InvitationMailer.invitation_email_registered_user(current_user.email, invitation.code, invitation.slug).deliver
+          #puts "\n 2:invitation:#{invitation.valid?}"
+        end
+         
+      end
     else
       # error with input
       @errors = validation_invitation_sender.merge(validation_email)

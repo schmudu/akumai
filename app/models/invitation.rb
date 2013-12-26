@@ -14,7 +14,8 @@ class Invitation < ActiveRecord::Base
   validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value, :user_does_not_have_role_in_program, :user_does_not_have_duplicate_invitation
 
   #callbacks
-  after_validation :create_code
+  #after_validation :create_code
+  after_create :create_code
 
   def recipient
     return recipient_email unless recipient_email.blank?
@@ -33,7 +34,9 @@ class Invitation < ActiveRecord::Base
 
     def generate_code
       o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
-      (0...10).map{ o[rand(o.length)] }.join
+      code = (0...10).map{ o[rand(o.length)] }.join
+      puts "\nGENERATING CODE:#{code}"
+      return code
     end
 
     def user_level_value

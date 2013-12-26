@@ -146,7 +146,65 @@ describe InvitationsController do
       end
     end
 
-    describe "with valid params" do
+    describe "with valid params with registered user" do
+      before do
+        @params[:program_id] = @program.slug
+        @params[:invitation_type]="0"
+        @params[:email_addresses]=@another_user.email
+      end
+
+      it "should not assign programs" do
+        post :send_invitations, @params 
+        assigns[:programs].should be_nil
+        assigns[:errors].should be_empty
+      end
+
+      it "should increase the invitations count by 1" do
+        lambda{
+          post :send_invitations, @params 
+        }.should change(Invitation, :count).from(0).to(1)
+      end
+
+      it "should increase the emails sent by 1" do
+        lambda{
+          post :send_invitations, @params 
+        }.should change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+      end
+
+      it "should create an invitation without a recipient_email" do
+        post :send_invitations, @params 
+        @invitation = Invitation.first
+        @invitation.recipient_email.should be_nil
+        @invitation.recipient_id.should == @another_user.id
+      end
+
+      it "should create an invitation with a SENT status" do
+        post :send_invitations, @params 
+        @invitation = Invitation.first
+        @invitation.status.should == ConstantsHelper::INVITATION_STATUS_SENT
+      end
+
+      describe "it should send an email with content including" do 
+        before do
+          post :send_invitations, @params 
+          @email_content = {}
+          @email_content[:text] = ActionMailer::Base.deliveries.last.body.parts.first.body.raw_source 
+          @email_content[:html] = ActionMailer::Base.deliveries.last.body.parts.last.body.raw_source 
+        end
+
+        it "sender email" do
+          @email_content[:html].should include(@user.email)
+        end
+
+        it "invitation code" do
+          @invitation = Invitation.first
+          puts "\nCODE IN TEST:#{@invitation.code}"
+          @email_content[:html].should include(@invitation.code)
+        end
+      end
+    end
+
+    describe "with valid params with unregistered user" do
       before do
         @params[:program_id] = @program.slug
         @params[:invitation_type]="0"
@@ -175,6 +233,13 @@ describe InvitationsController do
         post :send_invitations, @params 
         @invitation = Invitation.first
         @invitation.status.should == ConstantsHelper::INVITATION_STATUS_SENT
+      end
+
+      it "should create an invitation without a recipient_id" do
+        post :send_invitations, @params 
+        @invitation = Invitation.first
+        @invitation.recipient_id.should be_nil
+        @invitation.recipient_email.should == "abc@abc.com"
       end
 
       describe "it should send an email with content including" do 

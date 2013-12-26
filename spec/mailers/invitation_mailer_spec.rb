@@ -29,11 +29,11 @@ describe InvitationMailer do
     end
 
     it 'should set the subject to the correct subject' do
-      ActionMailer::Base.deliveries.first.subject.should == 'Here Is Your Story!'
+      ActionMailer::Base.deliveries.first.subject.should == I18n.t('invitations.email.title.invitation')
     end
 
     it "should have the correct content" do
-      expect(@email_content[:html]).to include("Hello")
+      expect(@email_content[:html]).to include("invitation")
       pending
     end
   end

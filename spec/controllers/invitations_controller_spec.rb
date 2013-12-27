@@ -10,6 +10,10 @@ describe InvitationsController do
     sign_in @user
   end
 
+  after(:each) do
+    ActionMailer::Base.deliveries.clear
+  end
+
   describe "POST 'review_invitations'" do
     before(:each) do
       @params = {}
@@ -196,9 +200,8 @@ describe InvitationsController do
           @email_content[:html].should include(@user.email)
         end
 
-        it "invitation code" do
+        it "invitation code2" do
           @invitation = Invitation.first
-          puts "\nCODE IN TEST:#{@invitation.code}"
           @email_content[:html].should include(@invitation.code)
         end
       end
@@ -240,6 +243,7 @@ describe InvitationsController do
         @invitation = Invitation.first
         @invitation.recipient_id.should be_nil
         @invitation.recipient_email.should == "abc@abc.com"
+        @invitation.slug.should_not be_blank
       end
 
       describe "it should send an email with content including" do 

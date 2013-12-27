@@ -15,7 +15,7 @@ class Invitation < ActiveRecord::Base
 
   #callbacks
   #after_validation :create_code
-  after_create :create_code
+  before_create :create_code
 
   def recipient
     return recipient_email unless recipient_email.blank?
@@ -35,7 +35,7 @@ class Invitation < ActiveRecord::Base
     def generate_code
       o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
       code = (0...10).map{ o[rand(o.length)] }.join
-      puts "\nGENERATING CODE:#{code}"
+      #puts "\nGENERATING CODE:#{code}"
       return code
     end
 

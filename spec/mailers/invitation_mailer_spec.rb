@@ -3,12 +3,15 @@ require "spec_helper"
 describe InvitationMailer do
   describe "invitation_email" do
     before(:each) do
+      @sender = FactoryGirl.create(:user)
       @user = FactoryGirl.create(:user)
-      @email = InvitationMailer.invitation_email(@user) 
+      @program = FactoryGirl.create(:program)
+      @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @sender.id)
+      @email = InvitationMailer.invitation_email_new_user(@user.email, @invitation.code, @invitation.slug) 
       ActionMailer::Base.delivery_method = :test
       ActionMailer::Base.perform_deliveries = true
       ActionMailer::Base.deliveries = []
-      InvitationMailer.invitation_email(@user).deliver
+      @email.deliver
 
       # define email content
       @email_content = {}

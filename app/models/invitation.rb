@@ -24,7 +24,7 @@ class Invitation < ActiveRecord::Base
 
   # Friendly_Id code to only update the url for new records
   def should_generate_new_friendly_id?
-    self.new_record?
+    new_record? || slug.blank?
   end
 
   private

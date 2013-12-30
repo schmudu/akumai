@@ -13,4 +13,5 @@ module ConstantsHelper
   INVITATION_STATUS_REJECTED = 3
   INVITATION_STATUS_EXPIRED = 4
   EMAIL_REGEX = /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/i
+  INVITATION_SENDER_EMAIL = "notifications@trios.com"
 end

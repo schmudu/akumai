@@ -1,4 +1,5 @@
 require "spec_helper"
+require_relative '../../app/helpers/constants_helper'
 
 describe InvitationMailer do
   describe "invitation_email" do
@@ -7,7 +8,7 @@ describe InvitationMailer do
       @user = FactoryGirl.create(:user)
       @program = FactoryGirl.create(:program)
       @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @sender.id)
-      @email = InvitationMailer.invitation_email_new_user(@user.email, @invitation.code, @invitation.slug) 
+      @email = InvitationMailer.invitation_email_new_user(@sender.email, @user.email, @invitation.code, @invitation.slug) 
       ActionMailer::Base.delivery_method = :test
       ActionMailer::Base.perform_deliveries = true
       ActionMailer::Base.deliveries = []
@@ -31,12 +32,21 @@ describe InvitationMailer do
       ActionMailer::Base.deliveries.first.to.to_a.first.should == @user.email
     end
 
+    it 'renders the sender email' do
+      ActionMailer::Base.deliveries.first.from.to_a.first.should == ConstantsHelper::INVITATION_SENDER_EMAIL
+    end
+
     it 'should set the subject to the correct subject' do
       ActionMailer::Base.deliveries.first.subject.should == I18n.t('invitations.email.title.invitation')
     end
 
     it "should have the correct content" do
       expect(@email_content[:html]).to include("invitation")
+      pending
+    end
+
+    it "should include sender" do
+      expect(@email_content[:html]).to include(@sender.email)
       pending
     end
   end

@@ -57,11 +57,11 @@ class InvitationsController < ApplicationController
         if emails.empty?
           # new user
           invitation = Invitation.create(:sender_id => current_user.id, :recipient_email => email_address, :program_id => @program.id, :user_level => @invitation_type.to_s)
-          InvitationMailer.invitation_email_new_user(email_address, invitation.code, invitation.slug).deliver
+          InvitationMailer.invitation_email_new_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
         else
           # registered user
           invitation = Invitation.create(:sender_id => current_user.id, :recipient_id => emails.first.id, :program_id => @program.id, :user_level => @invitation_type.to_s)
-          InvitationMailer.invitation_email_registered_user(email_address, invitation.code, invitation.slug).deliver
+          InvitationMailer.invitation_email_registered_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
         end
          
       end

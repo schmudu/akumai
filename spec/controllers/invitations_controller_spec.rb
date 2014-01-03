@@ -262,6 +262,10 @@ describe InvitationsController do
           @invitation = Invitation.first
           @email_content[:html].should include(@invitation.code)
         end
+
+        it "view invitation link" do
+          @email_content[:html].should include(I18n.t('invitations.email.terms.view_invitation'))
+        end
       end
     end
   end

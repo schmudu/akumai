@@ -138,7 +138,6 @@ describe "InvitationPages" do
         describe "filling out with invalid information" do
           describe "do not select a program" do
             before do
-              #select('Program_Staff', from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => "patrick@abc.com"
               click_button I18n.t('invitations.form.buttons.review_invitations')
@@ -339,6 +338,49 @@ describe "InvitationPages" do
             it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
           end
         end
+
+        describe "on send invitations page" do
+          describe "one invitation" do
+            describe "page conent" do
+              before do
+                select('Program_Staff', from: 'program_id')
+                choose('radio_student')
+                fill_in "email_addresses", :with => "patrick@abc.com"
+                click_button I18n.t('invitations.form.buttons.review_invitations')
+                click_button I18n.t('invitations.form.buttons.send_invitations')
+              end
+
+              describe "content on page" do
+                it "should go to review invitations path" do
+                  current_path.should == send_invitations_path
+                end
+
+                it { should have_content(I18n.t('invitations.form.messages.sent_invitations', count: 1)) }
+              end
+            end
+          end
+
+          describe "multiple invitation" do
+            describe "page conent" do
+              before do
+                select('Program_Staff', from: 'program_id')
+                choose('radio_student')
+                fill_in "email_addresses", :with => "patrick@abc.com, another_user@als.com"
+                click_button I18n.t('invitations.form.buttons.review_invitations')
+                click_button I18n.t('invitations.form.buttons.send_invitations')
+              end
+
+              describe "content on page" do
+                it "should go to review invitations path" do
+                  current_path.should == send_invitations_path
+                end
+
+                it { should have_content(I18n.t('invitations.form.messages.sent_invitations', count: 2)) }
+              end
+            end
+          end
+        end
+
       end
     end
   end

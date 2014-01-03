@@ -5,7 +5,7 @@
   </head>
   <body>
     <h1>Welcome to trio.com, You were sent an invitation from <%= @sender_email %></h1>
-    Click the following link to view the invitation: <%= invite_users_url %>
+    Click the following link to view the invitation: <a href="<%= invite_users_url(:id => 5) %>"><%= t('invitations.email.terms.view_invitation')%></a> 
     <span>Code is: <%= @invitation_code %></span>
   </body>
 </html>

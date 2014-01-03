@@ -39,6 +39,7 @@ class InvitationsController < ApplicationController
     @invitation_type = params[:invitation_type]
     @emails_param = params[:email_addresses]
     @errors = {}
+    @invitations = []
 
     validation_invitation_sender = current_user.valid_invitation_sender?(@program_friendly, @invitation_type)
     validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails_param, @program_friendly, @invitation_type)
@@ -63,7 +64,7 @@ class InvitationsController < ApplicationController
           invitation = Invitation.create(:sender_id => current_user.id, :recipient_id => emails.first.id, :program_id => @program.id, :user_level => @invitation_type.to_s)
           InvitationMailer.invitation_email_registered_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
         end
-         
+        @invitations << invitation
       end
     else
       # error with input

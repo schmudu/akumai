@@ -1,6 +1,6 @@
 <%= @errors.inspect %>
 <% if @errors.empty? %>
-  Nothing.
+  <%= t('invitations.form.messages.sent_invitations', count: @invitations.count) %>
 <% else %>
   <%= render 'form_invite_users' %>
 <% end %>

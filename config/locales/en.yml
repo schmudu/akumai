@@ -29,6 +29,8 @@ en:
     student: "Student"
   invitations:
     email:
+      terms:
+        view_invitation: "View Invitation"
       title:
         invitation: "TRIOS Invitation"
     form:
@@ -53,6 +55,11 @@ en:
         user_already_in_program: 
           one: "The following email address is already registered with the %{program_name}."
           other: "The following email addresses is already registered with the %{program_name}."
+      messages:
+        sent_invitations:
+          one: "You have sent %{count} invitation.  Click the following link to view your invitations."
+          other: "You have sent %{count} invitations.  Click the following link to view your invitations."
+
       prompt:
         default_email: "brian@yahoo.com,samantha@gmail.com"
         select_program: "Select Program"

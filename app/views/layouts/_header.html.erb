@@ -40,14 +40,16 @@
     </div>
   </div>
 </div>
-<div class="navbar" id="navbar_sub">
-  <div class="navbar-inner">
-    <div class="container" id="navbar_sub_container">
-      <nav>
-        <ul class="nav pull-right">
-          <li><%= link_to "Help",    help_path %></li>
-        </ul>
-      </nav>
+<% if user_signed_in? %>
+  <div class="navbar" id="navbar_sub">
+    <div class="navbar-inner">
+      <div class="container" id="navbar_sub_container">
+        <nav>
+          <ul class="nav pull-right">
+            <li><%= link_to "Some User Function", "#" %></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
-</div>
+<% end %>

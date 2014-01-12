@@ -7,6 +7,10 @@ describe "AuthenticationPages" do
       before { visit root_path }
       it { should have_content('Sign up') }
       it { should have_content('Login') }
+
+      describe "should not show the sub navbar" do
+        it { should_not have_xpath("//div[@class='navbar' and @id='navbar_sub']") }
+      end
     end
 
     describe "with signing in" do
@@ -33,6 +37,10 @@ describe "AuthenticationPages" do
           it { should have_link('Admin', href: "#") }
           it { should have_link('Staff', href: "#") }
           it { should have_link('Students', href: "#") }
+        end
+
+        describe "should show the sub navbar" do
+          it { should have_xpath("//div[@class='navbar' and @id='navbar_sub']") }
         end
       end
     end

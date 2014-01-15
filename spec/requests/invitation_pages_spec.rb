@@ -26,8 +26,8 @@ describe "InvitationPages" do
       let (:program_student) { FactoryGirl.create(:program, name:"Program_Student")}
 
       before do   
-        FactoryGirl.create(:role, user_id:user.id, program_id:program_admin.id, level:ConstantsHelper::ROLE_LEVEL_ADMIN)
-        FactoryGirl.create(:role, user_id:user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STAFF)
+        FactoryGirl.create(:role, user_id:user.id, program_id:program_admin.id, level:ConstantsHelper::ROLE_LEVEL_ADMIN, student_id:nil)
+        FactoryGirl.create(:role, user_id:user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STAFF, student_id:nil)
         FactoryGirl.create(:role, user_id:user.id, program_id:program_student.id, level:ConstantsHelper::ROLE_LEVEL_STUDENT)
         visit invite_users_path
       end 
@@ -103,11 +103,11 @@ describe "InvitationPages" do
 
       describe "submitting invitation" do
         describe "filling out valid information" do
-          describe "with one email address" do
+          describe "enter student addresses" do
             before do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
-              fill_in "email_addresses", :with => "patrick@abc.com"
+              fill_in "email_addresses", :with => ""
               click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
@@ -115,14 +115,14 @@ describe "InvitationPages" do
               current_path.should == review_invitations_path
             end
 
-            it { should have_content("Step 2 of 2") }
+            it { should have_content(I18n.t 'invitations.form.title.enter_email_addresses.students')}
           end
 
-          describe "with two email addresses" do
+          describe "enter admin addresses" do
             before do
               select('Program_Staff', from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => "patrick@abc.com, jeremy@yikes.com"
+              choose('radio_staff')
+              fill_in "email_addresses", :with => ""
               click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
@@ -130,8 +130,22 @@ describe "InvitationPages" do
               current_path.should == review_invitations_path
             end
 
-            it { should have_content("patrick@abc.com") }
-            it { should have_content("jeremy@yikes.com") }
+            it { should have_content(I18n.t 'invitations.form.title.enter_email_addresses.admin')}
+          end
+
+          describe "enter staff addresses" do
+            before do
+              select('Program_Staff', from: 'program_id')
+              choose('radio_staff')
+              fill_in "email_addresses", :with => ""
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end
+
+            it "should go to review invitations path" do
+              current_path.should == review_invitations_path
+            end
+
+            it { should have_content(I18n.t 'invitations.form.title.enter_email_addresses.staff')}
           end
         end
 
@@ -139,21 +153,16 @@ describe "InvitationPages" do
           describe "do not select a program" do
             before do
               choose('radio_student')
-              fill_in "email_addresses", :with => "patrick@abc.com"
               click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.program')}
             it { should have_selector('div#program_group.error') }
-            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
-
           end
 
           describe "do not select an invitation type" do
             before do
               select('Program_Staff', from: 'program_id')
-              #choose('radio_student')
-              fill_in "email_addresses", :with => "patrick@abc.com"
               click_button I18n.t('invitations.form.buttons.review_invitations')
             end
 
@@ -162,6 +171,7 @@ describe "InvitationPages" do
             it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
 
+=begin
           describe "do not enter an email address" do
             before do
               select('Program_Staff', from: 'program_id')
@@ -263,8 +273,10 @@ describe "InvitationPages" do
             it { should have_selector('div#email_group.error') }
             it { should have_xpath("//ul[@class='errors_role_in_program' and ./li[contains(.,'#{student_user.email}')]]") }
           end
+=end
         end
 
+=begin
         describe "on review invitations page" do
           describe "invite student user" do
             before do
@@ -380,6 +392,7 @@ describe "InvitationPages" do
             end
           end
         end
+=end
 
       end
     end

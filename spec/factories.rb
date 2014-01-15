@@ -18,6 +18,7 @@ FactoryGirl.define do
     program_id 1
     user_id 1
     level ConstantsHelper::ROLE_LEVEL_STUDENT 
+    sequence(:student_id) { |n| "a00#{n}" }
   end
 
   factory :program do

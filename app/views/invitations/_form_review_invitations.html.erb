@@ -38,29 +38,6 @@
     </div>
   </div>
 
-  <!-- NUMBER OF INVITATION -->
-  <div id="no_invitation_group" class="row">
-    <div class="span4 form-label">
-      <span class="form-label text-info"><%= t('terms.number_of_invitations') %>:</span>
-    </div>
-    <div class="span8">
-      <span><%= @emails.count %></span>
-    </div>
-  </div>
-
-  <!-- EMAIL -->
-  <div id="email_group" class="row">
-    <div class="span4 form-label">
-      <span class="form-label text-info"><%= t('terms.email_addresses')%>:</span>
-    </div>
-    <div class="span8">
-      <ul>
-        <% @emails.each do |email| %>
-          <li><%= email %></li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
   <div class="row">
     <div class="span2">
       <!-- HIDDEN TAGS -->

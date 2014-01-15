@@ -4,8 +4,9 @@ class Role < ActiveRecord::Base
   validates :user_id, presence: true
   validates :program_id, presence: true
   validates :level, presence: true
-  validate :user_id_must_exist, :program_id_must_exist, :level_must_fall_within_range
+  validate :admin_and_staff_must_not_have_student_id, :user_id_must_exist, :program_id_must_exist, :level_must_fall_within_range, :student_role_must_have_student_id
   validates_uniqueness_of :user_id, :scope => :program_id
+  validates_uniqueness_of :student_id, :scope => :program_id
 
   private
     def level_must_fall_within_range
@@ -15,6 +16,14 @@ class Role < ActiveRecord::Base
     def program_id_must_exist
       program = Program.find_by_id(program_id)
       errors.add(:program_id, "must reference valid program") if program.nil?
+    end
+
+    def admin_and_staff_must_not_have_student_id
+      errors.add(:student_id, "student id must not be set for admin nor staff") if ((!level.nil?) && ((level == ConstantsHelper::ROLE_LEVEL_ADMIN) || (level == ConstantsHelper::ROLE_LEVEL_STAFF)) && (!student_id.nil?))
+    end
+
+    def student_role_must_have_student_id
+      errors.add(:student_id, "student id must be set") if ((!level.nil?) && (level == ConstantsHelper::ROLE_LEVEL_STUDENT) && (student_id.nil?))
     end
 
     def user_id_must_exist

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131220070114) do
+ActiveRecord::Schema.define(version: 20140115005047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20131220070114) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "level"
+    t.string   "student_id"
   end
 
   add_index "roles", ["level"], name: "index_roles_on_level", using: :btree

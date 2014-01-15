@@ -38,7 +38,7 @@ describe User do
       subject do
         lambda do
           @program = FactoryGirl.create(:program)
-          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a001")
         end
       end
 
@@ -50,7 +50,7 @@ describe User do
       describe "one staff level program" do
         before do
           @program = FactoryGirl.create(:program)
-          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a001")
         end
 
         it "program staff_level count" do
@@ -61,7 +61,7 @@ describe User do
       describe "one staff level program" do
         before do
           @program = FactoryGirl.create(:program)
-          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
+          @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF, :student_id => nil)
         end
 
         it "program staff_level count" do
@@ -188,7 +188,7 @@ describe User do
     describe "as a student member" do
       it "sending out superuser invite should return error" do
         @program = FactoryGirl.create(:program)
-        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_SUPERUSER)
         result[:valid].should eq(false)
         result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_superusers'))
@@ -196,7 +196,7 @@ describe User do
 
       it "sending out admin invite should return error" do
         @program = FactoryGirl.create(:program)
-        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
         result[:valid].should eq(false)
         result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_administrators'))
@@ -204,7 +204,7 @@ describe User do
 
       it "sending out staff invite should return error" do
         @program = FactoryGirl.create(:program)
-        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
         result[:valid].should eq(false)
         result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_staff'))
@@ -212,7 +212,7 @@ describe User do
 
       it "sending out student invite should return error" do
         @program = FactoryGirl.create(:program)
-        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
         result[:valid].should eq(false)
         result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_students'))

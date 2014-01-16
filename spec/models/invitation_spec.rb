@@ -19,11 +19,36 @@ describe Invitation do
   it { should respond_to(:user_level) }
   it { should respond_to(:code) }
   it { should respond_to(:status) }
+  it { should respond_to(:student_id) }
 
   it { should be_valid }
   its(:status) { should eq(0) }
 
   describe "invalid information" do
+    describe "student_id is not set and level is student" do
+      before do
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+        @invitation.student_id = nil
+      end
+      it { should_not be_valid }
+    end
+
+    describe "student_id is set and level is admin" do
+      before do
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+        @invitation.student_id = "A001"
+      end
+      it { should_not be_valid }
+    end
+
+    describe "student_id is set and level is staff" do
+      before do
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+        @invitation.student_id = "A001"
+      end
+      it { should_not be_valid }
+    end
+
     describe "program id is not set" do
       before { @invitation.program_id = nil }
       it { should_not be_valid }
@@ -120,6 +145,32 @@ describe Invitation do
         @invitation.recipient_email = nil
       end
       it { should be_valid }
+    end
+
+    describe "student_id" do
+      describe "should be set if level is student" do
+        before do
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.student_id = "a001"
+        end
+        it { should be_valid }
+      end
+
+      describe "student_id should not be set if level is staff" do
+        before do
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.student_id = nil
+        end
+        it { should be_valid }
+      end
+
+      describe "student_id should not be set if level is admin" do
+        before do
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.student_id = nil
+        end
+        it { should be_valid }
+      end
     end
   end
 end

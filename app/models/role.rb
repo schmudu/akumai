@@ -4,7 +4,11 @@ class Role < ActiveRecord::Base
   validates :user_id, presence: true
   validates :program_id, presence: true
   validates :level, presence: true
-  validate :admin_and_staff_must_not_have_student_id, :user_id_must_exist, :program_id_must_exist, :level_must_fall_within_range, :student_role_must_have_student_id
+  validate :admin_and_staff_must_not_have_student_id, 
+            :level_must_fall_within_range, 
+            :program_id_must_exist, 
+            :student_role_must_have_student_id,
+            :user_id_must_exist 
   validates_uniqueness_of :user_id, :scope => :program_id
   validates_uniqueness_of :student_id, :scope => :program_id
 

@@ -11,7 +11,13 @@ class Invitation < ActiveRecord::Base
   validates :sender_id, presence: true
   validates :program_id, presence: true
   validates :user_level, presence: true
-  validate :presence_of_email_or_recipient, :existence_of_program, :user_level_value, :user_does_not_have_role_in_program, :user_does_not_have_duplicate_invitation
+  validate :admin_and_staff_must_not_have_student_id,
+            :existence_of_program, 
+            :presence_of_email_or_recipient, 
+            :student_role_must_have_student_id,
+            :user_level_value, 
+            :user_does_not_have_role_in_program, 
+            :user_does_not_have_duplicate_invitation 
 
   #callbacks
   #after_validation :create_code
@@ -96,5 +102,13 @@ class Invitation < ActiveRecord::Base
       end
 
       errors[:duplicate_invitation] = "true" unless invitations.empty?
+    end
+
+    def admin_and_staff_must_not_have_student_id
+      errors.add(:student_id, "student id must not be set for admin nor staff") if ((!user_level.nil?) && ((user_level == ConstantsHelper::ROLE_LEVEL_ADMIN) || (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)) && (!student_id.nil?))
+    end
+
+    def student_role_must_have_student_id
+      errors.add(:student_id, "student id must be set") if ((!user_level.nil?) && (user_level == ConstantsHelper::ROLE_LEVEL_STUDENT) && (student_id.nil?))
     end
 end

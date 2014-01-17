@@ -81,6 +81,7 @@ en:
   terms:
     email_addresses: "Email Addresses"
     invitation_type: "Invitation Type"
+    next: "Next"
     number_of_invitations: "Number of invitations"
     program: "Program"
 

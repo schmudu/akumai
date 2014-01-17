@@ -3,12 +3,12 @@ class InvitationsController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_invitation, only: [:show, :edit, :update, :destroy]
 
-  def invite
+  def invite_users_type
     @errors = {}
     @programs = current_user.staff_level_programs
   end
 
-  def review_invitations
+  def invite_users_address
     @program_friendly = params[:program_id]
     @invitation_type = params[:invitation_type]
     #@emails_param = params[:email_addresses]
@@ -59,11 +59,17 @@ class InvitationsController < ApplicationController
 
         if emails.empty?
           # new user
-          invitation = Invitation.create(:sender_id => current_user.id, :recipient_email => email_address, :program_id => @program.id, :user_level => @invitation_type.to_s)
+          # TODO - need to add student id if STUDENT
+          student_id = nil
+          student_id = "a0001" if @invitation_type.to_s == "0"
+          invitation = Invitation.create(:sender_id => current_user.id, :recipient_email => email_address, :program_id => @program.id, :user_level => @invitation_type.to_s, :student_id => student_id)
           InvitationMailer.invitation_email_new_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
         else
           # registered user
-          invitation = Invitation.create(:sender_id => current_user.id, :recipient_id => emails.first.id, :program_id => @program.id, :user_level => @invitation_type.to_s)
+          # TODO - need to add student id if STUDENT
+          student_id = nil
+          student_id = "a0001" if @invitation_type.to_s == "0"
+          invitation = Invitation.create(:sender_id => current_user.id, :recipient_id => emails.first.id, :program_id => @program.id, :user_level => @invitation_type.to_s, :student_id => student_id)
           InvitationMailer.invitation_email_registered_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
         end
         @invitations << invitation

@@ -15,33 +15,33 @@ describe InvitationsController do
     ActionMailer::Base.deliveries.clear
   end
 
-  describe "POST 'review_invitations'" do
+  describe "POST 'invite_users_address'" do
     before(:each) do
       @params = {}
     end
 
     describe "with invalid params" do
       it "without any parameters" do
-        post :review_invitations, @params
+        post :invite_users_address, @params
         assigns[:programs].should_not be_nil
       end
 
       it "with only program_id" do
         @params[:program_id] = @program.slug
-        post :review_invitations, @params 
+        post :invite_users_address, @params 
         assigns[:programs].should_not be_nil
       end
 
       it "with only invitation_type" do
         @params[:invitation_type]="2"
-        post :review_invitations, @params 
+        post :invite_users_address, @params 
         assigns[:programs].should_not be_nil
       end
 
 =begin
       it "with only email_address" do
         @params[:email_addresses]="abc@abc.com"
-        post :review_invitations, @params 
+        post :invite_users_address, @params 
         assigns[:programs].should_not be_nil
       end
 
@@ -50,7 +50,7 @@ describe InvitationsController do
         @params[:program_id] = @program.slug
         @params[:invitation_type]="0"
         @params[:email_addresses]=@another_user.email
-        post :review_invitations, @params 
+        post :invite_users_address, @params 
         assigns[:errors].should_not be_empty
       end
 
@@ -59,7 +59,7 @@ describe InvitationsController do
         @params[:program_id] = @program.slug
         @params[:invitation_type]="0"
         @params[:email_addresses]=@another_user.email
-        post :review_invitations, @params 
+        post :invite_users_address, @params 
         assigns[:errors].should_not be_empty
       end
 =end
@@ -70,7 +70,7 @@ describe InvitationsController do
         @params[:program_id] = @program.slug
         @params[:invitation_type]="0"
         @params[:email_addresses]=@user_email_not_in_program
-        post :review_invitations, @params 
+        post :invite_users_address, @params 
         assigns[:errors].should_not be_empty
       end
 =end
@@ -81,7 +81,7 @@ describe InvitationsController do
         @params[:program_id] = @program.slug
         @params[:invitation_type]="0"
         #@params[:email_addresses]="abc@abc.com"
-        post :review_invitations, @params 
+        post :invite_users_address, @params 
         assigns[:programs].should be_nil
         assigns[:program].should_not be_nil
         assigns[:invitation_level].should eq("Student")

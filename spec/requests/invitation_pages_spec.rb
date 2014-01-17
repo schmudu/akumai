@@ -12,7 +12,7 @@ describe "InvitationPages" do
     describe "without logging in" do
       before do   
         logout user
-        visit invite_users_path
+        visit invite_users_type_path
       end 
 
       it "path should go to invite users path" do
@@ -29,11 +29,11 @@ describe "InvitationPages" do
         FactoryGirl.create(:role, user_id:user.id, program_id:program_admin.id, level:ConstantsHelper::ROLE_LEVEL_ADMIN, student_id:nil)
         FactoryGirl.create(:role, user_id:user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STAFF, student_id:nil)
         FactoryGirl.create(:role, user_id:user.id, program_id:program_student.id, level:ConstantsHelper::ROLE_LEVEL_STUDENT)
-        visit invite_users_path
+        visit invite_users_type_path
       end 
 
       it "path should go to invite users path" do
-        current_path.should == invite_users_path
+        current_path.should == invite_users_type_path
       end
 
       describe "should have appropriate controls" do
@@ -91,7 +91,7 @@ describe "InvitationPages" do
         before do
           logout user
           login superuser
-          visit invite_users_path
+          visit invite_users_type_path
         end
 
         describe "should have appropriate controls" do
@@ -108,11 +108,11 @@ describe "InvitationPages" do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => ""
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it "should go to review invitations path" do
-              current_path.should == review_invitations_path
+              current_path.should == invite_users_address_path
             end
 
             it { should have_content(I18n.t 'invitations.form.title.enter_email_addresses.students')}
@@ -123,11 +123,11 @@ describe "InvitationPages" do
               select('Program_Staff', from: 'program_id')
               choose('radio_staff')
               fill_in "email_addresses", :with => ""
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it "should go to review invitations path" do
-              current_path.should == review_invitations_path
+              current_path.should == invite_users_address_path
             end
 
             it { should have_content(I18n.t 'invitations.form.title.enter_email_addresses.admin')}
@@ -138,11 +138,11 @@ describe "InvitationPages" do
               select('Program_Staff', from: 'program_id')
               choose('radio_staff')
               fill_in "email_addresses", :with => ""
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it "should go to review invitations path" do
-              current_path.should == review_invitations_path
+              current_path.should == invite_users_address_path
             end
 
             it { should have_content(I18n.t 'invitations.form.title.enter_email_addresses.staff')}
@@ -153,7 +153,7 @@ describe "InvitationPages" do
           describe "do not select a program" do
             before do
               choose('radio_student')
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.program')}
@@ -163,7 +163,7 @@ describe "InvitationPages" do
           describe "do not select an invitation type" do
             before do
               select('Program_Staff', from: 'program_id')
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
@@ -177,7 +177,7 @@ describe "InvitationPages" do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => ""
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
@@ -191,7 +191,7 @@ describe "InvitationPages" do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => I18n.t('invitations.form.prompt.default_email')
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
@@ -205,7 +205,7 @@ describe "InvitationPages" do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => "abc.com"
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_format')}
@@ -219,7 +219,7 @@ describe "InvitationPages" do
             before do
               fill_in "email_addresses", :with => ""
 
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
@@ -236,7 +236,7 @@ describe "InvitationPages" do
               select(program_staff.name, from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => another_user.email
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
@@ -250,7 +250,7 @@ describe "InvitationPages" do
               select(program_staff.name, from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => "random_user@abc.com"
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
@@ -265,7 +265,7 @@ describe "InvitationPages" do
               select(program_staff.name, from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => student_user.email
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             it { should_not have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
@@ -283,12 +283,12 @@ describe "InvitationPages" do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
               fill_in "email_addresses", :with => "patrick@abc.com"
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             describe "content on page" do
               it "should go to review invitations path" do
-                current_path.should == review_invitations_path
+                current_path.should == invite_users_address_path
               end
 
               it { should have_content("Step 2 of 2") }
@@ -298,7 +298,7 @@ describe "InvitationPages" do
               it { should have_content(I18n.t('user_level.student')) }
               it { should have_content(I18n.t('terms.number_of_invitations')) }
               it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
-              it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path) }
+              it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_type_path) }
               it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
             end
           end
@@ -310,16 +310,16 @@ describe "InvitationPages" do
               FactoryGirl.create(:role, user_id:admin_user.id, program_id:program_admin.id, level:ConstantsHelper::ROLE_LEVEL_ADMIN)
               logout user
               login admin_user
-              visit invite_users_path
+              visit invite_users_type_path
               select(program_admin.name, from: 'program_id')
               choose('radio_admin')
               fill_in "email_addresses", :with => "patrick@abc.com"
-              click_button I18n.t('invitations.form.buttons.review_invitations')
+              click_button I18n.t('terms.next')
             end
 
             describe "inviting admins should display warning" do
               it "should go to review invitations path" do
-                current_path.should == review_invitations_path
+                current_path.should == invite_users_address_path
               end
 
               # test that warning message shows up
@@ -333,13 +333,13 @@ describe "InvitationPages" do
             select('Program_Staff', from: 'program_id')
             choose('radio_student')
             fill_in "email_addresses", :with => "patrick@abc.com"
-            click_button I18n.t('invitations.form.buttons.review_invitations')
-            click_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_path)
+            click_button I18n.t('terms.next')
+            click_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_type_path)
           end
 
           describe "content on page" do
             it "should go to invite users path" do
-              current_path.should == invite_users_path
+              current_path.should == invite_users_type_path
             end
 
             it { should have_content("Step 1 of 2") }
@@ -347,7 +347,7 @@ describe "InvitationPages" do
             it { should have_xpath("//option[@selected='selected' and contains(.,'Program_Staff')]") }
             it { should have_xpath("//label[./input[@checked='checked'] and contains(.,'#{I18n.t('user_level.student')}')]") }
             it { should have_content("patrick@abc.com") }
-            it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
+            it { should have_button(I18n.t('terms.next')) }
           end
         end
 
@@ -358,7 +358,7 @@ describe "InvitationPages" do
                 select('Program_Staff', from: 'program_id')
                 choose('radio_student')
                 fill_in "email_addresses", :with => "patrick@abc.com"
-                click_button I18n.t('invitations.form.buttons.review_invitations')
+                click_button I18n.t('terms.next')
                 click_button I18n.t('invitations.form.buttons.send_invitations')
               end
 
@@ -378,7 +378,7 @@ describe "InvitationPages" do
                 select('Program_Staff', from: 'program_id')
                 choose('radio_student')
                 fill_in "email_addresses", :with => "patrick@abc.com, another_user@als.com"
-                click_button I18n.t('invitations.form.buttons.review_invitations')
+                click_button I18n.t('terms.next')
                 click_button I18n.t('invitations.form.buttons.send_invitations')
               end
 

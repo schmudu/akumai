@@ -32,7 +32,7 @@
   </div>
 <% end %>
 
-<%= form_tag({:action => "review_invitations", :controller => "invitations", :method => "post"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
+<%= form_tag({:action => "invite_users_address", :controller => "invitations", :method => "post"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
   <!-- PROGRAM -->
   <% if @errors[:program_id].nil? %>
     <div id="program_group" class="control-group">
@@ -97,5 +97,5 @@
       <%= text_area_tag(:email_addresses, t('invitations.form.prompt.default_email'), size: "70x10") %>
     <% end %>
   </div>
-  <%= submit_tag("Review Invitations", :id => '') %>
+  <%= submit_tag(t('terms.next'), :id => '') %>
 <% end %>

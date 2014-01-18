@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+#describe InvitationsController, :type => :controller do
 describe InvitationsController do
   before(:each) do
     @user=FactoryGirl.create(:user, :email => "sender@abc.com")
@@ -28,8 +29,9 @@ describe InvitationsController do
 
       it "with only program_id" do
         @params[:program_id] = @program.slug
-        post :invite_users_address, @params 
+        post :invite_users_address, @params
         assigns[:programs].should_not be_nil
+        session[:invite_users_program].should == @program.slug
       end
 
       it "with only invitation_type" do

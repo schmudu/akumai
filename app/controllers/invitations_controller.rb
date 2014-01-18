@@ -11,6 +11,10 @@ class InvitationsController < ApplicationController
   def invite_users_address
     @program_friendly = params[:program_id]
     @invitation_type = params[:invitation_type]
+
+    # session variables
+    session[:invite_users_program] = @program_friendly
+    puts "assigning session: #{session.inspect}\n"
     #@emails_param = params[:email_addresses]
     @errors = {}
 

@@ -42,4 +42,5 @@ RSpec.configure do |config|
 
   # use capybara for testing framework
   config.include Capybara::DSL
+  config.include Devise::TestHelpers, :type => :controller
 end

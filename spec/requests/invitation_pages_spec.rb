@@ -296,10 +296,16 @@ describe "InvitationPages" do
 =end
         end
 
-        describe "invitation address page" do
+        describe "invitation address page for staff" do
+          #let(:superuser) { FactoryGirl.create(:user, superuser: true) }
+          subject { page }
+
           before do
+            #logout user
+            #login superuser
+            visit invite_users_type_path
             select('Program_Staff', from: 'program_id')
-            choose('radio_student')
+            choose('radio_staff')
             #fill_in "email_addresses", :with => "patrick@abc.com"
             click_button I18n.t('terms.next')
           end
@@ -309,19 +315,55 @@ describe "InvitationPages" do
               current_path.should == invite_users_address_path
             end
 
-=begin
-            it { should have_content("Step 2 of 2") }
-            it { should have_content(I18n.t('invitations.form.review.invitations', count:1)) }
+            it { should have_content("#{I18n.t('invitations.form.messages.steps', index:2)}") }
+            it { should have_xpath("//textarea[@id='email_addresses' and contains(.,'#{I18n.t('invitations.form.prompt.default_email')}')]") }
             it { should have_content("Program_Staff") }
-            it { should have_content("patrick@abc.com") }
-            it { should have_content(I18n.t('user_level.student')) }
-            it { should have_content(I18n.t('terms.number_of_invitations')) }
+            it { should have_content(I18n.t('user_level.staff')) }
             it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
-            it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_type_path) }
-            it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
-=end
+            it { should have_link(I18n.t('terms.back'), invite_users_type_path) }
+            it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
           end
         end
+
+        describe "invitation address page for admin" do
+          subject { page }
+
+          before do
+            visit invite_users_type_path
+            select('Program_Staff', from: 'program_id')
+            choose('radio_admin')
+            click_button I18n.t('terms.next')
+          end
+
+          describe "content on page" do
+            it "should go to review invitations path" do
+              current_path.should == invite_users_address_path
+            end
+
+            it { should have_content("#{I18n.t('invitations.form.messages.steps', index:2)}") }
+            it { should have_xpath("//textarea[@id='email_addresses' and contains(.,'#{I18n.t('invitations.form.prompt.default_email')}')]") }
+          end
+        end
+
+        describe "invitation address page for students" do
+          subject { page }
+
+          before do
+            visit invite_users_type_path
+            select('Program_Staff', from: 'program_id')
+            choose('radio_student')
+            click_button I18n.t('terms.next')
+          end
+
+          describe "content on page" do
+            it "should go to review invitations path" do
+              current_path.should == invite_users_address_path
+            end
+
+            it { should have_content("#{I18n.t('invitations.form.messages.steps', index:2)}") }
+          end
+        end
+
 =begin
         describe "on review invitations page" do
           describe "invite student user" do

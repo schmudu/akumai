@@ -46,6 +46,9 @@ class InvitationsController < ApplicationController
     end
   end
 
+  def review_invitations
+  end
+  
   def send_invitations
     @program_friendly = params[:program_id]
     @invitation_type = params[:invitation_type]

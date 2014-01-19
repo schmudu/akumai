@@ -1,7 +1,7 @@
 <% provide(:title, "Review Invitations (Step 2 of 2)") %>
 <%= javascript_include_tag "form_utilities" %>
 
-<h2>Review Invitations ( Step 2 of 2 )</h2>
+<h2>Review Invitations ( <%= t('invitations.form.messages.steps', index:2) %> )</h2>
 
 <div class="row" id="review_instructions">
   <% if (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) %>

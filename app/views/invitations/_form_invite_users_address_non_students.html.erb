@@ -1,7 +1,7 @@
 <% provide(:title, "Review Invitations (Step 2 of 2)") %>
 <%= javascript_include_tag "form_utilities" %>
 
-<h2>Review Invitations ( Step 2 of 2 )</h2>
+<h2>Review Invitations ( <%= t('invitations.form.messages.steps', index:2) %> )</h2>
 
 <div class="row" id="review_instructions">
   <% if (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) %>
@@ -70,7 +70,7 @@
     </div>
     <div class="span6">
       <%= link_to(I18n.t('terms.back'), invite_users_type_path(:program_friendly => @program_friendly, :invitation_type => @invitation_type, :emails => @emails_param), :class => "btn") %>
-      <%= submit_tag(I18n.t('invitations.form.buttons.send_invitations'), :class => 'btn btn-success') %>
+      <%= submit_tag(I18n.t('invitations.form.buttons.review_invitations'), :class => 'btn btn-success') %>
     </div>
   </div>
 <% end %>

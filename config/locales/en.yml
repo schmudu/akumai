@@ -59,7 +59,7 @@ en:
         sent_invitations:
           one: "You have sent %{count} invitation.  Click the following link to view your invitations."
           other: "You have sent %{count} invitations.  Click the following link to view your invitations."
-
+        steps: "Step %{index} of 3"
       prompt:
         default_email: "brian@yahoo.com,samantha@gmail.com"
         select_program: "Select Program"

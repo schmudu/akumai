@@ -178,14 +178,8 @@ class InvitationsController < ApplicationController
 
     def reset_session_variables
       # UPDATE any new invitation session variables add UsersHelpere
-      puts "NOTE: resetting session variables...\n"
-      #session[:invite_users_invitation_type] = nil
-      puts "SESSION: before: #{session[:invite_users_program]}\n"
-      #reset_session
       session.delete(:invite_users_invitation_type)
       session.delete(:invite_users_program)
-      #session[:invite_users_program] = "Crazy Patrick"
-      puts "SESSION: after: #{session[:invite_users_program]}\n"
     end
 
     def valid_invitation_recipients?(sender, emails, program_slug, invitation_level)

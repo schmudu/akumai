@@ -33,6 +33,12 @@ $(document).ready(function(){
     $("#radio_student").attr("disabled", true);
   }
 
+  function getHost(href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l.protocol + "//" + l.host;
+  }
+
   $("#program_id").change(function(){
     $.get("/program_user_level.json", { program:$(this).val() })
       .done( function( data ){
@@ -52,31 +58,21 @@ $(document).ready(function(){
       });
   });
 
-  /*
-  $(".btn-cancel").click(function(){
-    alert("cancel called.");
-    $.post("/invite_users/cancel.json", function( data ){
-        alert("done clearing variables");
-      }).
-      fail(function() {
-        alert("error:");
-      });
-    });
-  });
-*/
-
   $(".btn-cancel").click(function(){
     var jqxhr = $.get( "/invite_users/cancel.json", function() {
     })
       .done(function() {
-        alert("done2:" + URL_DASHBOARD);
-        window.location.href = URL_DASHBOARD;
+        var host = getHost(window.location.href);
+        var dashboard_url = host + "" + PATH_DASHBOARD;
+        window.location.href = dashboard_url;
       })
       .fail(function(jqXHR, textStatus, errorThrown) {
-        alert("error");
+        alert("Error: U001 - Cancel button.");
       });
   });
 
+
+  $(".btn-cancel").attr('href', '#');
 
   $("#email_addresses").focus(function(){
     setFormTextFocus("#email_addresses", EMAIL_ADDRESSES_DEFAULT);

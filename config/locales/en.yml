@@ -36,6 +36,7 @@ en:
     form:
       buttons:
         edit_invitation: "Edit Invitation"
+        invite_users: "Invite Users"
         review_invitations: "Review Invitations"
         send_invitations: "Send Invitations"
       errors:

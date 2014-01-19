@@ -66,7 +66,9 @@
 
   <div class="row">
     <div class="span4">
-      <%= link_to(I18n.t('forms.buttons.cancel'), "#", :class => "btn btn-cancel") %>
+    </div>
+    <div class="span2">
+      <%= link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn btn-cancel") %>
     </div>
     <div class="span6">
       <%= link_to(I18n.t('terms.back'), invite_users_type_path(:program_friendly => @program_friendly, :invitation_type => @invitation_type, :emails => @emails_param), :class => "btn") %>

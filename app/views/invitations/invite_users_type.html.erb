@@ -2,10 +2,7 @@
 <%= javascript_include_tag "form_utilities" %>
 <%= javascript_include_tag "invite_users" %>
 
-<h2>Send Invitations (Step 1 of 2)</h2>
-
-Params: <%= params.inspect %><br/>
-Session: <%= session.inspect %><br/>
+<h2>Send Invitations (<%= t('invitations.form.messages.steps', index: 1)%>)</h2>
 
 <% if(!flash.empty?) %>
   <div>
@@ -35,7 +32,7 @@ Session: <%= session.inspect %><br/>
   </div>
 <% end %>
 
-<%= form_tag({:action => "invite_users_address", :controller => "invitations", :method => "post"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
+<%= form_tag({:action => "invite_users_address", :controller => "invitations"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
   <!-- PROGRAM -->
   <% if flash[:program_id].nil? %>
     <div id="program_group" class="control-group">

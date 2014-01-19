@@ -297,16 +297,12 @@ describe "InvitationPages" do
         end
 
         describe "invitation address page for staff" do
-          #let(:superuser) { FactoryGirl.create(:user, superuser: true) }
           subject { page }
 
           before do
-            #logout user
-            #login superuser
             visit invite_users_type_path
             select('Program_Staff', from: 'program_id')
             choose('radio_staff')
-            #fill_in "email_addresses", :with => "patrick@abc.com"
             click_button I18n.t('terms.next')
           end
 
@@ -323,6 +319,32 @@ describe "InvitationPages" do
             it { should have_link(I18n.t('terms.back'), invite_users_type_path) }
             it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
           end
+
+=begin
+          # TODO: tests btn-cancel AJAX call, need to figure out how we can test this
+          # JAVASCRIPT_TEST
+          describe "pressing cancel button" do
+            before do
+              click_link I18n.t('forms.buttons.cancel')
+            end
+
+            it "should go to dashboard_path" do
+              current_path.should == dashboard_path
+            end
+
+            describe "should clear session variables" do
+              before do
+                click_link I18n.t('invitations.form.buttons.invite_users')
+              end
+              it "should go to invite_users_type_path" do
+                current_path.should == invite_users_type_path
+                #save_and_open_page
+              end
+              it { should_not have_xpath("//option[@selected='selected' and @value='program_staff']") }
+              it { should_not have_xpath("//input[@value='1' and @id='radio_staff']") }
+            end
+          end
+=end
         end
 
         describe "invitation address page for admin" do

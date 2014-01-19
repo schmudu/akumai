@@ -127,8 +127,8 @@ describe "InvitationPages" do
 
           describe "enter admin addresses" do
             before do
-              select('Program_Staff', from: 'program_id')
-              choose('radio_staff')
+              select('Program_Admin', from: 'program_id')
+              choose('radio_admin')
               click_button I18n.t('terms.next')
             end
 

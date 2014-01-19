@@ -75,10 +75,11 @@ en:
         admin_invitations: "Warning: You are inviting Admin users.  Admin users have the ability to add/remove users as well as data."
       title:
         enter_email_addresses:
-          admin: "Enter the email addresses for the admin users you would like to invite"
-          staff: "Enter the email addresses for the staff users you would like to invite"
-          students: "Enter the email addresses and student IDs for the students you would like to invite"
+          admin: "Enter the email addresses for the admin users you would like to invite to the program."
+          staff: "Enter the email addresses for the staff users you would like to invite to the program."
+          students: "Enter the email addresses and student IDs for the students you would like to invite to the program."
   terms:
+    back: "Back"
     email_addresses: "Email Addresses"
     invitation_type: "Invitation Type"
     next: "Next"

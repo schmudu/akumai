@@ -4,9 +4,6 @@
 
 <h2>Send Invitations (Step 1 of 2)</h2>
 
-Flash begin:
-<%= flash.inspect %>
-Flash end:
 <% if(!flash.empty?) %>
   <div>
     <ul>
@@ -85,20 +82,5 @@ Flash end:
     </label>
   </div>
 
-  <!-- EMAIL -->
-  <% if (flash[:email].nil? && flash[:duplicate_invitation].nil? && flash[:role_in_program].nil?) %>
-    <div id="email_group" class="control-group">
-  <% else %>
-    <div id="email_group" class="error control-group">
-  <% end %>
-    <%= label_tag(:email_addresses, "Email Addresses", :class => 'control-label') %>
-    <% if !params[:emails].nil? %>
-      <%= text_area_tag(:email_addresses, params[:emails], size: "70x10") %>
-    <% elsif (!@emails_param.nil?) %>
-      <%= text_area_tag(:email_addresses, @emails_param, size: "70x10") %>
-    <% else %>
-      <%= text_area_tag(:email_addresses, t('invitations.form.prompt.default_email'), size: "70x10") %>
-    <% end %>
-  </div>
   <%= submit_tag(t('terms.next'), :id => '') %>
 <% end %>

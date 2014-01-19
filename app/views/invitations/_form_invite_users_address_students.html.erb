@@ -4,10 +4,16 @@
 <h2>Review Invitations ( Step 2 of 2 )</h2>
 
 <div class="row" id="review_instructions">
-  <%= t('invitations.form.review.invitations', count:1) %>
+  <% if (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) %>
+    <%= t('invitations.form.title.enter_email_addresses.admin') %>
+  <% elsif (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STAFF) %>
+    <%= t('invitations.form.title.enter_email_addresses.staff') %>
+  <% elsif (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STUDENT) %>
+    <%= t('invitations.form.title.enter_email_addresses.students') %>
+  <% end %>
 </div>
 
-<% if(@invitation_type == ConstantsHelper::ROLE_LEVEL_ADMIN.to_s) %>
+<% if (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) %>
   <br/><br/>
   <div class="row label label-warning">
     <div class="span12">
@@ -38,13 +44,33 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="span2">
-      <!-- HIDDEN TAGS -->
-      <%= hidden_field_tag(:program_id, @program_friendly) %>
-      <%= hidden_field_tag(:invitation_type, @invitation_type) %>
-      <%= hidden_field_tag(:email_addresses, @emails_param) %>
+  <!-- ADDRESSES -->
+  <div id="invitation_group" class="row">
+    <div class="span2"></div>
+    <div class="span8">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Student ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= text_field_tag(:a) %></td>
+            <td><%= text_field_tag(:id) %></td>
+          </tr>
+          <tr>
+            <td><%= text_field_tag(:a) %></td>
+            <td><%= text_field_tag(:id) %></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <div class="span2"></div>
+  </div>
+
+  <div class="row">
     <div class="span4">
       <%= link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn") %>
     </div>

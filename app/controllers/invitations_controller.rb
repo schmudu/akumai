@@ -1,5 +1,5 @@
 class InvitationsController < ApplicationController
-  include InvitationsHelper, UsersHelper 
+  include HashHelper, InvitationsHelper, UsersHelper 
   before_filter :authenticate_user!
   before_action :set_invitation, only: [:show, :edit, :update, :destroy]
 
@@ -43,13 +43,6 @@ class InvitationsController < ApplicationController
       #flash = errors.clone
       copy_hash(errors, flash)
       redirect_to invite_users_type_path
-    end
-  end
-
-  # TODO move this to helper
-  def copy_hash(from, to)
-    from.each do |key, value|
-      to[key] = value
     end
   end
 

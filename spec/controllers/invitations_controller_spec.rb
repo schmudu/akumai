@@ -99,6 +99,11 @@ describe InvitationsController do
     end
   end
 
+  describe "POST review_invitations" do
+    it "should redirect to invitation type if it hasn't hit invite_users_address" do
+    end
+  end
+
   describe "POST 'send_invitations'" do
     before(:each) do
       @params = {}

@@ -4,27 +4,30 @@
 
 <h2>Send Invitations (Step 1 of 2)</h2>
 
-<% if(!@errors.empty?) %>
+Flash begin:
+<%= flash.inspect %>
+Flash end:
+<% if(!flash.empty?) %>
   <div>
     <ul>
-      <% @errors.each do |key, value| %>
+      <% flash.each do |key, value| %>
         <% if((key.to_s!="valid") && (key.to_s!="emails") && (key.to_s!="duplicate_invitation") && (key.to_s!="role_in_program")) %>
           <li><%= value %></li>
         <% end %>
       <% end %>
     </ul>
-    <% unless @errors[:duplicate_invitation].nil? %>
-      <%= t('invitations.form.errors.duplicate_invitation', count:@errors[:duplicate_invitation].count, program_name: @program.name) %>
+    <% unless flash[:duplicate_invitation].nil? %>
+      <%= t('invitations.form.errors.duplicate_invitation', count:flash[:duplicate_invitation].count, program_name: @program.name) %>
       <ul class="errors_duplicate_invitation">
-        <% @errors[:duplicate_invitation].each_value do |email| %>
+        <% flash[:duplicate_invitation].each_value do |email| %>
           <li><%= email %></li>
         <% end %>
       </ul>
     <% end %>
-    <% unless @errors[:role_in_program].nil? %>
-      <%= t('invitations.form.errors.user_already_in_program', count:@errors[:role_in_program].count, program_name: @program.name) %>
+    <% unless flash[:role_in_program].nil? %>
+      <%= t('invitations.form.errors.user_already_in_program', count:flash[:role_in_program].count, program_name: @program.name) %>
       <ul class="errors_role_in_program">
-        <% @errors[:role_in_program].each_value do |email| %>
+        <% flash[:role_in_program].each_value do |email| %>
           <li><%= email %></li>
         <% end %>
       </ul>
@@ -34,7 +37,7 @@
 
 <%= form_tag({:action => "invite_users_address", :controller => "invitations", :method => "post"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
   <!-- PROGRAM -->
-  <% if @errors[:program_id].nil? %>
+  <% if flash[:program_id].nil? %>
     <div id="program_group" class="control-group">
   <% else %>
     <div id="program_group" class="error control-group">
@@ -43,12 +46,12 @@
     <% unless params[:program_friendly].nil? %>
       <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: params[:program_friendly])) %>
     <% else %>
-      <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: @program_friendly)) %>
+      <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: session[:invite_users_program])) %>
     <% end %>
   </div>
 
   <!-- INVITATION -->
-  <% if @errors[:invitation_level].nil? %>
+  <% if flash[:invitation_level].nil? %>
     <div id="invitation_group" class="control-group">
   <% else %>
     <div id="invitation_group" class="error control-group">
@@ -56,7 +59,7 @@
     <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>
     <label class="radio inline student">
 
-      <% if((@invitation_type=="0") || (params[:invitation_level] == '0'))%>
+      <% if(session[:invite_users_invitation_type]=="0")%>
         <input id="radio_student" checked="checked" class="student" name="invitation_type" value="0" type="radio"> 
       <% else %>
         <input id="radio_student" class="student" name="invitation_type" value="0" type="radio"> 
@@ -65,7 +68,7 @@
       <%= t('user_level.student') %>
     </label>
     <label class="radio inline staff">
-      <% if((@invitation_type=="1") || (params[:invitation_level] == '1'))%>
+      <% if(session[:invite_users_invitation_type]=="1")%>
         <input id="radio_staff" checked="checked" class="staff" name="invitation_type" value="1" type="radio"> 
       <% else %>
         <input id="radio_staff" class="staff" name="invitation_type" value="1" type="radio"> 
@@ -73,7 +76,7 @@
       <%= t('user_level.staff') %>
     </label>
     <label class="radio inline admin" id="label_admin">
-      <% if((@invitation_type=="2") || (params[:invitation_level] == '2'))%>
+      <% if(session[:invite_users_invitation_type]=="2")%>
         <input id="radio_admin" class="admin" checked="checked" name="invitation_type" value="2" type="radio"> 
       <% else %>
         <input id="radio_admin" class="admin" name="invitation_type" value="2" type="radio"> 
@@ -83,7 +86,7 @@
   </div>
 
   <!-- EMAIL -->
-  <% if (@errors[:email].nil? && @errors[:duplicate_invitation].nil? && @errors[:role_in_program].nil?) %>
+  <% if (flash[:email].nil? && flash[:duplicate_invitation].nil? && flash[:role_in_program].nil?) %>
     <div id="email_group" class="control-group">
   <% else %>
     <div id="email_group" class="error control-group">

@@ -1,5 +1,6 @@
 Trio::Application.routes.draw do
   #invitations
+  match '/invite_users/cancel',   to: 'invitations#cancel',   via: 'get'
   match '/invite_users/type',   to: 'invitations#invite_users_type',   via: 'get', as: :invite_users_type
   #match '/review_invitations',   to: 'invitations#review_invitations',   via: 'post'
   match '/invite_users/address',   to: 'invitations#invite_users_address',   via: 'post', as: :invite_users_address

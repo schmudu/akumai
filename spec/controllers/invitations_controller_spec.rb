@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-#describe InvitationsController, :type => :controller do
 describe InvitationsController do
   before(:each) do
     @user=FactoryGirl.create(:user, :email => "sender@abc.com")
@@ -24,20 +23,31 @@ describe InvitationsController do
     describe "with invalid params" do
       it "without any parameters" do
         post :invite_users_address, @params
-        assigns[:programs].should_not be_nil
+        assigns[:invitation_level].should be_nil
       end
 
       it "with only program_id" do
         @params[:program_id] = @program.slug
         post :invite_users_address, @params
-        assigns[:programs].should_not be_nil
+        assigns[:invitation_level].should be_nil
         session[:invite_users_program].should == @program.slug
+        session[:invite_users_invitation_type].should be_nil
       end
 
       it "with only invitation_type" do
         @params[:invitation_type]="2"
         post :invite_users_address, @params 
-        assigns[:programs].should_not be_nil
+        assigns[:invitation_level].should be_nil
+        session[:invite_users_invitation_type].should == "2"
+      end
+
+      it "should reset session variables" do
+        @params[:program_id] = @program.slug
+        @params[:invitation_type]="2"
+        post :invite_users_address, @params 
+        get :cancel
+        session[:invite_users_invitation_type].should be_nil
+        session[:invite_users_program].should be_nil
       end
 
 =begin
@@ -82,13 +92,9 @@ describe InvitationsController do
       it "should not assign programs" do
         @params[:program_id] = @program.slug
         @params[:invitation_type]="0"
-        #@params[:email_addresses]="abc@abc.com"
         post :invite_users_address, @params 
-        assigns[:programs].should be_nil
         assigns[:program].should_not be_nil
         assigns[:invitation_level].should eq("Student")
-        #assigns[:emails].should_not be_nil
-        assigns[:errors].should be_empty
       end
     end
   end

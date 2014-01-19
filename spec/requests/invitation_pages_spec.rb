@@ -8,7 +8,7 @@ describe "InvitationPages" do
   let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
   before(:each) { login user }
   subject { page }
-  describe "invite users" do
+  describe "invite users type" do
     describe "without logging in" do
       before do   
         logout user
@@ -102,12 +102,19 @@ describe "InvitationPages" do
       end
 
       describe "submitting invitation" do
+        let(:superuser) { FactoryGirl.create(:user, superuser: true) }
+        subject { page }
+
+        before do
+          logout user
+          login superuser
+          visit invite_users_type_path
+        end
         describe "filling out valid information" do
           describe "enter student addresses" do
             before do
               select('Program_Staff', from: 'program_id')
               choose('radio_student')
-              fill_in "email_addresses", :with => ""
               click_button I18n.t('terms.next')
             end
 
@@ -122,7 +129,6 @@ describe "InvitationPages" do
             before do
               select('Program_Staff', from: 'program_id')
               choose('radio_staff')
-              fill_in "email_addresses", :with => ""
               click_button I18n.t('terms.next')
             end
 
@@ -137,7 +143,6 @@ describe "InvitationPages" do
             before do
               select('Program_Staff', from: 'program_id')
               choose('radio_staff')
-              fill_in "email_addresses", :with => ""
               click_button I18n.t('terms.next')
             end
 
@@ -150,10 +155,21 @@ describe "InvitationPages" do
         end
 
         describe "filling out with invalid information" do
+          subject { page }
+
+          before do
+            logout superuser
+            login user
+            visit invite_users_type_path
+          end
           describe "do not select a program" do
             before do
               choose('radio_student')
               click_button I18n.t('terms.next')
+            end
+
+            it "should go to review invitations path" do
+              current_path.should == invite_users_type_path
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.program')}
@@ -164,6 +180,10 @@ describe "InvitationPages" do
             before do
               select('Program_Staff', from: 'program_id')
               click_button I18n.t('terms.next')
+            end
+
+            it "should go to review invitations path" do
+              current_path.should == invite_users_type_path
             end
 
             it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
@@ -276,6 +296,32 @@ describe "InvitationPages" do
 =end
         end
 
+        describe "invitation address page" do
+          before do
+            select('Program_Staff', from: 'program_id')
+            choose('radio_student')
+            #fill_in "email_addresses", :with => "patrick@abc.com"
+            click_button I18n.t('terms.next')
+          end
+
+          describe "content on page" do
+            it "should go to review invitations path" do
+              current_path.should == invite_users_address_path
+            end
+
+=begin
+            it { should have_content("Step 2 of 2") }
+            it { should have_content(I18n.t('invitations.form.review.invitations', count:1)) }
+            it { should have_content("Program_Staff") }
+            it { should have_content("patrick@abc.com") }
+            it { should have_content(I18n.t('user_level.student')) }
+            it { should have_content(I18n.t('terms.number_of_invitations')) }
+            it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
+            it { should have_link(I18n.t('invitations.form.buttons.edit_invitation'), invite_users_type_path) }
+            it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
+=end
+          end
+        end
 =begin
         describe "on review invitations page" do
           describe "invite student user" do

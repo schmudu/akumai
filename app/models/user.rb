@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
       return result
     end
 
-    # no program selected
+    # no program nor invitation level selected
     if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == I18n.t('invitations.form.prompt.select_program')) || (invitation_level.nil?) || (invitation_level.blank?))
       result[:valid] = false
       result[:invitation_level]=I18n.t('invitations.form.errors.invitation_type_none') if (invitation_level.nil? || invitation_level.blank?)

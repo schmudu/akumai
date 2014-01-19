@@ -9,34 +9,47 @@ class InvitationsController < ApplicationController
   end
 
   def invite_users_address
-    @program_friendly = params[:program_id]
-    @invitation_type = params[:invitation_type]
+    program_friendly = params[:program_id]
+    invitation_type = params[:invitation_type]
 
     # session variables
-    session[:invite_users_program] = @program_friendly
-    puts "assigning session: #{session.inspect}\n"
+    session[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
+    session[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
     #@emails_param = params[:email_addresses]
-    @errors = {}
+    errors = {}
 
-    validation_invitation_sender = current_user.valid_invitation_sender?(@program_friendly, @invitation_type)
+    # validate sender
+    validation_invitation_sender = current_user.valid_invitation_sender?(program_friendly, invitation_type)
     #validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails_param, @program_friendly, @invitation_type)
     #validation_email = valid_email_addresses?(@emails_param)
 
-    unless @program_friendly.nil?
-      programs = Program.where("slug=?",@program_friendly) 
+    # validate program selected
+    unless program_friendly.nil?
+      programs = Program.where("slug=?",program_friendly) 
       @program = programs.first unless programs.empty?
     end
-    
+
     #if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
-    if (validation_invitation_sender[:valid] == true)
-      @invitation_level = user_level(@invitation_type.to_s)
+    if ((!@program.nil?) && (validation_invitation_sender[:valid] == true))
+      @invitation_level = user_level(invitation_type.to_s)
       #@emails = validation_email[:emails]
     else
       # error with input
-      @errors = validation_invitation_sender
+      errors = validation_invitation_sender
+      errors[:program_id] = I18n.t('invitations.form.errors.program') if @program.nil?
       #@errors = validation_invitation_sender.merge(validation_email)
       #@errors = @errors.merge(validation_invitation_recipient)
-      @programs = current_user.staff_level_programs
+      #@programs = current_user.staff_level_programs
+      #flash = errors.clone
+      copy_hash(errors, flash)
+      redirect_to invite_users_type_path
+    end
+  end
+
+  # TODO move this to helper
+  def copy_hash(from, to)
+    from.each do |key, value|
+      to[key] = value
     end
   end
 
@@ -146,6 +159,11 @@ class InvitationsController < ApplicationController
     end
   end
 
+  def cancel
+    reset_session_variables
+    redirect_to dashboard_path
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_invitation
@@ -155,6 +173,12 @@ class InvitationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def invitation_params
       params[:invitation]
+    end
+
+    def reset_session_variables
+      # UPDATE any new invitation session variables add UsersHelpere
+      session[:invite_users_invitation_type] = nil
+      session[:invite_users_program] = nil
     end
 
     def valid_invitation_recipients?(sender, emails, program_slug, invitation_level)

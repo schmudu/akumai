@@ -52,6 +52,32 @@ $(document).ready(function(){
       });
   });
 
+  /*
+  $(".btn-cancel").click(function(){
+    alert("cancel called.");
+    $.post("/invite_users/cancel.json", function( data ){
+        alert("done clearing variables");
+      }).
+      fail(function() {
+        alert("error:");
+      });
+    });
+  });
+*/
+
+  $(".btn-cancel").click(function(){
+    var jqxhr = $.get( "/invite_users/cancel.json", function() {
+    })
+      .done(function() {
+        alert("done2:" + URL_DASHBOARD);
+        window.location.href = URL_DASHBOARD;
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        alert("error");
+      });
+  });
+
+
   $("#email_addresses").focus(function(){
     setFormTextFocus("#email_addresses", EMAIL_ADDRESSES_DEFAULT);
   });

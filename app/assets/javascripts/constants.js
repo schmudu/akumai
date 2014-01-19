@@ -6,3 +6,6 @@ var LEVEL_ROLE_STUDENT=0;
 
 // INVITATIONS
 var EMAIL_ADDRESSES_DEFAULT = "brian@yahoo.com,samantha@gmail.com";
+
+// URL 
+var URL_DASHBOARD = "http://localhost:3000/dashboard";

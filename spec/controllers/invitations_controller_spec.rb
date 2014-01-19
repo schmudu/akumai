@@ -45,7 +45,7 @@ describe InvitationsController do
         @params[:program_id] = @program.slug
         @params[:invitation_type]="2"
         post :invite_users_address, @params 
-        get :cancel
+        get :cancel, :format => "json"
         session[:invite_users_invitation_type].should be_nil
         session[:invite_users_program].should be_nil
       end

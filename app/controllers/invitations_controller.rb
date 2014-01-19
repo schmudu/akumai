@@ -12,6 +12,7 @@ class InvitationsController < ApplicationController
     program_friendly = params[:program_id]
     invitation_type = params[:invitation_type]
 
+    # TODO set session variables only after validated
     # session variables
     session[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
     session[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
@@ -157,7 +158,11 @@ class InvitationsController < ApplicationController
 
   def cancel
     reset_session_variables
-    redirect_to dashboard_path
+    #redirect_to dashboard_path
+    respond_to do |format|
+      msg = { :text => "success" }
+      format.json { render :json => msg }
+    end
   end
 
   private
@@ -173,8 +178,14 @@ class InvitationsController < ApplicationController
 
     def reset_session_variables
       # UPDATE any new invitation session variables add UsersHelpere
-      session[:invite_users_invitation_type] = nil
-      session[:invite_users_program] = nil
+      puts "NOTE: resetting session variables...\n"
+      #session[:invite_users_invitation_type] = nil
+      puts "SESSION: before: #{session[:invite_users_program]}\n"
+      #reset_session
+      session.delete(:invite_users_invitation_type)
+      session.delete(:invite_users_program)
+      #session[:invite_users_program] = "Crazy Patrick"
+      puts "SESSION: after: #{session[:invite_users_program]}\n"
     end
 
     def valid_invitation_recipients?(sender, emails, program_slug, invitation_level)

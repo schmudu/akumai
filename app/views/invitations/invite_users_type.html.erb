@@ -1,1 +1,91 @@
-<%= render 'form_invite_users_type' %>
+<% provide(:title, "Invite Users (Step 1 of 2)") %>
+<%= javascript_include_tag "form_utilities" %>
+<%= javascript_include_tag "invite_users" %>
+
+<h2>Send Invitations (Step 1 of 2)</h2>
+
+Params: <%= params.inspect %><br/>
+Session: <%= session.inspect %><br/>
+
+<% if(!flash.empty?) %>
+  <div>
+    <ul>
+      <% flash.each do |key, value| %>
+        <% if((key.to_s!="valid") && (key.to_s!="emails") && (key.to_s!="duplicate_invitation") && (key.to_s!="role_in_program")) %>
+          <li><%= value %></li>
+        <% end %>
+      <% end %>
+    </ul>
+    <% unless flash[:duplicate_invitation].nil? %>
+      <%= t('invitations.form.errors.duplicate_invitation', count:flash[:duplicate_invitation].count, program_name: @program.name) %>
+      <ul class="errors_duplicate_invitation">
+        <% flash[:duplicate_invitation].each_value do |email| %>
+          <li><%= email %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <% unless flash[:role_in_program].nil? %>
+      <%= t('invitations.form.errors.user_already_in_program', count:flash[:role_in_program].count, program_name: @program.name) %>
+      <ul class="errors_role_in_program">
+        <% flash[:role_in_program].each_value do |email| %>
+          <li><%= email %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_tag({:action => "invite_users_address", :controller => "invitations", :method => "post"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
+  <!-- PROGRAM -->
+  <% if flash[:program_id].nil? %>
+    <div id="program_group" class="control-group">
+  <% else %>
+    <div id="program_group" class="error control-group">
+  <% end %>
+    <%= label_tag(:program, "Program", :class => 'control-label') %>
+    <% unless params[:program_friendly].nil? %>
+      Using params.
+      <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: params[:program_friendly])) %>
+    <% else %>
+      Using session.<%= session[:invite_users_program] %>
+      <%= select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: session[:invite_users_program])) %>
+    <% end %>
+  </div>
+
+  <!-- INVITATION -->
+  <% if flash[:invitation_level].nil? %>
+    <div id="invitation_group" class="control-group">
+  <% else %>
+    <div id="invitation_group" class="error control-group">
+  <% end %>
+    <%= label_tag(:invitation_type, "Invitation Type", :class => 'control-label') %>
+    <label class="radio inline student">
+
+      <% if(session[:invite_users_invitation_type]=="0")%>
+        <input id="radio_student" checked="checked" class="student" name="invitation_type" value="0" type="radio"> 
+      <% else %>
+        <input id="radio_student" class="student" name="invitation_type" value="0" type="radio"> 
+      <% end %>
+
+      <%= t('user_level.student') %>
+    </label>
+    <label class="radio inline staff">
+      <% if(session[:invite_users_invitation_type]=="1")%>
+        <input id="radio_staff" checked="checked" class="staff" name="invitation_type" value="1" type="radio"> 
+      <% else %>
+        <input id="radio_staff" class="staff" name="invitation_type" value="1" type="radio"> 
+      <% end %>
+      <%= t('user_level.staff') %>
+    </label>
+    <label class="radio inline admin" id="label_admin">
+      <% if(session[:invite_users_invitation_type]=="2")%>
+        <input id="radio_admin" class="admin" checked="checked" name="invitation_type" value="2" type="radio"> 
+      <% else %>
+        <input id="radio_admin" class="admin" name="invitation_type" value="2" type="radio"> 
+      <% end %>
+      <%= t('user_level.admin') %>
+    </label>
+  </div>
+
+  <%= submit_tag(t('terms.next'), :id => '') %>
+<% end %>

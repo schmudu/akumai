@@ -328,12 +328,8 @@ describe "InvitationPages" do
               it "should redirect back to address_path" do
                 current_path.should == invite_users_address_path
               end
-=begin
               it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
               it { should have_selector('div#email_group.error') }
-              it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
-              it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
-=end
             end
           end
 

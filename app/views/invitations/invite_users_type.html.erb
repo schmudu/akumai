@@ -10,7 +10,6 @@
     <ul>
       <% flash.each do |key, value| %>
         <% if((key.to_s!="valid") && 
-            (key.to_s!="error_duplicate_invitation") && 
             (key.to_s!="emails") && 
             (key.to_s!="invite_users_program") && 
             (key.to_s!="invite_users_invitation_type") && 
@@ -19,14 +18,6 @@
         <% end %>
       <% end %>
     </ul>
-    <% unless flash[:error_duplicate_invitation].nil? %>
-      <%= t('invitations.form.errors.duplicate_invitation', count:flash[:error_duplicate_invitation].count, program_name: @program.name) %>
-      <ul class="errors_duplicate_invitation">
-        <% flash[:error_duplicate_invitation].each_value do |email| %>
-          <li><%= email %></li>
-        <% end %>
-      </ul>
-    <% end %>
     <% unless flash[:error_role_in_program].nil? %>
       <%= t('invitations.form.errors.user_already_in_program', count:flash[:error_role_in_program].count, program_name: @program.name) %>
       <ul class="errors_role_in_program">

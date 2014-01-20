@@ -39,7 +39,7 @@ class InvitationsController < ApplicationController
         session[:invite_users_program] = params[:program_id]
         session[:invite_users_invitation_type] = params[:invitation_type]
       else
-        # error with input
+        # collect errors
         errors = validation_invitation_sender
         errors[:error_program_id] = I18n.t('invitations.form.errors.program') if @program.nil?
         copy_hash(errors, flash)
@@ -49,27 +49,29 @@ class InvitationsController < ApplicationController
   end
 
   def review_invitations
-    emails_param = params[:email_addresses]
     errors = {}
 
     # validation of non-students
-    if ((session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) ||
-      (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STAFF))
-
+    if is_non_student?
       # set flash so on redirect, options can be pre-populated
       flash[:invite_users_email_addresses] = params[:email_addresses] if (!params[:email_addresses].nil? && !params[:email_addresses].blank?)
 
-      validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails_param, @program_friendly, @invitation_type)
-      validation_email = valid_email_addresses?(@emails_param)
+      validation_invitation_recipient = valid_invitation_recipients?(current_user, params[:email_addresses], session[:invite_users_program], session[:invite_users_invitation_type])
+      validation_email = valid_email_addresses?(params[:email_addresses])
 
       # if pass validation then set session and instance variables for this view
       if ((validation_invitation_recipient[:valid] == true) && 
           (validation_email[:valid] == true))
+        session[:invite_users_email_addresses] = params[:email_addresses]
       else
+        # collect errors
+        errors = validation_invitation_recipient.merge(validation_email)
+        copy_hash(errors, flash)
         redirect_to invite_users_address_path
       end
     else
       # validation students
+      puts "student!"
     end
   end
   
@@ -189,6 +191,11 @@ class InvitationsController < ApplicationController
   end
 
   private
+    def is_non_student?
+      return true if ((session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) ||
+        (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STAFF))
+      return false
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_invitation
       @invitation = Invitation.friendly.find(params[:id])
@@ -200,7 +207,7 @@ class InvitationsController < ApplicationController
     end
 
     def reset_session_variables
-      # UPDATE any new invitation session variables add UsersHelpere
+      # DUPLICATION_UPDATE any new invitation session variables add UsersHelper
       session.delete(:invite_users_invitation_type)
       session.delete(:invite_users_program)
     end

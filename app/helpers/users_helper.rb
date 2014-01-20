@@ -10,9 +10,9 @@ module UsersHelper
       return result
     end
 
-    #clean_emails(email_addresses)
-    #split_email_addresses = email_addresses.split(",")
     split_email_addresses = clean_and_split_email_address_to_a(email_addresses)
+
+    # validate email expression
     split_email_addresses.each do |email|
       unless valid_email?(email)
         result[:valid]=false
@@ -20,6 +20,14 @@ module UsersHelper
         return result
       end
     end
+
+    # validate duplicates
+    if duplicate_email_addresses? split_email_addresses
+      result[:valid]=false
+      result[:error_email]=I18n.t('invitations.form.errors.duplicate_email_address')
+      return result
+    end
+
     result[:valid]=true
     result[:emails]=split_email_addresses
     return result
@@ -47,5 +55,11 @@ module UsersHelper
   def clean_and_split_email_address_to_a email_addresses
     clean_emails email_addresses
     split_email_addresses = email_addresses.split(",")
+  end
+
+  def duplicate_email_addresses? array
+    result = array.detect {|e| array.rindex(e) != array.index(e) }
+    return true unless result.nil?
+    return false
   end
 end

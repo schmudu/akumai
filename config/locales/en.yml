@@ -40,6 +40,7 @@ en:
         review_invitations: "Review Invitations"
         send_invitations: "Send Invitations"
       errors:
+        duplicate_email_address: "One or more email email addresses are duplicated.  Please check the email addresses."
         duplicate_invitation: 
           one: "The following email address already has an invitation to %{program_name}."
           other: "The email addresses already has an invitation to %{program_name}."

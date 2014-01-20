@@ -8,3 +8,18 @@
 4) Install Postgres and set the owner of the database to be ruby_user by running the line:
     ALTER DATABASE trio_dev OWNER TO ruby_user;
 
+== ANNOTATIONS
+Annotations were used to keep track of what issues that need to be fixed, updated....basically a TODO list after everything is said and done.  
+
+= RUBY ANNOTATION
+To get a list of the default ruby annotations, run the following in the terminal:
+rake notes
+
+= CUSTOM ANNOTATION
+The following custom annotations were used:
+JAVASCRIPT_TEST - Used to denote where we need to test for AJAX/Javascript behavior
+DUPLICATION_UPDATE - Noted where duplication in code, namely because of difference in languages (Javascript constants and Ruby Constants)
+
+To get a list of the custom annotations in the project that I used run the following command in the terminal:
+rake notes:custom ANNOTATION=JAVASCRIPT_TEST
+

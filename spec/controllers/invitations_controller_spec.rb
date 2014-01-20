@@ -102,7 +102,55 @@ describe InvitationsController do
   end
 
   describe "POST review_invitations" do
-    it "should redirect to invitation type if it hasn't hit invite_users_address" do
+    describe "non-student invitation path" do
+      before do
+        @params = {}
+        session[:invite_users_program] = @program.slug
+        session[:invite_users_invitation_type]=ConstantsHelper::ROLE_LEVEL_STAFF
+      end
+
+      it "should respond without any emails" do
+        @params[:email_addresses] = ""
+        post :review_invitations, @params
+        flash[:invite_users_email_addresses].should be_nil
+      end
+
+      it "should respond with one email" do
+        emails = "test@test.com"
+        @params[:email_addresses] = emails
+        post :review_invitations, @params
+        flash[:invite_users_email_addresses].should == emails
+        session[:invite_users_email_addresses].should == emails
+      end
+
+      it "should respond with multiple email" do
+        emails = "test@test.com, test2@test.com"
+        @params[:email_addresses] = emails
+        post :review_invitations, @params
+        flash[:invite_users_email_addresses].should == emails
+        session[:invite_users_email_addresses].should == emails
+      end
+
+      it "should respond with duplicate emails" do
+        emails = "test@test.com, test@test.com"
+        @params[:email_addresses] = emails
+        post :review_invitations, @params
+        flash[:invite_users_email_addresses].should == emails
+        session[:invite_users_email_addresses].should be_nil
+      end
+
+    end
+
+    describe "student invitation path" do
+      before do
+        @params = {}
+        @params[:program_id] = @program.slug
+        @params[:invitation_type]=ConstantsHelper::ROLE_LEVEL_STUDENT.to_s
+        post :invite_users_address, @params 
+      end
+
+      it "should redirect to invitation type if it hasn't hit invite_users_address" do
+      end
     end
   end
 

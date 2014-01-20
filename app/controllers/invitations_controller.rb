@@ -12,10 +12,11 @@ class InvitationsController < ApplicationController
     program_friendly = params[:program_id]
     invitation_type = params[:invitation_type]
 
-    # TODO set session variables only after validated
-    # session variables
-    session[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
-    session[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
+    # set flash so on redirect, options can be pre-populated
+    flash[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
+    flash[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
+    #session[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
+    #session[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
     #@emails_param = params[:email_addresses]
     errors = {}
 
@@ -33,6 +34,8 @@ class InvitationsController < ApplicationController
     #if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
     if ((!@program.nil?) && (validation_invitation_sender[:valid] == true))
       @invitation_level = user_level(invitation_type.to_s)
+      session[:invite_users_program] = params[:program_id]
+      session[:invite_users_invitation_type] = params[:invitation_type]
       #@emails = validation_email[:emails]
     else
       # error with input

@@ -174,6 +174,7 @@ describe "InvitationPages" do
 
             it { should have_content(I18n.t 'invitations.form.errors.program')}
             it { should have_selector('div#program_group.error') }
+            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
           end
 
           describe "do not select an invitation type" do
@@ -319,6 +320,7 @@ describe "InvitationPages" do
             it { should have_link(I18n.t('terms.back'), invite_users_type_path) }
             it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
           end
+
 
 =begin
           # TODO: tests btn-cancel AJAX call, need to figure out how we can test this

@@ -1,38 +1,57 @@
+function enableAllUserLevels(){
+  $(".admin").removeClass("disabled");
+  $("#radio_admin").attr("disabled", false);
+  $(".staff").removeClass("disabled");
+  $("#radio_staff").attr("disabled", false);
+  $(".student").removeClass("disabled");
+  $("#radio_student").attr("disabled", false);
+}
+
+function enableOnlyStudent(){
+  uncheckRadioButton("input.admin");
+  uncheckRadioButton("input.staff");
+
+  $(".admin").addClass("disabled");
+  $("#radio_admin").attr("disabled", true);
+  $(".staff").addClass("disabled");
+  $("#radio_staff").attr("disabled", true);
+  $(".student").removeClass("disabled");
+  $("#radio_student").attr("disabled", false);
+}
+
+function disableAllUserLevels(){
+  uncheckRadioButton("input.admin");
+  uncheckRadioButton("input.staff");
+  uncheckRadioButton("input.student");
+
+  $(".admin").addClass("disabled");
+  $("#radio_admin").attr("disabled", true);
+  $(".staff").addClass("disabled");
+  $("#radio_staff").attr("disabled", true);
+  $(".student").addClass("disabled");
+  $("#radio_student").attr("disabled", true);
+}
+
+function setInvitationLevel(program_value){
+  $.get("/program_user_level.json", { program:program_value })
+    .done( function( data ){
+      var user_level = data.level;
+      if (user_level == LEVEL_ROLE_SUPERUSER){
+        enableAllUserLevels();
+      }
+      else if (user_level == LEVEL_ROLE_ADMIN){
+        enableAllUserLevels();
+      }
+      else if (user_level == LEVEL_ROLE_STAFF){
+        enableOnlyStudent();
+      }
+      else if (user_level == LEVEL_ROLE_STUDENT){
+        disableAllUserLevels();
+      }
+    });
+  }
+
 $(document).ready(function(){
-  function enableAllUserLevels(){
-    $(".admin").removeClass("disabled");
-    $("#radio_admin").attr("disabled", false);
-    $(".staff").removeClass("disabled");
-    $("#radio_staff").attr("disabled", false);
-    $(".student").removeClass("disabled");
-    $("#radio_student").attr("disabled", false);
-  }
-
-  function enableOnlyStudent(){
-    uncheckRadioButton("input.admin");
-    uncheckRadioButton("input.staff");
-
-    $(".admin").addClass("disabled");
-    $("#radio_admin").attr("disabled", true);
-    $(".staff").addClass("disabled");
-    $("#radio_staff").attr("disabled", true);
-    $(".student").removeClass("disabled");
-    $("#radio_student").attr("disabled", false);
-  }
-
-  function disableAllUserLevels(){
-    uncheckRadioButton("input.admin");
-    uncheckRadioButton("input.staff");
-    uncheckRadioButton("input.student");
-
-    $(".admin").addClass("disabled");
-    $("#radio_admin").attr("disabled", true);
-    $(".staff").addClass("disabled");
-    $("#radio_staff").attr("disabled", true);
-    $(".student").addClass("disabled");
-    $("#radio_student").attr("disabled", true);
-  }
-
   function getHost(href) {
     var l = document.createElement("a");
     l.href = href;

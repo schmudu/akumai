@@ -319,6 +319,22 @@ describe "InvitationPages" do
             it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
             it { should have_link(I18n.t('terms.back'), invite_users_type_path) }
             it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
+            describe "do not enter an email address" do
+              before do
+                fill_in "email_addresses", :with => ""
+                click_button I18n.t('invitations.form.buttons.review_invitations')
+              end
+
+              it "should redirect back to address_path" do
+                current_path.should == invite_users_address_path
+              end
+=begin
+              it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+              it { should have_selector('div#email_group.error') }
+              it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
+              it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
+=end
+            end
           end
 
 

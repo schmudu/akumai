@@ -23,7 +23,7 @@
 <% end %>
 
 <br/><br/>
-<%= form_tag({:action => "send_invitations", :controller => "invitations"},{:class => 'form-horizontal', :id => 'review_invitations'}) do %>
+<%= form_tag({:action => "review_invitations", :controller => "invitations"},{:class => 'form-horizontal', :id => 'review_invitations'}) do %>
   <!-- PROGRAM -->
   <div id="program_group" class="row">
     <div class="span4 form-label">
@@ -54,10 +54,10 @@
       <span class="form-label text-info"><%= t('terms.email_addresses') %>:</span>
     </div>
     <div class="span8">
-    <% if !params[:emails].nil? %>
-      <%= text_area_tag(:email_addresses, params[:emails], :rows => "10") %>
-    <% elsif (!@emails_param.nil?) %>
-      <%= text_area_tag(:email_addresses, @emails_param, :rows => "10", :class => "span5") %>
+    <% if !session[:invite_users_email_addresses].nil? %>
+      <%= text_area_tag(:email_addresses, session[:invite_users_email_addresses], :rows => "10") %>
+    <% elsif (!flash[:invite_users_email_addresses].nil?) %>
+      <%= text_area_tag(:email_addresses, flash[:invite_users_email_addresses], :rows => "10", :class => "span5") %>
     <% else %>
       <%= text_area_tag(:email_addresses, t('invitations.form.prompt.default_email'), :rows => "10", :class => "span5") %>
     <% end %>

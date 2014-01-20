@@ -9,48 +9,68 @@ class InvitationsController < ApplicationController
   end
 
   def invite_users_address
-    program_friendly = params[:program_id]
-    invitation_type = params[:invitation_type]
-
-    # set flash so on redirect, options can be pre-populated
-    flash[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
-    flash[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
-    #session[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
-    #session[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
-    #@emails_param = params[:email_addresses]
-    errors = {}
-
-    # validate sender
-    validation_invitation_sender = current_user.valid_invitation_sender?(program_friendly, invitation_type)
-    #validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails_param, @program_friendly, @invitation_type)
-    #validation_email = valid_email_addresses?(@emails_param)
-
-    # validate program selected
-    unless program_friendly.nil?
-      programs = Program.where("slug=?",program_friendly) 
+    if ((!session[:invite_users_program].nil?) && (!session[:invite_users_invitation_type].nil?))
+      # session parameters have already been validated
+      # usually thrown here as a rejection from next step
+      programs = Program.where("slug=?",session[:invite_users_program]) 
       @program = programs.first unless programs.empty?
-    end
-
-    #if ((validation_invitation_recipient[:valid] == true) && (validation_invitation_sender[:valid] == true) && (validation_email[:valid] == true))
-    if ((!@program.nil?) && (validation_invitation_sender[:valid] == true))
-      @invitation_level = user_level(invitation_type.to_s)
-      session[:invite_users_program] = params[:program_id]
-      session[:invite_users_invitation_type] = params[:invitation_type]
-      #@emails = validation_email[:emails]
     else
-      # error with input
-      errors = validation_invitation_sender
-      errors[:program_id] = I18n.t('invitations.form.errors.program') if @program.nil?
-      #@errors = validation_invitation_sender.merge(validation_email)
-      #@errors = @errors.merge(validation_invitation_recipient)
-      #@programs = current_user.staff_level_programs
-      #flash = errors.clone
-      copy_hash(errors, flash)
-      redirect_to invite_users_type_path
+      # this step needs to be validated
+      program_friendly = params[:program_id]
+      invitation_type = params[:invitation_type]
+
+      # set flash so on redirect, options can be pre-populated
+      flash[:invite_users_program] = params[:program_id] if (!params[:program_id].nil? && !params[:program_id].blank?)
+      flash[:invite_users_invitation_type] = params[:invitation_type] if (!params[:invitation_type].nil? && !params[:invitation_type].blank?)
+      errors = {}
+
+      # validate sender
+      validation_invitation_sender = current_user.valid_invitation_sender?(program_friendly, invitation_type)
+
+      # validate program selected
+      unless program_friendly.nil?
+        programs = Program.where("slug=?",program_friendly) 
+        @program = programs.first unless programs.empty?
+      end
+
+      # if pass validation then set session and instance variables for this view
+      if ((!@program.nil?) && (validation_invitation_sender[:valid] == true))
+        @invitation_level = user_level(invitation_type.to_s)
+        session[:invite_users_program] = params[:program_id]
+        session[:invite_users_invitation_type] = params[:invitation_type]
+      else
+        # error with input
+        errors = validation_invitation_sender
+        errors[:program_id] = I18n.t('invitations.form.errors.program') if @program.nil?
+        copy_hash(errors, flash)
+        redirect_to invite_users_type_path
+      end
     end
   end
 
   def review_invitations
+    emails_param = params[:email_addresses]
+    errors = {}
+
+    # validation of non-students
+    if ((session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) ||
+      (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STAFF))
+
+      # set flash so on redirect, options can be pre-populated
+      flash[:invite_users_email_addresses] = params[:email_addresses] if (!params[:email_addresses].nil? && !params[:email_addresses].blank?)
+
+      validation_invitation_recipient = valid_invitation_recipients?(current_user, @emails_param, @program_friendly, @invitation_type)
+      validation_email = valid_email_addresses?(@emails_param)
+
+      # if pass validation then set session and instance variables for this view
+      if ((validation_invitation_recipient[:valid] == true) && 
+          (validation_email[:valid] == true))
+      else
+        redirect_to invite_users_address_path
+      end
+    else
+      # validation students
+    end
   end
   
   def send_invitations

@@ -46,7 +46,7 @@
 
   <!-- ADDRESSES -->
   <div id="invitation_group" class="row">
-    <% if (flash[:email].nil? && flash[:duplicate_invitation].nil? && flash[:role_in_program].nil?) %>
+    <% if (flash[:error_email].nil? && flash[:error_duplicate_invitation].nil? && flash[:error_role_in_program].nil?) %>
       <div id="email_group" class="span4 form-label control-group">
     <% else %>
       <div id="email_group" class="span4 error form-label control-group">

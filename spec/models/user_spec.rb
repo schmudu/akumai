@@ -82,21 +82,21 @@ describe User do
           @program = FactoryGirl.create(:program)
           result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
           result[:valid].should eq(false)
-          result[:invitation_level].should eq("You do not have the privileges to add users to this program.")
+          result[:error_invitation_level].should eq("You do not have the privileges to add users to this program.")
         end
 
         it "sending out admin invite should return error" do
           @program = FactoryGirl.create(:program)
           result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
           result[:valid].should eq(false)
-          result[:invitation_level].should eq("You do not have the privileges to add users to this program.")
+          result[:error_invitation_level].should eq("You do not have the privileges to add users to this program.")
         end
 
         it "sending out admin invite should return error" do
           @program = FactoryGirl.create(:program)
           result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
           result[:valid].should eq(false)
-          result[:invitation_level].should eq("You do not have the privileges to add users to this program.")
+          result[:error_invitation_level].should eq("You do not have the privileges to add users to this program.")
         end
       end
     end
@@ -127,7 +127,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN)
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_SUPERUSER)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_superusers'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_superusers'))
       end
 
       it "sending out admin invite should return error" do
@@ -158,7 +158,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_SUPERUSER)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_superusers'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_superusers'))
       end
 
       it "sending out admin invite should return error" do
@@ -166,7 +166,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_administrators'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_administrators'))
       end
 
       it "sending out staff invite should return error" do
@@ -174,7 +174,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF)
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_staff'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_staff'))
       end
 
       it "sending out student invite should return error" do
@@ -191,7 +191,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_SUPERUSER)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_superusers'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_superusers'))
       end
 
       it "sending out admin invite should return error" do
@@ -199,7 +199,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_ADMIN)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_administrators'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_administrators'))
       end
 
       it "sending out staff invite should return error" do
@@ -207,7 +207,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_STAFF)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_staff'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_staff'))
       end
 
       it "sending out student invite should return error" do
@@ -215,7 +215,7 @@ describe User do
         @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
         result=@user.valid_invitation_sender?(@program.slug, ConstantsHelper::ROLE_LEVEL_STUDENT)
         result[:valid].should eq(false)
-        result[:invitation_level].should eq(I18n.t('invitations.form.errors.privileges_students'))
+        result[:error_invitation_level].should eq(I18n.t('invitations.form.errors.privileges_students'))
       end
     end
   end

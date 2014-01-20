@@ -10,27 +10,27 @@
     <ul>
       <% flash.each do |key, value| %>
         <% if((key.to_s!="valid") && 
-            (key.to_s!="duplicate_invitation") && 
+            (key.to_s!="error_duplicate_invitation") && 
             (key.to_s!="emails") && 
             (key.to_s!="invite_users_program") && 
             (key.to_s!="invite_users_invitation_type") && 
-            (key.to_s!="role_in_program")) %>
+            (key.to_s!="error_role_in_program")) %>
           <li><%= value %></li>
         <% end %>
       <% end %>
     </ul>
-    <% unless flash[:duplicate_invitation].nil? %>
-      <%= t('invitations.form.errors.duplicate_invitation', count:flash[:duplicate_invitation].count, program_name: @program.name) %>
+    <% unless flash[:error_duplicate_invitation].nil? %>
+      <%= t('invitations.form.errors.duplicate_invitation', count:flash[:error_duplicate_invitation].count, program_name: @program.name) %>
       <ul class="errors_duplicate_invitation">
-        <% flash[:duplicate_invitation].each_value do |email| %>
+        <% flash[:error_duplicate_invitation].each_value do |email| %>
           <li><%= email %></li>
         <% end %>
       </ul>
     <% end %>
-    <% unless flash[:role_in_program].nil? %>
-      <%= t('invitations.form.errors.user_already_in_program', count:flash[:role_in_program].count, program_name: @program.name) %>
+    <% unless flash[:error_role_in_program].nil? %>
+      <%= t('invitations.form.errors.user_already_in_program', count:flash[:error_role_in_program].count, program_name: @program.name) %>
       <ul class="errors_role_in_program">
-        <% flash[:role_in_program].each_value do |email| %>
+        <% flash[:error_role_in_program].each_value do |email| %>
           <li><%= email %></li>
         <% end %>
       </ul>
@@ -40,7 +40,7 @@
 
 <%= form_tag({:action => "invite_users_address", :controller => "invitations"},{:class => 'form-horizontal', :id => 'invite_users'}) do %>
   <!-- PROGRAM -->
-  <% if flash[:program_id].nil? %>
+  <% if flash[:error_program_id].nil? %>
     <div id="program_group" class="control-group">
   <% else %>
     <div id="program_group" class="error control-group">
@@ -54,7 +54,7 @@
   </div>
 
   <!-- INVITATION -->
-  <% if flash[:invitation_level].nil? %>
+  <% if flash[:error_invitation_level].nil? %>
     <div id="invitation_group" class="control-group">
   <% else %>
     <div id="invitation_group" class="error control-group">

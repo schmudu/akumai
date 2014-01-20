@@ -6,7 +6,7 @@ module UsersHelper
     # nil or empty
     if ((email_addresses == I18n.t('invitations.form.prompt.default_email')) || (email_addresses.nil?) || (email_addresses.blank?))
       result[:valid]=false
-      result[:email]=I18n.t('invitations.form.errors.email_blank')
+      result[:error_email]=I18n.t('invitations.form.errors.email_blank')
       return result
     end
 
@@ -16,7 +16,7 @@ module UsersHelper
     split_email_addresses.each do |email|
       unless valid_email?(email)
         result[:valid]=false
-        result[:email]=I18n.t('invitations.form.errors.email_format')
+        result[:error_email]=I18n.t('invitations.form.errors.email_format')
         return result
       end
     end

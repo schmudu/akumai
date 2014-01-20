@@ -40,8 +40,8 @@ class User < ActiveRecord::Base
     # no program nor invitation level selected
     if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == I18n.t('invitations.form.prompt.select_program')) || (invitation_level.nil?) || (invitation_level.blank?))
       result[:valid] = false
-      result[:invitation_level]=I18n.t('invitations.form.errors.invitation_type_none') if (invitation_level.nil? || invitation_level.blank?)
-      result[:program_id] = I18n.t('invitations.form.errors.program') if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == I18n.t('invitations.form.prompt.select_program')))
+      result[:error_invitation_level]=I18n.t('invitations.form.errors.invitation_type_none') if (invitation_level.nil? || invitation_level.blank?)
+      result[:error_program_id] = I18n.t('invitations.form.errors.program') if ((program_slug.nil?) || (program_slug.empty?) || (program_slug == I18n.t('invitations.form.prompt.select_program')))
       return result
     end
 
@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
     if matches.empty?
       # no matches
       result[:valid]=false
-      result[:invitation_level]=I18n.t('invitations.form.errors.invitation_type_invalid')
+      result[:error_invitation_level]=I18n.t('invitations.form.errors.invitation_type_invalid')
     else
       user_level = matches.first.level
       if (user_level == ConstantsHelper::ROLE_LEVEL_ADMIN)
@@ -67,26 +67,26 @@ class User < ActiveRecord::Base
           result[:valid] = true
         else
           result[:valid] = false
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_superusers') if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_superusers') if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
         end
       elsif (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
         if (invitation_level == ConstantsHelper::ROLE_LEVEL_STUDENT)
           result[:valid] = true
         else
           result[:valid] = false
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_superusers') if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_administrators') if invitation_level == ConstantsHelper::ROLE_LEVEL_ADMIN
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_staff') if invitation_level == ConstantsHelper::ROLE_LEVEL_STAFF
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_superusers') if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_administrators') if invitation_level == ConstantsHelper::ROLE_LEVEL_ADMIN
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_staff') if invitation_level == ConstantsHelper::ROLE_LEVEL_STAFF
         end
       elsif (user_level == ConstantsHelper::ROLE_LEVEL_STUDENT)
           result[:valid] = false
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_superusers') if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_administrators') if invitation_level == ConstantsHelper::ROLE_LEVEL_ADMIN
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_staff') if invitation_level == ConstantsHelper::ROLE_LEVEL_STAFF
-          result[:invitation_level]=I18n.t('invitations.form.errors.privileges_students') if invitation_level == ConstantsHelper::ROLE_LEVEL_STUDENT
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_superusers') if invitation_level == ConstantsHelper::ROLE_LEVEL_SUPERUSER
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_administrators') if invitation_level == ConstantsHelper::ROLE_LEVEL_ADMIN
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_staff') if invitation_level == ConstantsHelper::ROLE_LEVEL_STAFF
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.privileges_students') if invitation_level == ConstantsHelper::ROLE_LEVEL_STUDENT
       else
           result[:valid] = false
-          result[:invitation_level]=I18n.t('invitations.form.errors.invalid_role_level') 
+          result[:error_invitation_level]=I18n.t('invitations.form.errors.invalid_role_level') 
       end
     end
     return result

@@ -41,7 +41,7 @@ class InvitationsController < ApplicationController
       else
         # error with input
         errors = validation_invitation_sender
-        errors[:program_id] = I18n.t('invitations.form.errors.program') if @program.nil?
+        errors[:error_program_id] = I18n.t('invitations.form.errors.program') if @program.nil?
         copy_hash(errors, flash)
         redirect_to invite_users_type_path
       end
@@ -228,14 +228,14 @@ class InvitationsController < ApplicationController
         end
 
         unless invitation.valid?
-          unless invitation.errors[:duplicate_invitation].empty?
-            results[:duplicate_invitation] = {} if results[:duplicate_invitation].nil?
-            results[:duplicate_invitation][email_address.parameterize.to_sym] = email_address
+          unless invitation.errors[:error_duplicate_invitation].empty?
+            results[:error_duplicate_invitation] = {} if results[:duplicate_invitation].nil?
+            results[:error_duplicate_invitation][email_address.parameterize.to_sym] = email_address
           end
 
-          unless invitation.errors[:role_in_program].empty?
-            results[:role_in_program] = {} if results[:role_in_program].nil?
-            results[:role_in_program][email_address.parameterize.to_sym] = email_address
+          unless invitation.errors[:error_role_in_program].empty?
+            results[:error_role_in_program] = {} if results[:role_in_program].nil?
+            results[:error_role_in_program][email_address.parameterize.to_sym] = email_address
           end
         end
       end

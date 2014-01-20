@@ -101,7 +101,7 @@ describe "InvitationPages" do
         end
       end
 
-      describe "submitting invitation" do
+      describe "invite_users_type_path" do
         let(:superuser) { FactoryGirl.create(:user, superuser: true) }
         subject { page }
 
@@ -110,7 +110,7 @@ describe "InvitationPages" do
           login superuser
           visit invite_users_type_path
         end
-        describe "filling out valid information" do
+        describe "filling out valid information on invite_users_type_path" do
           describe "enter student addresses" do
             before do
               select('Program_Staff', from: 'program_id')
@@ -296,12 +296,20 @@ describe "InvitationPages" do
           end
 =end
         end
+      end
 
-        describe "invitation address page for staff" do
-          subject { page }
+      describe "invitation address page" do
+        let(:superuser) { FactoryGirl.create(:user, superuser: true) }
+        subject { page }
 
+        before do
+          logout user
+          login superuser
+          visit invite_users_type_path
+        end
+
+        describe "for staff" do
           before do
-            visit invite_users_type_path
             select('Program_Staff', from: 'program_id')
             choose('radio_staff')
             click_button I18n.t('terms.next')
@@ -362,10 +370,7 @@ describe "InvitationPages" do
         end
 
         describe "invitation address page for admin" do
-          subject { page }
-
           before do
-            visit invite_users_type_path
             select('Program_Staff', from: 'program_id')
             choose('radio_admin')
             click_button I18n.t('terms.next')
@@ -382,10 +387,7 @@ describe "InvitationPages" do
         end
 
         describe "invitation address page for students" do
-          subject { page }
-
           before do
-            visit invite_users_type_path
             select('Program_Staff', from: 'program_id')
             choose('radio_student')
             click_button I18n.t('terms.next')
@@ -399,6 +401,36 @@ describe "InvitationPages" do
             it { should have_content("#{I18n.t('invitations.form.messages.steps', index:2)}") }
           end
         end
+      end
+
+      describe "review invitations page" do
+        let(:superuser) { FactoryGirl.create(:user, superuser: true) }
+        subject { page }
+
+        before do
+          logout user
+          login superuser
+          visit invite_users_type_path
+        end
+
+        describe "for staff" do
+          before do
+            select('Program_Staff', from: 'program_id')
+            choose('radio_staff')
+            click_button I18n.t('terms.next')
+            fill_in "email_addresses", :with => "abc@abc.com"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+          end
+
+          describe "content on page" do
+            it "should go to review invitations path" do
+              current_path.should == invite_users_review_path
+            end
+
+            #it { should have_content("#{I18n.t('invitations.form.messages.steps', index:2)}") }
+          end
+        end
+      end
 
 =begin
         describe "on review invitations page" do
@@ -516,9 +548,9 @@ describe "InvitationPages" do
             end
           end
         end
-=end
 
       end
+=end
     end
   end
 end

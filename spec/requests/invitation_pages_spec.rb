@@ -191,110 +191,6 @@ describe "InvitationPages" do
             it { should have_selector('div#invitation_group.error') }
             it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
           end
-
-=begin
-          describe "do not enter an email address" do
-            before do
-              select('Program_Staff', from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => ""
-              click_button I18n.t('terms.next')
-            end
-
-            it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
-            it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
-            it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
-          end
-
-          describe "do nothing with email" do
-            before do
-              select('Program_Staff', from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => I18n.t('invitations.form.prompt.default_email')
-              click_button I18n.t('terms.next')
-            end
-
-            it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
-            it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
-            it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
-          end
-
-          describe "enter an invalid email" do
-            before do
-              select('Program_Staff', from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => "abc.com"
-              click_button I18n.t('terms.next')
-            end
-
-            it { should have_content(I18n.t 'invitations.form.errors.email_format')}
-            it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//input[@id='radio_student' and @checked='checked']")}
-            it { should have_xpath("//option[@value='program_staff' and @selected='selected']")}
-            it { should have_selector("textarea", :text => "abc.com") }
-          end
-
-          describe "do not enter any information" do
-            before do
-              fill_in "email_addresses", :with => ""
-
-              click_button I18n.t('terms.next')
-            end
-
-            it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
-            it { should have_content(I18n.t 'invitations.form.errors.invitation_type_none')}
-            it { should have_content(I18n.t 'invitations.form.errors.program')}
-            it { should have_selector('div#email_group.error') }
-            it { should have_selector('div#invitation_group.error') }
-            it { should have_selector('div#program_group.error') }
-          end
-
-          describe "enter an email that is registered that already has an invitation to a program" do
-            before do
-              FactoryGirl.create(:invitation, :program_id => program_staff.id, :sender_id => user.id, :recipient_id => another_user.id, :recipient_email => nil, :status => ConstantsHelper::INVITATION_STATUS_SENT)
-              select(program_staff.name, from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => another_user.email
-              click_button I18n.t('terms.next')
-            end
-
-            it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
-            it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//ul[@class='errors_duplicate_invitation' and ./li[contains(.,'#{another_user.email}')]]") }
-          end
-
-          describe "enter an email that is not registered that already has an invitation to a program" do
-            before do
-              FactoryGirl.create(:invitation, :program_id => program_staff.id, :sender_id => user.id, :recipient_id => nil, :recipient_email => "random_user@abc.com", :status => ConstantsHelper::INVITATION_STATUS_SENT)
-              select(program_staff.name, from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => "random_user@abc.com"
-              click_button I18n.t('terms.next')
-            end
-
-            it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
-            it { should_not have_content(I18n.t 'invitations.form.errors.user_already_in_program', count: 1, program_name:program_staff.name)}
-            it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//ul[@class='errors_duplicate_invitation' and ./li[contains(.,'random_user@abc.com')]]") }
-          end
-
-          describe "enter an email that is already has a role in the program" do
-            before do
-              FactoryGirl.create(:role, user_id:student_user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STUDENT)
-              select(program_staff.name, from: 'program_id')
-              choose('radio_student')
-              fill_in "email_addresses", :with => student_user.email
-              click_button I18n.t('terms.next')
-            end
-
-            it { should_not have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
-            it { should have_content(I18n.t 'invitations.form.errors.user_already_in_program', count: 1, program_name:program_staff.name)}
-            it { should have_selector('div#email_group.error') }
-            it { should have_xpath("//ul[@class='errors_role_in_program' and ./li[contains(.,'#{student_user.email}')]]") }
-          end
-=end
         end
       end
 
@@ -327,17 +223,94 @@ describe "InvitationPages" do
             it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
             it { should have_link(I18n.t('terms.back'), invite_users_type_path) }
             it { should have_button(I18n.t('invitations.form.buttons.review_invitations')) }
-            describe "do not enter an email address" do
-              before do
-                fill_in "email_addresses", :with => ""
-                click_button I18n.t('invitations.form.buttons.review_invitations')
+
+            describe "invalid information" do
+              describe "do not enter an email address" do
+                before do
+                  fill_in "email_addresses", :with => ""
+                  click_button I18n.t('invitations.form.buttons.review_invitations')
+                end
+
+                it "should redirect back to address_path" do
+                  current_path.should == invite_users_address_path
+                end
+                it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
+                it { should have_selector('div#email_group.error') }
               end
 
-              it "should redirect back to address_path" do
-                current_path.should == invite_users_address_path
+              describe "do not enter an duplicate address" do
+                before do
+                  fill_in "email_addresses", :with => "abc@abc.com, abc@abc.com"
+                  click_button I18n.t('invitations.form.buttons.review_invitations')
+                end
+
+                it "should redirect back to address_path" do
+                  current_path.should == invite_users_address_path
+                end
+                it { should have_content(I18n.t 'invitations.form.errors.duplicate_email_address')}
+                it { should have_selector('div#email_group.error') }
               end
-              it { should have_content(I18n.t 'invitations.form.errors.email_blank')}
-              it { should have_selector('div#email_group.error') }
+
+              describe "do not enter an duplicate address" do
+                before do
+                  fill_in "email_addresses", :with => "abc@abccom, abc@abc.com"
+                  click_button I18n.t('invitations.form.buttons.review_invitations')
+                end
+
+                it "should redirect back to address_path" do
+                  current_path.should == invite_users_address_path
+                end
+                it { should have_content(I18n.t 'invitations.form.errors.email_format')}
+                it { should have_selector('div#email_group.error') }
+              end
+
+              describe "enter an email that is registered that already has an invitation to a program" do
+                before do
+                  FactoryGirl.create(:invitation, :program_id => program_staff.id, :sender_id => user.id, :recipient_id => another_user.id, :recipient_email => nil, :status => ConstantsHelper::INVITATION_STATUS_SENT)
+                  fill_in "email_addresses", :with => another_user.email
+                  click_button I18n.t('invitations.form.buttons.review_invitations')
+                end
+
+                it "should redirect back to address_path" do
+                  #save_and_open_page
+                  current_path.should == invite_users_address_path
+                end
+                it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
+                it { should have_selector('div#email_group.error') }
+                it { should have_xpath("//ul[@class='errors_duplicate_invitation' and ./li[contains(.,'#{another_user.email}')]]") }
+              end
+
+              describe "enter an email that is not registered that already has an invitation to a program" do
+                before do
+                  FactoryGirl.create(:invitation, :program_id => program_staff.id, :sender_id => user.id, :recipient_id => nil, :recipient_email => "random_user@abc.com", :status => ConstantsHelper::INVITATION_STATUS_SENT)
+                  fill_in "email_addresses", :with => "random_user@abc.com"
+                  click_button I18n.t('invitations.form.buttons.review_invitations')
+                end
+
+                it "should redirect back to address_path" do
+                  current_path.should == invite_users_address_path
+                end
+                it { should have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
+                it { should_not have_content(I18n.t 'invitations.form.errors.user_already_in_program', count: 1, program_name:program_staff.name)}
+                it { should have_selector('div#email_group.error') }
+                it { should have_xpath("//ul[@class='errors_duplicate_invitation' and ./li[contains(.,'random_user@abc.com')]]") }
+              end
+
+              describe "enter an email that already has a role in the program2" do
+                before do
+                  FactoryGirl.create(:role, user_id:student_user.id, program_id:program_staff.id, level:ConstantsHelper::ROLE_LEVEL_STUDENT)
+                  fill_in "email_addresses", :with => student_user.email
+                  click_button I18n.t('invitations.form.buttons.review_invitations')
+                end
+
+                it "should redirect back to address_path" do
+                  current_path.should == invite_users_address_path
+                end
+                it { should_not have_content(I18n.t 'invitations.form.errors.duplicate_invitation', count: 1, program_name:program_staff.name)}
+                it { should have_content(I18n.t 'invitations.form.errors.user_already_in_program', count: 1, program_name:program_staff.name)}
+                it { should have_selector('div#email_group.error') }
+                it { should have_xpath("//ul[@class='errors_role_in_program' and ./li[contains(.,'#{student_user.email}')]]") }
+              end
             end
           end
 

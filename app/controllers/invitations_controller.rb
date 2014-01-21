@@ -71,7 +71,6 @@ class InvitationsController < ApplicationController
       end
     else
       # validation students
-      puts "student!"
     end
   end
   
@@ -247,7 +246,7 @@ class InvitationsController < ApplicationController
         end
       end
        
-      results[:valid] = true if ((results[:duplicate_invitation].nil?) && (results[:role_in_program].nil?))
+      results[:valid] = true if ((results[:error_duplicate_invitation].nil?) && (results[:error_role_in_program].nil?))
       return results
     end
 end

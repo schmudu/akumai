@@ -79,7 +79,7 @@ class Invitation < ActiveRecord::Base
         users = User.where("id = ?", self.recipient_id)
       end
 
-      errors[:role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: users.first.email, program_name: program.name) unless roles.empty?
+      errors[:error_role_in_program] = I18n.t('invitations.form.errors.user_already_in_program', email: users.first.email, program_name: program.name) unless roles.empty?
     end
 
     def user_does_not_have_duplicate_invitation
@@ -101,7 +101,7 @@ class Invitation < ActiveRecord::Base
         user_email = User.where("id=?", self.recipient_id).first.email
       end
 
-      errors[:duplicate_invitation] = "true" unless invitations.empty?
+      errors[:error_duplicate_invitation] = "true" unless invitations.empty?
     end
 
     def admin_and_staff_must_not_have_student_id

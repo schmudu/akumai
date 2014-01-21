@@ -44,6 +44,14 @@
         <% end %>
       </ul>
     <% end %>
+     <% unless flash[:error_role_in_program].nil? %>
+      <%= t('invitations.form.errors.user_already_in_program', count:flash[:error_role_in_program].count, program_name: @program.name) %>
+      <ul class="errors_role_in_program">
+        <% flash[:error_role_in_program].each_value do |email| %>
+          <li><%= email %></li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 <% end %>
 

@@ -51,6 +51,12 @@ class InvitationsController < ApplicationController
   def review_invitations
     errors = {}
 
+    # validate session variables
+    if ((session[:invite_users_program].nil?) || (session[:invite_users_invitation_type].nil?))
+      # send user back to step 1
+      redirect_to invite_users_type_path
+    end
+
     # validation of non-students
     if is_non_student?
       # set flash so on redirect, options can be pre-populated

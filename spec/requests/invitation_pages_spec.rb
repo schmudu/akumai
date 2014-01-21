@@ -110,6 +110,7 @@ describe "InvitationPages" do
           login superuser
           visit invite_users_type_path
         end
+
         describe "filling out valid information on invite_users_type_path" do
           describe "enter student addresses" do
             before do
@@ -203,6 +204,17 @@ describe "InvitationPages" do
           login superuser
           visit invite_users_type_path
         end
+
+        describe "going in the wrong order" do
+          before do
+            visit invite_users_address_path
+          end
+
+          it "should go to review invitations path" do
+            current_path.should == invite_users_type_path
+          end
+        end
+
 
         describe "for staff" do
           before do
@@ -384,6 +396,16 @@ describe "InvitationPages" do
           logout user
           login superuser
           visit invite_users_type_path
+        end
+
+        describe "going in the wrong order" do
+          before do
+            visit invite_users_review_path
+          end
+
+          it "should go straight to review invitations path" do
+            current_path.should == invite_users_type_path
+          end
         end
 
         describe "for staff" do

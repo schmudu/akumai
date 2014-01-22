@@ -79,7 +79,13 @@
       <span class="form-label text-info"><%= t('terms.invitation_type') %>:</span>
     </div>
     <div class="span8">
-      <span><%= @invitation_level %></span>
+      <span>
+        <% unless session[:invite_users_invitation_type].nil? %>
+          <%= user_level(session[:invite_users_invitation_type]) %>
+        <% else %>
+          <%= @invitation_level %>
+        <% end %>
+      </span>
     </div>
   </div>
 

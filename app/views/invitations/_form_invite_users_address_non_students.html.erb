@@ -63,7 +63,13 @@
       <span class="form-label text-info"><%= t('terms.program') %>:</span>
     </div>
     <div class="span8">
-      <span><%= @program.name %></span>
+      <span>
+        <% unless session[:invite_users_program_name].nil? %>
+          <%= session[:invite_users_program_name] %>
+        <% else %>
+          <%= @program.name %>
+        <% end %>
+      </span>
     </div>
   </div>
 

@@ -409,11 +409,12 @@ describe "InvitationPages" do
         end
 
         describe "for staff" do
+          let (:email_addresses) { "abc@abc.com,def@def.com"}
           before do
             select('Program_Staff', from: 'program_id')
             choose('radio_staff')
             click_button I18n.t('terms.next')
-            fill_in "email_addresses", :with => "abc@abc.com"
+            fill_in "email_addresses", :with => email_addresses
             click_button I18n.t('invitations.form.buttons.review_invitations')
           end
 
@@ -422,8 +423,39 @@ describe "InvitationPages" do
               current_path.should == invite_users_review_path
             end
 
-            #it { should have_content("#{I18n.t('invitations.form.messages.steps', index:2)}") }
+            it { should have_content("#{I18n.t('invitations.form.messages.steps', index:3)}") }
+            it { should have_content("abc@abc.com") }
+            it { should have_content("def@def.com") }
+            it { should have_content(I18n.t('user_level.staff')) }
+            it { should have_link(I18n.t('forms.buttons.cancel'), dashboard_path) }
+            it { should have_link(I18n.t('terms.back'), invite_users_address_path) }
+            it { should have_button(I18n.t('invitations.form.buttons.send_invitations')) }
+
+            describe "check links" do
+              describe "back button" do
+                before do
+                  click_link(I18n.t('terms.back'))
+                end
+
+                it "click cancel should go to invite_users_address_path" do
+                  current_path.should == invite_users_address_path
+                end
+
+                it { should have_content(email_addresses) }
+              end
+
+              describe "cancel button" do
+                before do
+                  click_link(I18n.t('forms.buttons.cancel'))
+                end
+
+                it "click cancel should go to dashboard_path" do
+                  current_path.should == dashboard_path
+                end
+              end
+            end
           end
+
         end
       end
 

@@ -29,13 +29,20 @@ class InvitationsController < ApplicationController
 
       # validate program selected
       unless program_friendly.nil?
+        # TODO - replace @program with session[:invite_users_program_name]
+        #         that way we don't have to ping the db every time we want to pull name
+        #        also add to reset session variables
         programs = Program.where("slug=?",program_friendly) 
         @program = programs.first unless programs.empty?
       end
 
       # if pass validation then set session and instance variables for this view
       if ((!@program.nil?) && (validation_invitation_sender[:valid] == true))
+        # TODO - replace @invitation_level with session[:invite_users_invitation_level]
+        #         that way we don't have to ping the db every time we want to pull name
+        #        also add to reset session variables
         @invitation_level = user_level(invitation_type.to_s)
+        session[:invite_users_program_name] = @program.name
         session[:invite_users_program] = params[:program_id]
         session[:invite_users_invitation_type] = params[:invitation_type]
       else
@@ -69,6 +76,7 @@ class InvitationsController < ApplicationController
       if ((validation_invitation_recipient[:valid] == true) && 
           (validation_email[:valid] == true))
         session[:invite_users_email_addresses] = params[:email_addresses]
+        @emails = validation_email[:emails]
       else
         # collect errors
         errors = validation_invitation_recipient.merge(validation_email)
@@ -215,6 +223,7 @@ class InvitationsController < ApplicationController
       # DUPLICATION_UPDATE any new invitation session variables add UsersHelper
       session.delete(:invite_users_invitation_type)
       session.delete(:invite_users_program)
+      session.delete(:invite_users_program_name)
     end
 
     def valid_invitation_recipients?(sender, emails, program_slug, invitation_level)

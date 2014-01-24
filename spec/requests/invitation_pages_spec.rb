@@ -424,6 +424,8 @@ describe "InvitationPages" do
             end
 
             it { should have_content("#{I18n.t('invitations.form.messages.steps', index:3)}") }
+            it { should have_content("#{I18n.t('invitations.form.title.review')}") }
+            it { should have_content("#{I18n.t('terms.number_of_invitations')}") }
             it { should have_content("abc@abc.com") }
             it { should have_content("def@def.com") }
             it { should have_content(I18n.t('user_level.staff')) }
@@ -455,10 +457,46 @@ describe "InvitationPages" do
               end
             end
           end
-
         end
       end
 
+      describe "send invitations page" do
+        let(:superuser) { FactoryGirl.create(:user, superuser: true) }
+        let (:email_addresses) { "abc@abc.com,def@def.com"}
+        subject { page }
+
+        describe "valid invitation path" do
+          before do
+            logout user
+            login superuser
+            visit invite_users_type_path
+            select('Program_Staff', from: 'program_id')
+            choose('radio_staff')
+            click_button I18n.t('terms.next')
+            fill_in "email_addresses", :with => email_addresses
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+            click_button I18n.t('invitations.form.buttons.send_invitations')
+          end
+
+          it { should have_content(I18n.t('invitations.form.messages.sent_invitations', count: 2)) }
+          it "should go straight to send invitations path" do
+            current_path.should == invite_users_send_path
+          end
+        end
+
+=begin
+        describe "going in the wrong order" do
+          before do
+            visit invite_users_send_path
+          end
+
+          it "should go straight to review invitations path" do
+            current_path.should == invite_users_type_path
+          end
+        end
+=end
+
+      end
 =begin
         describe "on review invitations page" do
           describe "invite student user" do

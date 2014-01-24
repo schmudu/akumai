@@ -80,6 +80,7 @@ en:
           admin: "Enter the email addresses for the admin users you would like to invite to the program."
           staff: "Enter the email addresses for the staff users you would like to invite to the program."
           students: "Enter the email addresses and student IDs for the students you would like to invite to the program."
+        review: "Review the invitation information."
   terms:
     back: "Back"
     email_addresses: "Email Addresses"

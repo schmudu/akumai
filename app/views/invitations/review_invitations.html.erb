@@ -4,13 +4,7 @@
 <h2>Review Invitations ( <%= t('invitations.form.messages.steps', index:3) %> )</h2>
 
 <div class="row" id="review_instructions">
-  <% if (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) %>
-    <%= t('invitations.form.title.enter_email_addresses.admin') %>
-  <% elsif (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STAFF) %>
-    <%= t('invitations.form.title.enter_email_addresses.staff') %>
-  <% elsif (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STUDENT) %>
-    <%= t('invitations.form.title.enter_email_addresses.students') %>
-  <% end %>
+  <h2> <%= t('invitations.form.title.review') %></h2>
 </div>
 
 <% if (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) %>
@@ -41,6 +35,16 @@
     </div>
     <div class="span8">
       <span><%= user_level(session[:invite_users_invitation_type].to_s) %></span>
+    </div>
+  </div>
+
+  <!-- NUMBER OF INVITATIONS -->
+  <div id="invitation_group" class="row">
+    <div class="span4 form-label">
+      <span class="form-label text-info"><%= t('terms.number_of_invitations') %>:</span>
+    </div>
+    <div class="span8">
+      <span><%= @emails.count %></span>
     </div>
   </div>
 

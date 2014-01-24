@@ -38,9 +38,6 @@ class InvitationsController < ApplicationController
 
       # if pass validation then set session and instance variables for this view
       if ((!@program.nil?) && (validation_invitation_sender[:valid] == true))
-        # TODO - replace @invitation_level with session[:invite_users_invitation_level]
-        #         that way we don't have to ping the db every time we want to pull name
-        #        also add to reset session variables
         @invitation_level = user_level(invitation_type.to_s)
         session[:invite_users_program_name] = @program.name
         session[:invite_users_program] = params[:program_id]

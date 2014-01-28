@@ -14,6 +14,7 @@ describe InvitationsController do
     ActionMailer::Base.deliveries.clear
   end
 
+=begin
   describe "POST 'invite_users_address'" do
     before(:each) do
       @params = {}

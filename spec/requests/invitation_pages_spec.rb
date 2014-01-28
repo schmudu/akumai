@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 require_relative '../../app/helpers/constants_helper'
 
 describe "InvitationPages" do
@@ -8,6 +9,7 @@ describe "InvitationPages" do
   let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
   before(:each) { login user }
   subject { page }
+=begin
   describe "invite users type" do
     describe "without logging in" do
       before do   
@@ -80,7 +82,7 @@ describe "InvitationPages" do
             #page.should have_select(:xpath, "//input[@type='radio' and @id='level_staff' and @class='disabled']")
             #page.should have_no_select(:xpath, "//input[@type='radio' and @id='level_student' and @class='disabled']")
           end
-=end
+  =end
         end
       end
 
@@ -351,7 +353,7 @@ describe "InvitationPages" do
               it { should_not have_xpath("//input[@value='1' and @id='radio_staff']") }
             end
           end
-=end
+  =end
         end
 
         describe "invitation address page for admin" do
@@ -484,7 +486,7 @@ describe "InvitationPages" do
           end
         end
 
-=begin
+  =begin
         describe "going in the wrong order" do
           before do
             visit invite_users_send_path
@@ -494,10 +496,10 @@ describe "InvitationPages" do
             current_path.should == invite_users_type_path
           end
         end
-=end
+  =end
 
       end
-=begin
+  =begin
         describe "on review invitations page" do
           describe "invite student user" do
             before do
@@ -615,7 +617,7 @@ describe "InvitationPages" do
         end
 
       end
-=end
     end
   end
+=end
 end

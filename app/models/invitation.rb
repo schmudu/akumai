@@ -2,12 +2,15 @@ require_relative '../helpers/constants_helper'
 
 class Invitation < ActiveRecord::Base
   #attr_accessor :recipient_email
+=begin
   extend FriendlyId
   friendly_id :code, use: :slugged
+=end
 
   belongs_to :program
   belongs_to :sender, class_name: "User", foreign_key: "sender_id"
 
+=begin
   validates :sender_id, presence: true
   validates :program_id, presence: true
   validates :user_level, presence: true
@@ -18,10 +21,11 @@ class Invitation < ActiveRecord::Base
             :user_level_value, 
             :user_does_not_have_role_in_program, 
             :user_does_not_have_duplicate_invitation 
+=end
 
   #callbacks
   #after_validation :create_code
-  before_create :create_code
+  #before_create :create_code
 
   def recipient
     return recipient_email unless recipient_email.blank?

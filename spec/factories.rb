@@ -9,10 +9,10 @@ FactoryGirl.define do
   end
 
   factory :invitation do
-    sequence(:recipient_email) { |n| "recipient_#{n}@example.com"}
     program_id 1
     user_level ConstantsHelper::ROLE_LEVEL_STUDENT 
-    sequence(:student_id) { |n| "a00#{n}" }
+    status ConstantsHelper::INVITATION_STATUS_CREATED
+    recipient_emails ""
   end
 
   factory :role do

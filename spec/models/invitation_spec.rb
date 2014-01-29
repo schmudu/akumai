@@ -3,23 +3,31 @@ require_relative '../../app/helpers/constants_helper'
 
 describe Invitation do
   before do
+=begin
     @user = FactoryGirl.create(:user)
     @another_user = FactoryGirl.create(:user, :email => "another_user@abc.com")
     @user_in_program = FactoryGirl.create(:user, :email => "user_in_program@example.com")
     @program = FactoryGirl.create(:program)
     @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
     @role = FactoryGirl.create(:role, :user_id => @user_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+=end
+    @user = FactoryGirl.create(:user)
+    @invitation = FactoryGirl.create(:invitation, :sender_id => @user.id)
   end
 
   subject { @invitation }
 
+  it { should respond_to(:sender_id) }
+  it { should respond_to(:program_id) }
+  it { should respond_to(:status) }
+  it { should respond_to(:user_level) }
+  it { should respond_to(:recipient_emails) }
+  it { should respond_to(:slug) }
+=begin
   it { should respond_to(:recipient_email) }
   it { should respond_to(:recipient_id) }
   it { should respond_to(:recipient) }
-  it { should respond_to(:user_level) }
   it { should respond_to(:code) }
-  it { should respond_to(:status) }
-  it { should respond_to(:student_id) }
 
   it { should be_valid }
   its(:status) { should eq(0) }
@@ -173,4 +181,5 @@ describe Invitation do
       end
     end
   end
+=end
 end

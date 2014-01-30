@@ -1,6 +1,7 @@
 # any changes here means changes to constants.js
 module ConstantsHelper
   # ROLE
+  ROLE_LEVEL_NO_ROLE = -1 
   ROLE_LEVEL_STUDENT = 0
   ROLE_LEVEL_STAFF = 1
   ROLE_LEVEL_ADMIN = 2

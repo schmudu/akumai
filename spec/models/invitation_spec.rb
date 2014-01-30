@@ -9,8 +9,10 @@ describe Invitation do
     @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
 =end
     @staff_in_program = FactoryGirl.create(:user, :email => "staff_in_program@example.com")
+    @student_in_program = FactoryGirl.create(:user, :email => "student_in_program@example.com")
     @program = FactoryGirl.create(:program)
-    @role = FactoryGirl.create(:role, :user_id => @staff_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF, :student_id => nil)
+    @role_staff = FactoryGirl.create(:role, :user_id => @staff_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF, :student_id => nil)
+    @role_student = FactoryGirl.create(:role, :user_id => @student_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
     @invitation = Invitation.new
   end
 
@@ -54,10 +56,12 @@ describe Invitation do
         end
 
         describe "set to non-existent user id" do
-          before do 
-            @invitation.creator_id = -99
-            @invitation.creator = nil
-          end 
+          before { @invitation.creator_id = -99 }
+          it { should_not be_valid }
+        end
+
+        describe "set to user who does not have privileges to invite other users" do
+          before { @invitation.creator_id = @student_in_program.id }
           it { should_not be_valid }
         end
       end

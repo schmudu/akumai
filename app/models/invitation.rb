@@ -9,7 +9,8 @@ class Invitation < ActiveRecord::Base
 
 
   validates_presence_of :creator_id
-  validate :existence_of_creator
+  validate :creator_privileges,
+            :existence_of_creator
 
 =begin
   validates :program_id, presence: true
@@ -40,6 +41,25 @@ class Invitation < ActiveRecord::Base
   private
     def create_code
       self.code = generate_code
+    end
+
+    def creator_privileges
+      return if (program_id.nil? || creator_id.nil?)
+      creator_role = Role.role_in_program(program_id, creator_id)
+
+      # students and those with no role cannot create invitations
+      errors.add(:creator_id, I18n.t('invitations.form.errors.invitation_type_invalid')) if ((creator_role == ConstantsHelper::ROLE_LEVEL_NO_ROLE) || (creator_role == ConstantsHelper::ROLE_LEVEL_STUDENT))
+
+      # student invitation valid since only staff or higher would get to this point
+      return if (user_level == ConstantsHelper::ROLE_LEVEL_STUDENT)
+
+      # staff invitation
+      if (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
+        errors.add(:creator_id, I18n.t('invitations.form.errors.privileges_staff')) if (creator_id == ConstantsHelper::ROLE_LEVEL_STAFF)
+      end
+
+      # admin invitation
+      errors.add(:creator_id, I18n.t('invitations.form.errors.privileges_admin')) if ((creator_id != ConstantsHelper::ROLE_LEVEL_ADMIN) && (creator_id != ConstantsHelper::ROLE_LEVEL_SUPERUSER))
     end
 
     def generate_code

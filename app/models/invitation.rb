@@ -1,17 +1,17 @@
 require_relative '../helpers/constants_helper'
 
 class Invitation < ActiveRecord::Base
-  #attr_accessor :recipient_email
-=begin
   extend FriendlyId
-  friendly_id :code, use: :slugged
-=end
+  friendly_id :status, use: :slugged
 
   belongs_to :program
-  belongs_to :sender, class_name: "User", foreign_key: "sender_id"
+  belongs_to :creator, class_name: "User", foreign_key: "creator_id"
+
+
+  validates_presence_of :creator_id
+  validate :existence_of_creator
 
 =begin
-  validates :sender_id, presence: true
   validates :program_id, presence: true
   validates :user_level, presence: true
   validate :admin_and_staff_must_not_have_student_id,
@@ -51,6 +51,11 @@ class Invitation < ActiveRecord::Base
 
     def user_level_value
       errors.add(:user_level, "is not a valid value") if ((!user_level.nil?) && ((user_level < ConstantsHelper::ROLE_LEVEL_STUDENT) || (user_level > ConstantsHelper::ROLE_LEVEL_ADMIN)))
+    end
+
+    def existence_of_creator
+      creator = User.find_by_id(creator_id)
+      errors.add(:creator_id, "creator id does not reference a user") if creator.nil?
     end
 
     def existence_of_program

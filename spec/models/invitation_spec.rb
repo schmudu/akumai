@@ -6,23 +6,64 @@ describe Invitation do
 =begin
     @user = FactoryGirl.create(:user)
     @another_user = FactoryGirl.create(:user, :email => "another_user@abc.com")
-    @user_in_program = FactoryGirl.create(:user, :email => "user_in_program@example.com")
-    @program = FactoryGirl.create(:program)
     @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
-    @role = FactoryGirl.create(:role, :user_id => @user_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
 =end
-    @user = FactoryGirl.create(:user)
-    @invitation = FactoryGirl.create(:invitation, :sender_id => @user.id)
+    @staff_in_program = FactoryGirl.create(:user, :email => "staff_in_program@example.com")
+    @program = FactoryGirl.create(:program)
+    @role = FactoryGirl.create(:role, :user_id => @staff_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF, :student_id => nil)
+    @invitation = Invitation.new
   end
 
   subject { @invitation }
 
-  it { should respond_to(:sender_id) }
+  # mass-assignment
+
+  # attributes
+  it { should respond_to(:creator) }
+  it { should respond_to(:creator_id) }
   it { should respond_to(:program_id) }
   it { should respond_to(:status) }
   it { should respond_to(:user_level) }
   it { should respond_to(:recipient_emails) }
   it { should respond_to(:slug) }
+
+  describe "validation at type stage" do
+    describe "valid attributes" do
+      before do
+        @invitation.creator_id = @staff_in_program.id
+        @invitation.program_id = @program.id
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+        @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+      end
+
+      it { should be_valid }
+    end
+
+    describe "invalid attributes" do
+      before do
+        @invitation.creator_id = @staff_in_program.id
+        @invitation.program_id = @program.id
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+        @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+      end
+
+      describe "creator_id" do
+        describe "set to nil" do
+          before { @invitation.creator_id = nil }
+          it { should_not be_valid }
+        end
+
+        describe "set to non-existent user id" do
+          before do 
+            @invitation.creator_id = -99
+            @invitation.creator = nil
+          end 
+          it { should_not be_valid }
+        end
+      end
+    end
+
+  end
 =begin
   it { should respond_to(:recipient_email) }
   it { should respond_to(:recipient_id) }

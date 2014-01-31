@@ -8,9 +8,12 @@ describe Invitation do
     @another_user = FactoryGirl.create(:user, :email => "another_user@abc.com")
     @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
 =end
+    @superuser = FactoryGirl.create(:user, :superuser => true)
     @staff_in_program = FactoryGirl.create(:user, :email => "staff_in_program@example.com")
     @student_in_program = FactoryGirl.create(:user, :email => "student_in_program@example.com")
+    @admin_in_program = FactoryGirl.create(:user, :email => "admin_in_program@example.com")
     @program = FactoryGirl.create(:program)
+    @role_admin = FactoryGirl.create(:role, :user_id => @admin_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)
     @role_staff = FactoryGirl.create(:role, :user_id => @staff_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF, :student_id => nil)
     @role_student = FactoryGirl.create(:role, :user_id => @student_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
     @invitation = Invitation.new
@@ -39,6 +42,64 @@ describe Invitation do
       end
 
       it { should be_valid }
+
+      describe "creator id" do
+        describe "set to staff inviting students" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+            @invitation.creator_id = @staff_in_program.id 
+          end
+          it { should be_valid }
+        end
+
+        describe "set to admin inviting students" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+            @invitation.creator_id = @admin_in_program.id 
+          end
+          it { should be_valid }
+        end
+
+        describe "set to admin inviting staff" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+            @invitation.creator_id = @admin_in_program.id 
+          end
+          it { should be_valid }
+        end
+
+        describe "set to admin inviting admin" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+            @invitation.creator_id = @admin_in_program.id 
+          end
+          it { should be_valid }
+        end
+
+        describe "set to superuser inviting students" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+            @invitation.creator_id = @superuser.id 
+          end
+          it { should be_valid }
+        end
+
+        describe "set to superuser inviting staff" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+            @invitation.creator_id = @superuser.id 
+          end
+          it { should be_valid }
+        end
+
+        describe "set to superuser inviting admin" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+            @invitation.creator_id = @superuser.id 
+          end
+          it { should be_valid }
+        end
+      end
     end
 
     describe "invalid attributes" do
@@ -60,8 +121,24 @@ describe Invitation do
           it { should_not be_valid }
         end
 
-        describe "set to user who does not have privileges to invite other users" do
+        describe "set to student user who does not have privileges to invite other users" do
           before { @invitation.creator_id = @student_in_program.id }
+          it { should_not be_valid }
+        end
+
+        describe "set to staff inviting staff" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+            @invitation.creator_id = @student_in_program.id 
+          end
+          it { should_not be_valid }
+        end
+
+        describe "set to staff inviting admin" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+            @invitation.creator_id = @student_in_program.id 
+          end
           it { should_not be_valid }
         end
       end

@@ -45,8 +45,25 @@ class Invitation < ActiveRecord::Base
 
     def creator_privileges
       return if (program_id.nil? || creator_id.nil?)
+      return if creator.nil?
+      return if creator.is_superuser?
       creator_role = Role.role_in_program(program_id, creator_id)
 
+      # rules
+      # students and someone that has no role cannot invite anyone
+      # staff can only invite students
+      # admin can invite anyone
+      # superusers can invite anyone
+      case creator_role
+      when ConstantsHelper::ROLE_LEVEL_NO_ROLE..ConstantsHelper::ROLE_LEVEL_STUDENT
+        errors.add(:creator_id, I18n.t('invitations.form.errors.invitation_type_invalid')) if ((creator_role == ConstantsHelper::ROLE_LEVEL_NO_ROLE) || (creator_role == ConstantsHelper::ROLE_LEVEL_STUDENT))
+      when ConstantsHelper::ROLE_LEVEL_STAFF
+        errors.add(:creator_id, I18n.t('invitations.form.errors.privileges_staff')) if ((user_level == ConstantsHelper::ROLE_LEVEL_STAFF) || (user_level == ConstantsHelper::ROLE_LEVEL_ADMIN))
+      when ConstantsHelper::ROLE_LEVEL_ADMIN
+        return
+      end
+        
+=begin
       # students and those with no role cannot create invitations
       errors.add(:creator_id, I18n.t('invitations.form.errors.invitation_type_invalid')) if ((creator_role == ConstantsHelper::ROLE_LEVEL_NO_ROLE) || (creator_role == ConstantsHelper::ROLE_LEVEL_STUDENT))
 
@@ -60,6 +77,7 @@ class Invitation < ActiveRecord::Base
 
       # admin invitation
       errors.add(:creator_id, I18n.t('invitations.form.errors.privileges_admin')) if ((creator_id != ConstantsHelper::ROLE_LEVEL_ADMIN) && (creator_id != ConstantsHelper::ROLE_LEVEL_SUPERUSER))
+=end
     end
 
     def generate_code
@@ -74,8 +92,8 @@ class Invitation < ActiveRecord::Base
     end
 
     def existence_of_creator
-      creator = User.find_by_id(creator_id)
-      errors.add(:creator_id, "creator id does not reference a user") if creator.nil?
+      user_found = User.find_by_id(creator_id)
+      errors.add(:creator_id, "creator id does not reference a user") if user_found.nil?
     end
 
     def existence_of_program

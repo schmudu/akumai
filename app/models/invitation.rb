@@ -8,9 +8,14 @@ class Invitation < ActiveRecord::Base
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
 
 
-  validates_presence_of :creator_id
-  validate :creator_privileges,
-            :existence_of_creator
+  # validation rules
+  # during stage TYPE: validate creator_id, program_id, and user_level
+  # during stage ADDRESSES: validate recipient_emails or student entries
+  # during stage ADDRESSES: user can bypass validation if they want to save their progress (see save_state column)
+  validates_presence_of :creator_id, :program_id
+  validate :existence_of_program,
+            :existence_of_creator,
+            :creator_privileges
 
 =begin
   validates :program_id, presence: true
@@ -55,7 +60,9 @@ class Invitation < ActiveRecord::Base
       # admin can invite anyone
       # superusers can invite anyone
       case creator_role
-      when ConstantsHelper::ROLE_LEVEL_NO_ROLE..ConstantsHelper::ROLE_LEVEL_STUDENT
+      when ConstantsHelper::ROLE_LEVEL_NO_ROLE
+        errors.add(:creator_id, I18n.t('invitations.form.errors.invitation_type_invalid')) if ((creator_role == ConstantsHelper::ROLE_LEVEL_NO_ROLE) || (creator_role == ConstantsHelper::ROLE_LEVEL_STUDENT))
+      when ConstantsHelper::ROLE_LEVEL_STUDENT
         errors.add(:creator_id, I18n.t('invitations.form.errors.invitation_type_invalid')) if ((creator_role == ConstantsHelper::ROLE_LEVEL_NO_ROLE) || (creator_role == ConstantsHelper::ROLE_LEVEL_STUDENT))
       when ConstantsHelper::ROLE_LEVEL_STAFF
         errors.add(:creator_id, I18n.t('invitations.form.errors.privileges_staff')) if ((user_level == ConstantsHelper::ROLE_LEVEL_STAFF) || (user_level == ConstantsHelper::ROLE_LEVEL_ADMIN))

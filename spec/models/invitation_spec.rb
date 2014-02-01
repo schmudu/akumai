@@ -4,7 +4,6 @@ require_relative '../../app/helpers/constants_helper'
 describe Invitation do
   before do
 =begin
-    @user = FactoryGirl.create(:user)
     @another_user = FactoryGirl.create(:user, :email => "another_user@abc.com")
     @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
 =end
@@ -12,6 +11,7 @@ describe Invitation do
     @staff_in_program = FactoryGirl.create(:user, :email => "staff_in_program@example.com")
     @student_in_program = FactoryGirl.create(:user, :email => "student_in_program@example.com")
     @admin_in_program = FactoryGirl.create(:user, :email => "admin_in_program@example.com")
+    @user_outside_of_program = FactoryGirl.create(:user, :email => "user_outside@abc.com")
     @program = FactoryGirl.create(:program)
     @role_admin = FactoryGirl.create(:role, :user_id => @admin_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)
     @role_staff = FactoryGirl.create(:role, :user_id => @staff_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF, :student_id => nil)
@@ -44,6 +44,7 @@ describe Invitation do
       it { should be_valid }
 
       describe "creator id" do
+
         describe "set to staff inviting students" do
           before do 
             @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
@@ -110,6 +111,8 @@ describe Invitation do
         @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
       end
 
+      it { should be_valid }
+
       describe "creator_id" do
         describe "set to nil" do
           before { @invitation.creator_id = nil }
@@ -123,6 +126,30 @@ describe Invitation do
 
         describe "set to student user who does not have privileges to invite other users" do
           before { @invitation.creator_id = @student_in_program.id }
+          it { should_not be_valid }
+        end
+
+        describe "set to none user inviting students" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+            @invitation.creator_id = @user_outside_of_program.id 
+          end
+          it { should_not be_valid }
+        end
+        
+        describe "set to none user inviting staff" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+            @invitation.creator_id = @user_outside_of_program.id 
+          end
+          it { should_not be_valid }
+        end
+        
+        describe "set to none user inviting admin" do
+          before do 
+            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+            @invitation.creator_id = @user_outside_of_program.id 
+          end
           it { should_not be_valid }
         end
 
@@ -142,8 +169,26 @@ describe Invitation do
           it { should_not be_valid }
         end
       end
-    end
 
+      describe "program_id" do
+        describe "program_id set to nil" do
+          before do 
+            @invitation.program_id = nil
+          end
+          it { should_not be_valid }
+        end
+
+        describe "program_id set to non-existent program" do
+          before do 
+            @invitation.program_id = -99
+          end
+          it { should_not be_valid }
+        end
+      end
+    end
+  end
+
+  describe "at address stage" do
   end
 =begin
   it { should respond_to(:recipient_email) }

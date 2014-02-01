@@ -13,7 +13,7 @@ class Role < ActiveRecord::Base
   validates_uniqueness_of :student_id, :scope => :program_id, if: Proc.new { |role| !role.student_id.nil?}
 
   def self.role_in_program(program_id, user_id)
-    results = self.where("program_id=? and user_id=?", program_id, user_id)
+    results = where("program_id=? and user_id=?", program_id, user_id)
     return ConstantsHelper::ROLE_LEVEL_NO_ROLE if results.empty?
     return results.first.level
   end

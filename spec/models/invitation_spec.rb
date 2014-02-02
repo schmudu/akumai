@@ -3,10 +3,6 @@ require_relative '../../app/helpers/constants_helper'
 
 describe Invitation do
   before do
-=begin
-    @another_user = FactoryGirl.create(:user, :email => "another_user@abc.com")
-    @invitation = FactoryGirl.create(:invitation, :program_id => @program.id, :sender_id => @user.id, :recipient_id => @another_user.id, :recipient_email => nil)
-=end
     @superuser = FactoryGirl.create(:user, :superuser => true)
     @staff_in_program = FactoryGirl.create(:user, :email => "staff_in_program@example.com")
     @student_in_program = FactoryGirl.create(:user, :email => "student_in_program@example.com")
@@ -31,6 +27,8 @@ describe Invitation do
   it { should respond_to(:user_level) }
   it { should respond_to(:recipient_emails) }
   it { should respond_to(:slug) }
+  it { should respond_to(:student_entries) }
+  it { should respond_to(:validation_bypass) }
 
   describe "validation at type stage" do
     describe "valid attributes" do
@@ -189,6 +187,9 @@ describe Invitation do
   end
 
   describe "at address stage" do
+  end
+
+  describe "at review stage" do
   end
 =begin
   it { should respond_to(:recipient_email) }

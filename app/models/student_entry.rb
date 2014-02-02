@@ -5,6 +5,7 @@ class StudentEntry < ActiveRecord::Base
   #       however in order to be in actual use, the validation_bypass must be set to false.
   #       validation_bypass will only be set to true if the user saves the invitation and consequently
   #       the student entries.
+  belongs_to :invitation
 
   validates_presence_of :invitation_id
   validate :existence_of_invitation

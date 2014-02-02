@@ -46,6 +46,7 @@ en:
           other: "The email addresses already has an invitation to %{program_name}."
         email_blank: "Please enter an email address for the invitation."
         email_format: "Please verify the format of the email addresses."
+        existence_invitation: "The invitation_id does not reference an invitation."
         invalid_role_level: "ERROR: INV00 - Invalid value in invitation level."
         invitation_type_invalid: "You do not have the privileges to add users to this program."
         invitation_type_none: "You must select an invitation type."

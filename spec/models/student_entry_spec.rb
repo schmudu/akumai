@@ -157,6 +157,11 @@ describe StudentEntry do
           before { @student_entry.invitation_id = nil }
           it { should_not be_valid }
         end
+
+        describe "set to non-existent invitation" do
+          before { @student_entry.invitation_id = -99 }
+          it { should_not be_valid }
+        end
       end
 
       describe "student_id" do
@@ -189,6 +194,15 @@ describe StudentEntry do
         describe "set to nil even with validation bypass it should fail" do
           before do 
             @student_entry.invitation_id = nil 
+            @student_entry.validation_bypass = true 
+          end
+
+          it { should_not be_valid }
+        end
+
+        describe "set to nil even with validation bypass it should fail" do
+          before do 
+            @student_entry.invitation_id = -99 
             @student_entry.validation_bypass = true 
           end
 

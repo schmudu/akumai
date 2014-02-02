@@ -15,6 +15,10 @@ FactoryGirl.define do
     recipient_emails ""
   end
 
+  factory :program do
+    sequence(:name) { |n| "TRIO Program UCSD_#{n}" }
+  end
+
   factory :role do
     program_id 1
     user_id 1
@@ -22,7 +26,10 @@ FactoryGirl.define do
     sequence(:student_id) { |n| "a00#{n}" }
   end
 
-  factory :program do
-    sequence(:name) { |n| "TRIO Program UCSD_#{n}" }
+  factory :student_entry do
+    email ""
+    student_id 1
+    validation_bypass false
+    invitation_id 1
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130054801) do
+ActiveRecord::Schema.define(version: 20140202062503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,17 @@ ActiveRecord::Schema.define(version: 20140130054801) do
   add_index "roles", ["level"], name: "index_roles_on_level", using: :btree
   add_index "roles", ["program_id"], name: "index_roles_on_program_id", using: :btree
   add_index "roles", ["user_id"], name: "index_roles_on_user_id", using: :btree
+
+  create_table "student_entries", force: true do |t|
+    t.string   "email",             default: ""
+    t.string   "student_id",        default: ""
+    t.integer  "invitation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "validation_bypass", default: false
+  end
+
+  add_index "student_entries", ["invitation_id"], name: "index_student_entries_on_invitation_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false

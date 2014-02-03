@@ -10,9 +10,10 @@ FactoryGirl.define do
 
   factory :invitation do
     program_id 1
-    user_level ConstantsHelper::ROLE_LEVEL_STUDENT 
-    status ConstantsHelper::INVITATION_STATUS_CREATED
+    name "Random Invitation"
     recipient_emails ""
+    status ConstantsHelper::INVITATION_STATUS_CREATED
+    user_level ConstantsHelper::ROLE_LEVEL_STUDENT 
   end
 
   factory :program do

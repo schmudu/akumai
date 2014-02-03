@@ -10,10 +10,11 @@ class Invitation < ActiveRecord::Base
 
 
   # validation rules
-  # during stage TYPE: validate creator_id, program_id, and user_level
+  # during stage TYPE: validate creator_id, name, program_id, and user_level
   # during stage ADDRESSES: validate recipient_emails or student entries
-  # during stage ADDRESSES: user can bypass validation if they want to save their progress (see save_state column)
-  validates_presence_of :creator_id, :program_id
+  # during stage ADDRESSES: user can bypass validation if they want to save their progress (see validation_bypass column)
+  # during stage REVIEW: all attributes need to be validated
+  validates_presence_of :creator_id, :program_id, :name
   validate :existence_of_program,
             :existence_of_creator,
             :creator_privileges
@@ -33,6 +34,16 @@ class Invitation < ActiveRecord::Base
   #callbacks
   #after_validation :create_code
   #before_create :create_code
+
+  def has_email_recipients?
+    return false if (recipient_emails.nil? || recipient_emails.blank?)
+    true
+  end
+
+  def has_student_entries?
+    return true if student_entries.count > 0
+    false
+  end
 
   def recipient
     return recipient_email unless recipient_email.blank?

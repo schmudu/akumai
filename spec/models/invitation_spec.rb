@@ -17,171 +17,202 @@ describe Invitation do
 
   subject { @invitation }
 
-  # mass-assignment
-
   # attributes
   it { should respond_to(:creator) }
   it { should respond_to(:creator_id) }
+  it { should respond_to(:has_email_recipients?) }
+  it { should respond_to(:has_student_entries?) }
+  it { should respond_to(:name) }
   it { should respond_to(:program_id) }
-  it { should respond_to(:status) }
-  it { should respond_to(:user_level) }
   it { should respond_to(:recipient_emails) }
+  it { should respond_to(:status) }
   it { should respond_to(:slug) }
   it { should respond_to(:student_entries) }
+  it { should respond_to(:user_level) }
   it { should respond_to(:validation_bypass) }
 
-  describe "validation at type stage" do
-    describe "valid attributes" do
-      before do
-        @invitation.creator_id = @staff_in_program.id
-        @invitation.program_id = @program.id
-        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
-        @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+  # test instance methods
+  describe "instance methods" do
+    describe "has_email_recipients?" do
+      describe "recipients set to nil" do
+        before { @invitation.recipient_emails = nil }
+        it { expect(@invitation.has_email_recipients?).to eq(false) }
       end
 
-      it { should be_valid }
+      describe "recipients set to nil" do
+        before { @invitation.recipient_emails = "" }
+        it { expect(@invitation.has_email_recipients?).to eq(false) }
+      end
 
-      describe "creator id" do
-
-        describe "set to staff inviting students" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
-            @invitation.creator_id = @staff_in_program.id 
-          end
-          it { should be_valid }
-        end
-
-        describe "set to admin inviting students" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
-            @invitation.creator_id = @admin_in_program.id 
-          end
-          it { should be_valid }
-        end
-
-        describe "set to admin inviting staff" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
-            @invitation.creator_id = @admin_in_program.id 
-          end
-          it { should be_valid }
-        end
-
-        describe "set to admin inviting admin" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
-            @invitation.creator_id = @admin_in_program.id 
-          end
-          it { should be_valid }
-        end
-
-        describe "set to superuser inviting students" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
-            @invitation.creator_id = @superuser.id 
-          end
-          it { should be_valid }
-        end
-
-        describe "set to superuser inviting staff" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
-            @invitation.creator_id = @superuser.id 
-          end
-          it { should be_valid }
-        end
-
-        describe "set to superuser inviting admin" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
-            @invitation.creator_id = @superuser.id 
-          end
-          it { should be_valid }
-        end
+      describe "recipients set to nil" do
+        before { @invitation.recipient_emails = "a" }
+        it { expect(@invitation.has_email_recipients?).to eq(true) }
       end
     end
 
-    describe "invalid attributes" do
+    describe "has_student_entries" do
       before do
-        @invitation.creator_id = @staff_in_program.id
-        @invitation.program_id = @program.id
-        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
-        @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+        @test_invitation = FactoryGirl.create(:invitation, :creator_id => @staff_in_program.id, :program_id => @program.id)
+        @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @test_invitation.id, :email => "abc@abc.com")
+      end
+      it { expect(@test_invitation.has_student_entries?).to eq(true) }
+    end
+  end
+
+  describe "validation at type stage" do
+    before do
+      @invitation.name = "Random Invitation"
+      @invitation.creator_id = @staff_in_program.id
+      @invitation.program_id = @program.id
+      @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+      @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+    end
+
+    it { should be_valid }
+
+    describe "creator id" do
+      describe "set to staff inviting students" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @staff_in_program.id 
+        end
+        it { should be_valid }
       end
 
-      it { should be_valid }
-
-      describe "creator_id" do
-        describe "set to nil" do
-          before { @invitation.creator_id = nil }
-          it { should_not be_valid }
+      describe "set to admin inviting students" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @admin_in_program.id 
         end
-
-        describe "set to non-existent user id" do
-          before { @invitation.creator_id = -99 }
-          it { should_not be_valid }
-        end
-
-        describe "set to student user who does not have privileges to invite other users" do
-          before { @invitation.creator_id = @student_in_program.id }
-          it { should_not be_valid }
-        end
-
-        describe "set to none user inviting students" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
-            @invitation.creator_id = @user_outside_of_program.id 
-          end
-          it { should_not be_valid }
-        end
-        
-        describe "set to none user inviting staff" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
-            @invitation.creator_id = @user_outside_of_program.id 
-          end
-          it { should_not be_valid }
-        end
-        
-        describe "set to none user inviting admin" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
-            @invitation.creator_id = @user_outside_of_program.id 
-          end
-          it { should_not be_valid }
-        end
-
-        describe "set to staff inviting staff" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
-            @invitation.creator_id = @student_in_program.id 
-          end
-          it { should_not be_valid }
-        end
-
-        describe "set to staff inviting admin" do
-          before do 
-            @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
-            @invitation.creator_id = @student_in_program.id 
-          end
-          it { should_not be_valid }
-        end
+        it { should be_valid }
       end
 
-      describe "program_id" do
-        describe "program_id set to nil" do
-          before do 
-            @invitation.program_id = nil
-          end
-          it { should_not be_valid }
+      describe "set to admin inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @admin_in_program.id 
         end
+        it { should be_valid }
+      end
 
-        describe "program_id set to non-existent program" do
-          before do 
-            @invitation.program_id = -99
-          end
-          it { should_not be_valid }
+      describe "set to admin inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @admin_in_program.id 
         end
+        it { should be_valid }
+      end
+
+      describe "set to superuser inviting students" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @superuser.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to superuser inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @superuser.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to superuser inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @superuser.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to nil" do
+        # test validaiton_bypass
+        before { @invitation.creator_id = nil }
+        it { should_not be_valid }
+      end
+
+      describe "set to non-existent user id" do
+        before { @invitation.creator_id = -99 }
+        it { should_not be_valid }
+      end
+
+      describe "set to student user who does not have privileges to invite other users" do
+        before { @invitation.creator_id = @student_in_program.id }
+        it { should_not be_valid }
+      end
+
+      describe "set to none user inviting students" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+      
+      describe "set to none user inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+      
+      describe "set to none user inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to staff inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @student_in_program.id 
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to staff inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @student_in_program.id 
+        end
+        it { should_not be_valid }
+      end
+    end
+
+    describe "name attribute" do
+      describe "set to blank" do
+        before do 
+          @invitation.name = ""
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to nil" do
+        before do 
+          @invitation.name = nil
+        end
+        it { should_not be_valid }
+      end
+    end
+
+    describe "program_id" do
+      describe "program_id set to nil" do
+        before do 
+          @invitation.program_id = nil
+        end
+        it { should_not be_valid }
+      end
+
+      describe "program_id set to non-existent program" do
+        before do 
+          @invitation.program_id = -99
+        end
+        it { should_not be_valid }
       end
     end
   end

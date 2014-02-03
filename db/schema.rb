@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140202080007) do
+ActiveRecord::Schema.define(version: 20140202193821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20140202080007) do
     t.integer  "status",            default: 0
     t.text     "recipient_emails",  default: ""
     t.boolean  "validation_bypass", default: false
+    t.string   "name",              default: ""
   end
 
   add_index "invitations", ["creator_id"], name: "index_invitations_on_creator_id", using: :btree

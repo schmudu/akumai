@@ -328,13 +328,15 @@ describe Invitation do
     end
 
     describe "student_entries" do
-      # no need for student entries on type stage
-      # TODO: Need to understand nested attributes
+      # invitations should not have student entries at the type stage
     end
 
     describe "email_recipients" do
       # no need for email recipients on type stage
-      # TODO: Need to understand nested attributes
+      before do
+        @invitation.recipient_emails = "abc@abc.com"
+      end
+      it { should_not be_valid }
     end
   end
 

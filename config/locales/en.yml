@@ -50,6 +50,7 @@ en:
         invalid_role_level: "ERROR: INV00 - Invalid value in invitation level."
         invitation_type_invalid: "You do not have the privileges to add users to this program."
         invitation_type_none: "You must select an invitation type."
+        non_existence_of_email_recipients: "Invitations should not have email recipients during the Type stage."
         privileges_administrators: "You do not have the privileges to add administrators."
         privileges_staff: "You do not have the privileges to add staff."
         privileges_students: "You do not have the privileges to add students."

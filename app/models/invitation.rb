@@ -15,6 +15,7 @@ class Invitation < ActiveRecord::Base
   # during stage ADDRESSES: user can bypass validation if they want to save their progress (see validation_bypass column)
   # during stage REVIEW: all attributes need to be validated
   validates_presence_of :creator_id, :program_id, :name
+  validate :non_existence_of_email_recipients, if: "is_stage_type?"
   validate :existence_of_program,
             :existence_of_creator,
             :creator_privileges
@@ -106,8 +107,18 @@ class Invitation < ActiveRecord::Base
       return code
     end
 
+    def is_stage_type?
+      return true if status == ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+      false
+    end
+
     def user_level_value
       errors.add(:user_level, "is not a valid value") if ((!user_level.nil?) && ((user_level < ConstantsHelper::ROLE_LEVEL_STUDENT) || (user_level > ConstantsHelper::ROLE_LEVEL_ADMIN)))
+    end
+
+    def existence_of_program
+      program = Program.find_by_id(program_id)
+      errors.add(:program_id, "program id does not reference a program") if program.nil?
     end
 
     def existence_of_creator
@@ -115,9 +126,8 @@ class Invitation < ActiveRecord::Base
       errors.add(:creator_id, "creator id does not reference a user") if user_found.nil?
     end
 
-    def existence_of_program
-      program = Program.find_by_id(program_id)
-      errors.add(:program_id, "program id does not reference a program") if program.nil?
+    def non_existence_of_email_recipients
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.non_existence_of_email_recipients')) if has_email_recipients?
     end
 
     def presence_of_email_or_recipient

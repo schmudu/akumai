@@ -51,11 +51,20 @@ describe Invitation do
     end
 
     describe "has_student_entries" do
-      before do
-        @test_invitation = FactoryGirl.create(:invitation, :creator_id => @staff_in_program.id, :program_id => @program.id)
-        @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @test_invitation.id, :email => "abc@abc.com")
+      describe "has one student entry" do
+        before do
+          @test_invitation = FactoryGirl.create(:invitation, :creator_id => @staff_in_program.id, :program_id => @program.id)
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @test_invitation.id, :email => "abc@abc.com")
+        end
+        it { expect(@test_invitation.has_student_entries?).to eq(true) }
       end
-      it { expect(@test_invitation.has_student_entries?).to eq(true) }
+
+      describe "has no student entry" do
+        before do
+          @test_invitation = FactoryGirl.create(:invitation, :creator_id => @staff_in_program.id, :program_id => @program.id)
+        end
+        it { expect(@test_invitation.has_student_entries?).to eq(false) }
+      end
     end
   end
 
@@ -128,8 +137,17 @@ describe Invitation do
       end
 
       describe "set to nil" do
-        # test validaiton_bypass
+        # test validation_bypass
         before { @invitation.creator_id = nil }
+        it { should_not be_valid }
+      end
+
+      describe "set to nil with validation_bypass" do
+        # test validation_bypass
+        before do 
+          @invitation.creator_id = nil 
+          @invitation.validation_bypass = true
+        end
         it { should_not be_valid }
       end
 
@@ -138,8 +156,24 @@ describe Invitation do
         it { should_not be_valid }
       end
 
+      describe "set to non-existent user id with validation_bypass" do
+        before do
+          @invitation.creator_id = -99 
+          @invitation.validation_bypass = true
+        end
+        it { should_not be_valid }
+      end
+
       describe "set to student user who does not have privileges to invite other users" do
         before { @invitation.creator_id = @student_in_program.id }
+        it { should_not be_valid }
+      end
+
+      describe "set to student user who does not have privileges to invite other users with validation bypass" do
+        before do 
+          @invitation.creator_id = @student_in_program.id 
+          @invitation.validation_bypass = true
+        end
         it { should_not be_valid }
       end
 
@@ -147,6 +181,15 @@ describe Invitation do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+      
+      describe "set to none user inviting students with validation_bypass" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @user_outside_of_program.id 
+          @invitation.validation_bypass = true
         end
         it { should_not be_valid }
       end
@@ -159,10 +202,28 @@ describe Invitation do
         it { should_not be_valid }
       end
       
+      describe "set to none user inviting staff with validation_bypass" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @user_outside_of_program.id 
+          @invitation.validation_bypass = true
+        end
+        it { should_not be_valid }
+      end
+      
       describe "set to none user inviting admin" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
           @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to none user inviting admin with validation_bypass" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @user_outside_of_program.id 
+          @invitation.validation_bypass = true
         end
         it { should_not be_valid }
       end
@@ -175,10 +236,28 @@ describe Invitation do
         it { should_not be_valid }
       end
 
+      describe "set to staff inviting staff with validation_bypass" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @student_in_program.id 
+          @invitation.validation_bypass = true
+        end
+        it { should_not be_valid }
+      end
+
       describe "set to staff inviting admin" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
           @invitation.creator_id = @student_in_program.id 
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to staff inviting admin with validation_bypass" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @student_in_program.id 
+          @invitation.validation_bypass = true
         end
         it { should_not be_valid }
       end
@@ -192,9 +271,25 @@ describe Invitation do
         it { should_not be_valid }
       end
 
+      describe "set to blank with validation_bypass" do
+        before do 
+          @invitation.name = ""
+          @invitation.validation_bypass = true
+        end
+        it { should_not be_valid }
+      end
+
       describe "set to nil" do
         before do 
           @invitation.name = nil
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to nil with validation_bypass" do
+        before do 
+          @invitation.name = nil
+          @invitation.validation_bypass = true
         end
         it { should_not be_valid }
       end
@@ -208,12 +303,38 @@ describe Invitation do
         it { should_not be_valid }
       end
 
+      describe "program_id set to nil with validation_bypass" do
+        before do 
+          @invitation.program_id = nil
+          @invitation.validation_bypass = true
+        end
+        it { should_not be_valid }
+      end
+
       describe "program_id set to non-existent program" do
         before do 
           @invitation.program_id = -99
         end
         it { should_not be_valid }
       end
+
+      describe "program_id set to non-existent program with validation_bypass" do
+        before do 
+          @invitation.program_id = -99
+          @invitation.validation_bypass = true
+        end
+        it { should_not be_valid }
+      end
+    end
+
+    describe "student_entries" do
+      # no need for student entries on type stage
+      # TODO: Need to understand nested attributes
+    end
+
+    describe "email_recipients" do
+      # no need for email recipients on type stage
+      # TODO: Need to understand nested attributes
     end
   end
 

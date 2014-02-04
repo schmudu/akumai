@@ -47,6 +47,7 @@ en:
         email_blank: "Please enter an email address for the invitation."
         email_format: "Please verify the format of the email addresses."
         existence_invitation: "The invitation_id does not reference an invitation."
+        has_student_entries_and_email_recipients: "The invitation cannot have email recipients and student entries."
         invalid_role_level: "ERROR: INV00 - Invalid value in invitation level."
         invitation_type_invalid: "You do not have the privileges to add users to this program."
         invitation_type_none: "You must select an invitation type."
@@ -83,6 +84,9 @@ en:
           staff: "Enter the email addresses for the staff users you would like to invite to the program."
           students: "Enter the email addresses and student IDs for the students you would like to invite to the program."
         review: "Review the invitation information."
+  student_entries:
+    errors:
+      either_student_id_or_email: "Either Student ID or Email attribute must be set to save student entry."
   terms:
     back: "Back"
     email_addresses: "Email Addresses"

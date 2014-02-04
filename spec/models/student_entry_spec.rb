@@ -190,6 +190,28 @@ describe StudentEntry do
     end
 
     describe "with true validation_bypass" do
+      describe "email and student id" do
+        describe "set to nil even with validation bypass it should fail" do
+          before do 
+            @student_entry.validation_bypass = true 
+            @student_entry.email = nil
+            @student_entry.student_id = nil
+          end
+
+          it { should_not be_valid }
+        end
+
+        describe "set to blank even with validation bypass it should fail" do
+          before do 
+            @student_entry.validation_bypass = true 
+            @student_entry.email = ""
+            @student_entry.student_id = nil
+          end
+
+          it { should_not be_valid }
+        end
+      end
+
       describe "invitation_id" do
         describe "set to nil even with validation bypass it should fail" do
           before do 

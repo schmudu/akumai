@@ -10,6 +10,7 @@ class StudentEntry < ActiveRecord::Base
   validates_presence_of :invitation_id
   validate :existence_of_invitation
 
+  validate :either_email_or_student_id, if: "validation_bypass"
   validates_presence_of :email, if: "!validation_bypass"
   validate :email_validation, if: "!validation_bypass"
   validates_uniqueness_of :email, :scope => :invitation_id, if: "!validation_bypass"
@@ -25,5 +26,9 @@ class StudentEntry < ActiveRecord::Base
     def existence_of_invitation
       invitation = Invitation.find_by_id(invitation_id)
       errors.add(:invitation_id, I18n.t('invitations.form.errors.existence_invitation')) if invitation.nil?
+    end
+
+    def either_email_or_student_id
+      errors.add(:student_id, I18n.t('student_entries.errors.either_student_id_or_email')) if ((student_id.nil?) && ((email.nil?) || (email.blank?)))
     end
 end

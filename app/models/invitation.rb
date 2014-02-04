@@ -20,6 +20,7 @@ class Invitation < ActiveRecord::Base
             :existence_of_creator,
             :creator_privileges
 
+  validate :has_email_recipients_or_student_entries?, if: "is_stage_address?"
 =begin
   validates :program_id, presence: true
   validates :user_level, presence: true
@@ -105,6 +106,25 @@ class Invitation < ActiveRecord::Base
       code = (0...10).map{ o[rand(o.length)] }.join
       #puts "\nGENERATING CODE:#{code}"
       return code
+    end
+
+    def has_email_recipients_or_student_entries?
+      # cannot have invalid email recipients nor invalid student entries
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.has_student_entries_and_email_recipients')) if ((has_student_entries?) && (has_email_recipients?))
+      if ((validation_bypass == true) && (status == ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS))
+        #validation_bypass
+      else
+        # invitation can only have email recipients or student entries but not both
+        if has_student_entries?
+          student_entries.each do |entry|
+          end
+        end
+      end
+    end
+
+    def is_stage_address?
+      return true if status == ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+      false
     end
 
     def is_stage_type?

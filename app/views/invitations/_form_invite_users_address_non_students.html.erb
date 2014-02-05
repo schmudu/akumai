@@ -82,7 +82,7 @@
     <div class="span8">
       <span>
         <% unless session[:invite_users_invitation_type].nil? %>
-          <%= user_level(session[:invite_users_invitation_type]) %>
+          <%= user_level_to_s(session[:invite_users_invitation_type]) %>
         <% else %>
           <%= @invitation_level %>
         <% end %>

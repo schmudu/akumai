@@ -1,7 +1,9 @@
 require_relative '../helpers/constants_helper'
+require_relative '../helpers/users_helper'
 
 class Invitation < ActiveRecord::Base
   extend FriendlyId
+  include UsersHelper
   friendly_id :status, use: :slugged
 
   belongs_to :program
@@ -16,11 +18,12 @@ class Invitation < ActiveRecord::Base
   # during stage REVIEW: all attributes need to be validated
   validates_presence_of :creator_id, :program_id, :name
   validate :non_existence_of_email_recipients, if: "is_stage_type?"
-  validate :existence_of_program,
+  validate :has_only_email_recipients_or_student_entries,
+            :existence_of_program,
             :existence_of_creator,
             :creator_privileges
 
-  validate :has_email_recipients_or_student_entries?, if: "is_stage_address?"
+  validate :has_valid_saved_addresses, if: "is_stage_address?"
 =begin
   validates :program_id, presence: true
   validates :user_level, presence: true
@@ -38,7 +41,7 @@ class Invitation < ActiveRecord::Base
   #before_create :create_code
 
   def has_email_recipients?
-    return false if (recipient_emails.nil? || recipient_emails.blank?)
+    return false if (recipient_emails.nil? || recipient_emails.empty?)
     true
   end
 
@@ -108,16 +111,26 @@ class Invitation < ActiveRecord::Base
       return code
     end
 
-    def has_email_recipients_or_student_entries?
+    def has_only_email_recipients_or_student_entries
       # cannot have invalid email recipients nor invalid student entries
       errors.add(:recipient_emails, I18n.t('invitations.form.errors.has_student_entries_and_email_recipients')) if ((has_student_entries?) && (has_email_recipients?))
-      if ((validation_bypass == true) && (status == ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS))
-        #validation_bypass
-      else
-        # invitation can only have email recipients or student entries but not both
+    end
+
+    def has_valid_saved_addresses
+      if (validation_bypass == false)
+        #no bypass
         if has_student_entries?
           student_entries.each do |entry|
+            if (!entry.valid? || entry.validation_bypass)
+              # if entry is invalid or is bypassing validation, then error b/c this invitation does not have bypass
+              errors.add(:id, I18n.t('invitations.form.errors.has_invalid_student_entries')) 
+              return
+            end
           end
+        else
+          #email_recipients, need to validate
+          result = self.valid_email_addresses?(recipient_emails)
+          errors.add(:recipient_emails, I18n.t('invitations.form.errors.email_format')) if (result[:valid] == false)
         end
       end
     end

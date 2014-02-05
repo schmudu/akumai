@@ -347,6 +347,7 @@ describe Invitation do
       @invitation.program_id = @program.id
       @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
       @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+      @invitation.recipient_emails = "abc@abc.com"
     end
 
     it { should be_valid }
@@ -599,14 +600,16 @@ describe Invitation do
       end
     end
 
-    describe "student_entries" do
+    describe "student_entries and recipient_emails" do
       describe "have one valid student entry without validation bypass" do
         before do
           # save in type mode
+          @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.recipient_emails = ""
+          puts "invitation id is #{@invitation.id} valid?:#{@invitation.errors.inspect}"
           @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
         end
 
@@ -616,6 +619,7 @@ describe Invitation do
       describe "have one valid student entry with validation bypass" do
         before do
           # save in type mode
+          @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
@@ -630,6 +634,7 @@ describe Invitation do
       describe "have one invalid student entry without validation bypass" do
         before do
           # save in type mode
+          @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
@@ -642,6 +647,7 @@ describe Invitation do
       describe "have one invalid student entry with validation bypass" do
         before do
           # save in type mode
+          @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
@@ -652,12 +658,93 @@ describe Invitation do
         it { should be_valid }
       end
 
-      describe "be valid with no student entries NOR email_recipients" do
+      describe "have one valid email recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.validation_bypass = false
+          @invitation.recipient_emails = "abc@abc.com"
+        end
+
         it { should be_valid }
+      end
+
+      describe "have one valid email recipients with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.validation_bypass = true
+          @invitation.recipient_emails = "abc@abc.com"
+        end
+
+        it { should be_valid }
+      end
+
+      describe "have one invalid email recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.validation_bypass = false
+          @invitation.recipient_emails = "abc"
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "have one invalid email recipients with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.validation_bypass = true
+          @invitation.recipient_emails = "abc"
+        end
+
+        it { should be_valid }
+      end
+
+      describe "be valid with no student entries NOR email_recipients with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.validation_bypass = true
+          @invitation.recipient_emails = ""
+        end
+
+        it { should be_valid }
+      end
+
+      describe "not be valid with no student entries NOR email_recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.validation_bypass = false
+          @invitation.recipient_emails = ""
+        end
+
+        it { should_not be_valid }
       end
 
       describe "should not have email_recipients AND student entries" do
         before do
+          @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
@@ -668,34 +755,7 @@ describe Invitation do
 
         it { should_not be_valid }
       end
-
-      pending "has invalid email_recipients without validation bypass" 
     end
-
-    describe "email_recipients" do
-      describe "valid email recipients" do
-        # no need for email recipients on type stage
-        before do
-          @invitation.recipient_emails = "abc@abc.com"
-        end
-        it { should_not be_valid }
-      end
-
-      describe "invalid email recipients" do
-        # TODO
-        pending "do"
-      end
-
-      describe "invalid email recipients with validation_bypass" do
-        # TODO
-        pending "do"
-      end
-    end
-
-    describe "student_entries and email_recipients" do
-      pending "add tests for invitaiton having student_entries and email_recipients, should not have both"
-    end
-
   end
 
   describe "at review stage" do

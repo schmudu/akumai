@@ -16,13 +16,18 @@ class Invitation < ActiveRecord::Base
   # during stage ADDRESSES: validate recipient_emails or student entries
   # during stage ADDRESSES: user can bypass validation if they want to save their progress (see validation_bypass column)
   # during stage REVIEW: all attributes need to be validated
+  # general validation
   validates_presence_of :creator_id, :program_id, :name
-  validate :non_existence_of_email_recipients, if: "is_stage_type?"
   validate :has_only_email_recipients_or_student_entries,
+            :invitation_types_have_correct_addresses,
             :existence_of_program,
             :existence_of_creator,
             :creator_privileges
 
+  # stage validation - type
+  validate :non_existence_of_email_recipients, if: "is_stage_type?"
+
+  # stage validation - address
   validate :has_valid_saved_addresses, if: "is_stage_address?"
 =begin
   validates :program_id, presence: true
@@ -133,6 +138,11 @@ class Invitation < ActiveRecord::Base
           errors.add(:recipient_emails, I18n.t('invitations.form.errors.email_format')) if (result[:valid] == false)
         end
       end
+    end
+
+    def invitation_types_have_correct_addresses
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.non_student_has_student_entries')) if (((user_level == ConstantsHelper::ROLE_LEVEL_ADMIN) || (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)) && has_student_entries?)
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.students_have_email_addresses')) if(user_level == ConstantsHelper::ROLE_LEVEL_STUDENT && has_email_recipients?)
     end
 
     def is_stage_address?

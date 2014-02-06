@@ -18,6 +18,10 @@ class StudentEntry < ActiveRecord::Base
   validates_presence_of :student_id, if: "!validation_bypass"
   validates_uniqueness_of :student_id, :scope => :invitation_id, if: "!validation_bypass"
 
+  def self.saved
+    where("validation_bypass = ?", true)
+  end
+
   private
     def email_validation
       errors[:email] = I18n.t('invitations.form.errors.email_format') unless valid_email? email

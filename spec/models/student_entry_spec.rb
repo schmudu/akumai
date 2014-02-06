@@ -12,6 +12,9 @@ describe StudentEntry do
 
   subject { @student_entry }
 
+  # attributes
+  it { should respond_to(:saved) }
+
   describe "valid" do
     before do
       @student_entry.email = @email_valid

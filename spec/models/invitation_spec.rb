@@ -343,9 +343,9 @@ describe Invitation do
   describe "at address stage" do
     before do
       @invitation.name = "Random Invitation"
-      @invitation.creator_id = @staff_in_program.id
+      @invitation.creator_id = @admin_in_program.id
       @invitation.program_id = @program.id
-      @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+      @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
       @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
       @invitation.recipient_emails = "abc@abc.com"
     end
@@ -355,6 +355,8 @@ describe Invitation do
     describe "creator id" do
       describe "set to staff inviting students" do
         before do 
+          @invitation.recipient_emails = ""
+          @invitation.validation_bypass = true
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.creator_id = @staff_in_program.id 
         end
@@ -364,8 +366,14 @@ describe Invitation do
       describe "set to admin inviting students" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.creator_id = @admin_in_program.id 
         end
+
         it { should be_valid }
       end
 
@@ -388,6 +396,11 @@ describe Invitation do
       describe "set to superuser inviting students" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.creator_id = @superuser.id 
         end
         it { should be_valid }
@@ -604,6 +617,7 @@ describe Invitation do
       describe "have one valid student entry without validation bypass" do
         before do
           # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
@@ -618,6 +632,7 @@ describe Invitation do
       describe "have one valid student entry with validation bypass" do
         before do
           # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
@@ -633,6 +648,7 @@ describe Invitation do
       describe "have one invalid student entry without validation bypass" do
         before do
           # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
@@ -646,6 +662,7 @@ describe Invitation do
       describe "have one invalid student entry with validation bypass" do
         before do
           # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.recipient_emails =""
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
@@ -861,7 +878,7 @@ describe Invitation do
           @invitation.recipient_emails = "abc@abc.com"
         end
 
-        it { should be_valid }
+        it { should_not be_valid }
       end
 
       describe "student invitation with one valid email recipient should be valid with validation bypass" do
@@ -876,7 +893,7 @@ describe Invitation do
           @invitation.recipient_emails = "abc@abc.com"
         end
 
-        it { should be_valid }
+        it { should_not be_valid }
       end
 
     end

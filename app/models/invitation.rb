@@ -17,15 +17,18 @@ class Invitation < ActiveRecord::Base
   # during stage ADDRESSES: user can bypass validation if they want to save their progress (see validation_bypass column)
   # during stage REVIEW: all attributes need to be validated
   # general validation
+  # TODO - add any uni
   validates_presence_of :creator_id, :program_id, :name
   validate :has_only_email_recipients_or_student_entries,
-            :invitation_types_have_correct_addresses,
             :existence_of_program,
             :existence_of_creator,
             :creator_privileges
 
   # stage validation - type
   validate :non_existence_of_email_recipients, if: "is_stage_type?"
+
+  # stage validation - beyond type
+  validate :invitation_types_have_correct_addresses, if: "is_passed_stage_type?"
 
   # stage validation - address
   validate :has_valid_saved_addresses, if: "is_stage_address?"
@@ -66,6 +69,10 @@ class Invitation < ActiveRecord::Base
   end
 
   private
+    def admin_and_staff_must_not_have_student_id
+      errors.add(:student_id, "student id must not be set for admin nor staff") if ((!user_level.nil?) && ((user_level == ConstantsHelper::ROLE_LEVEL_ADMIN) || (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)) && (!student_id.nil?))
+    end
+
     def create_code
       self.code = generate_code
     end
@@ -141,8 +148,13 @@ class Invitation < ActiveRecord::Base
     end
 
     def invitation_types_have_correct_addresses
-      errors.add(:recipient_emails, I18n.t('invitations.form.errors.non_student_has_student_entries')) if (((user_level == ConstantsHelper::ROLE_LEVEL_ADMIN) || (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)) && has_student_entries?)
-      errors.add(:recipient_emails, I18n.t('invitations.form.errors.students_have_email_addresses')) if(user_level == ConstantsHelper::ROLE_LEVEL_STUDENT && has_email_recipients?)
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.non_student_has_student_entries')) if ((user_level_is_admin_or_staff?) && has_student_entries?)
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.students_have_email_addresses')) if(user_level_is_student? && has_email_recipients?)
+    end
+
+    def is_passed_stage_type?
+      return true if status > ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+      false
     end
 
     def is_stage_address?
@@ -176,6 +188,10 @@ class Invitation < ActiveRecord::Base
     def presence_of_email_or_recipient
       errors.add(:recipient_email, "recipient_email and recipient id cannot both be set") if ((!recipient_id.nil?) && (!recipient_email.blank?))
       errors.add(:recipient_email, "recipient_email or recipient id must be set") if ((recipient.nil?) && (recipient_email.blank?))
+    end
+
+    def student_role_must_have_student_id
+      errors.add(:student_id, "student id must be set") if ((!user_level.nil?) && (user_level == ConstantsHelper::ROLE_LEVEL_STUDENT) && (student_id.nil?))
     end
 
     def user_does_not_have_role_in_program
@@ -223,11 +239,13 @@ class Invitation < ActiveRecord::Base
       errors[:error_duplicate_invitation] = "true" unless invitations.empty?
     end
 
-    def admin_and_staff_must_not_have_student_id
-      errors.add(:student_id, "student id must not be set for admin nor staff") if ((!user_level.nil?) && ((user_level == ConstantsHelper::ROLE_LEVEL_ADMIN) || (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)) && (!student_id.nil?))
+    def user_level_is_admin_or_staff?
+      return true if (user_level == ConstantsHelper::ROLE_LEVEL_ADMIN || user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
+      false
     end
 
-    def student_role_must_have_student_id
-      errors.add(:student_id, "student id must be set") if ((!user_level.nil?) && (user_level == ConstantsHelper::ROLE_LEVEL_STUDENT) && (student_id.nil?))
+    def user_level_is_student?
+      return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
+      false
     end
 end

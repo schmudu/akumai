@@ -1,25 +1,25 @@
 class StudentEntry < ActiveRecord::Base
   include UsersHelper
-  # note: column "validation_bypass" denotes whether the user has saved the student_entry
+  # note: column "saved" denotes whether the user has saved the student_entry
   #       this means that the student_entry is saved and has bypassed the validation stages
-  #       however in order to be in actual use, the validation_bypass must be set to false.
-  #       validation_bypass will only be set to true if the user saves the invitation and consequently
+  #       however in order to be in actual use, the saved must be set to false.
+  #       saved will only be set to true if the user saves the invitation and consequently
   #       the student entries.
   belongs_to :invitation
 
   validates_presence_of :invitation_id
   validate :existence_of_invitation
 
-  validate :either_email_or_student_id, if: "validation_bypass"
-  validates_presence_of :email, if: "!validation_bypass"
-  validate :email_validation, if: "!validation_bypass"
-  validates_uniqueness_of :email, :scope => :invitation_id, if: "!validation_bypass"
+  validate :either_email_or_student_id, if: "saved"
+  validates_presence_of :email, if: "!saved"
+  validate :email_validation, if: "!saved"
+  validates_uniqueness_of :email, :scope => :invitation_id, if: "!saved"
 
-  validates_presence_of :student_id, if: "!validation_bypass"
-  validates_uniqueness_of :student_id, :scope => :invitation_id, if: "!validation_bypass"
+  validates_presence_of :student_id, if: "!saved"
+  validates_uniqueness_of :student_id, :scope => :invitation_id, if: "!saved"
 
   def self.saved
-    where("validation_bypass = ?", true)
+    where("saved = ?", true)
   end
 
   private

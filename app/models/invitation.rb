@@ -14,10 +14,9 @@ class Invitation < ActiveRecord::Base
   # validation rules
   # during stage TYPE: validate creator_id, name, program_id, and user_level
   # during stage ADDRESSES: validate recipient_emails or student entries
-  # during stage ADDRESSES: user can bypass validation if they want to save their progress (see validation_bypass column)
+  # during stage ADDRESSES: user can bypass validation if they want to save their progress (see saved column)
   # during stage REVIEW: all attributes need to be validated
   # general validation
-  # TODO - add any uni
   validates_presence_of :creator_id, :program_id, :name
   validate :has_only_email_recipients_or_student_entries,
             :existence_of_program,
@@ -129,11 +128,11 @@ class Invitation < ActiveRecord::Base
     end
 
     def has_valid_saved_addresses
-      if (validation_bypass == false)
+      if (saved == false)
         #no bypass
         if has_student_entries?
           student_entries.each do |entry|
-            if (!entry.valid? || entry.validation_bypass)
+            if (!entry.valid? || entry.saved)
               # if entry is invalid or is bypassing validation, then error b/c this invitation does not have bypass
               errors.add(:id, I18n.t('invitations.form.errors.has_invalid_student_entries')) 
               return

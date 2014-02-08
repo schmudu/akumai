@@ -30,7 +30,7 @@ FactoryGirl.define do
   factory :student_entry do
     email ""
     student_id 1
-    validation_bypass false
+    saved false
     invitation_id 1
   end
 end

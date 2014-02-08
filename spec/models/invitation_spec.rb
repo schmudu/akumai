@@ -25,11 +25,11 @@ describe Invitation do
   it { should respond_to(:name) }
   it { should respond_to(:program_id) }
   it { should respond_to(:recipient_emails) }
+  it { should respond_to(:saved) }
   it { should respond_to(:status) }
   it { should respond_to(:slug) }
   it { should respond_to(:student_entries) }
   it { should respond_to(:user_level) }
-  it { should respond_to(:validation_bypass) }
 
   # test instance methods
   describe "instance methods" do
@@ -137,16 +137,16 @@ describe Invitation do
       end
 
       describe "set to nil" do
-        # test validation_bypass
+        # test saved
         before { @invitation.creator_id = nil }
         it { should_not be_valid }
       end
 
-      describe "set to nil with validation_bypass" do
-        # test validation_bypass
+      describe "set to nil with saved" do
+        # test saved
         before do 
           @invitation.creator_id = nil 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -156,10 +156,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to non-existent user id with validation_bypass" do
+      describe "set to non-existent user id with saved" do
         before do
           @invitation.creator_id = -99 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -172,7 +172,7 @@ describe Invitation do
       describe "set to student user who does not have privileges to invite other users with validation bypass" do
         before do 
           @invitation.creator_id = @student_in_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -185,11 +185,11 @@ describe Invitation do
         it { should_not be_valid }
       end
       
-      describe "set to none user inviting students with validation_bypass" do
+      describe "set to none user inviting students with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.creator_id = @user_outside_of_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -202,11 +202,11 @@ describe Invitation do
         it { should_not be_valid }
       end
       
-      describe "set to none user inviting staff with validation_bypass" do
+      describe "set to none user inviting staff with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
           @invitation.creator_id = @user_outside_of_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -219,11 +219,11 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to none user inviting admin with validation_bypass" do
+      describe "set to none user inviting admin with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
           @invitation.creator_id = @user_outside_of_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -236,11 +236,11 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to staff inviting staff with validation_bypass" do
+      describe "set to staff inviting staff with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
           @invitation.creator_id = @student_in_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -253,11 +253,11 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to staff inviting admin with validation_bypass" do
+      describe "set to staff inviting admin with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
           @invitation.creator_id = @student_in_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -271,10 +271,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to blank with validation_bypass" do
+      describe "set to blank with saved" do
         before do 
           @invitation.name = ""
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -286,10 +286,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to nil with validation_bypass" do
+      describe "set to nil with saved" do
         before do 
           @invitation.name = nil
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -303,10 +303,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "program_id set to nil with validation_bypass" do
+      describe "program_id set to nil with saved" do
         before do 
           @invitation.program_id = nil
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -318,10 +318,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "program_id set to non-existent program with validation_bypass" do
+      describe "program_id set to non-existent program with saved" do
         before do 
           @invitation.program_id = -99
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -356,7 +356,7 @@ describe Invitation do
       describe "set to staff inviting students" do
         before do 
           @invitation.recipient_emails = ""
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.creator_id = @staff_in_program.id 
         end
@@ -423,16 +423,16 @@ describe Invitation do
       end
 
       describe "set to nil" do
-        # test validation_bypass
+        # test saved
         before { @invitation.creator_id = nil }
         it { should_not be_valid }
       end
 
-      describe "set to nil with validation_bypass" do
-        # test validation_bypass
+      describe "set to nil with saved" do
+        # test saved
         before do 
           @invitation.creator_id = nil 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -442,10 +442,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to non-existent user id with validation_bypass" do
+      describe "set to non-existent user id with saved" do
         before do
           @invitation.creator_id = -99 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -458,7 +458,7 @@ describe Invitation do
       describe "set to student user who does not have privileges to invite other users with validation bypass" do
         before do 
           @invitation.creator_id = @student_in_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -471,11 +471,11 @@ describe Invitation do
         it { should_not be_valid }
       end
       
-      describe "set to none user inviting students with validation_bypass" do
+      describe "set to none user inviting students with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
           @invitation.creator_id = @user_outside_of_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -488,11 +488,11 @@ describe Invitation do
         it { should_not be_valid }
       end
       
-      describe "set to none user inviting staff with validation_bypass" do
+      describe "set to none user inviting staff with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
           @invitation.creator_id = @user_outside_of_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -505,11 +505,11 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to none user inviting admin with validation_bypass" do
+      describe "set to none user inviting admin with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
           @invitation.creator_id = @user_outside_of_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -522,11 +522,11 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to staff inviting staff with validation_bypass" do
+      describe "set to staff inviting staff with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
           @invitation.creator_id = @student_in_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -539,11 +539,11 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to staff inviting admin with validation_bypass" do
+      describe "set to staff inviting admin with saved" do
         before do 
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
           @invitation.creator_id = @student_in_program.id 
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -557,10 +557,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to blank with validation_bypass" do
+      describe "set to blank with saved" do
         before do 
           @invitation.name = ""
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -572,10 +572,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "set to nil with validation_bypass" do
+      describe "set to nil with saved" do
         before do 
           @invitation.name = nil
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -589,10 +589,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "program_id set to nil with validation_bypass" do
+      describe "program_id set to nil with saved" do
         before do 
           @invitation.program_id = nil
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -604,10 +604,10 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "program_id set to non-existent program with validation_bypass" do
+      describe "program_id set to non-existent program with saved" do
         before do 
           @invitation.program_id = -99
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
         it { should_not be_valid }
       end
@@ -639,7 +639,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.recipient_emails = ""
           @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
-          @invitation.validation_bypass = true
+          @invitation.saved = true
         end
 
         it { should be_valid }
@@ -653,7 +653,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :validation_bypass => true)
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :saved => true)
         end
 
         it { should_not be_valid }
@@ -667,8 +667,8 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = true
-          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :validation_bypass => true)
+          @invitation.saved = true
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :saved => true)
         end
 
         it { should be_valid }
@@ -681,7 +681,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = false
+          @invitation.saved = false
           @invitation.recipient_emails = "abc@abc.com"
         end
 
@@ -695,7 +695,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @invitation.recipient_emails = "abc@abc.com"
         end
 
@@ -709,7 +709,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = false
+          @invitation.saved = false
           @invitation.recipient_emails = "abc"
         end
 
@@ -723,7 +723,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @invitation.recipient_emails = "abc"
         end
 
@@ -737,7 +737,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @invitation.recipient_emails = ""
         end
 
@@ -751,7 +751,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = false
+          @invitation.saved = false
           @invitation.recipient_emails = ""
         end
 
@@ -764,8 +764,8 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = true
-          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :validation_bypass => true)
+          @invitation.saved = true
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :saved => true)
           @invitation.recipient_emails = "abc@abc.com"
         end
 
@@ -787,7 +787,7 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "admin invitations should not have student entries with validation_bypass" do
+      describe "admin invitations should not have student entries with saved" do
         before do
           # save in type mode
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
@@ -796,7 +796,7 @@ describe Invitation do
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.recipient_emails = ""
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
         end
 
@@ -818,7 +818,7 @@ describe Invitation do
         it { should_not be_valid }
       end
 
-      describe "staff invitations should not have student entries with validation_bypass" do
+      describe "staff invitations should not have student entries with saved" do
         before do
           # save in type mode
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
@@ -827,14 +827,14 @@ describe Invitation do
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.recipient_emails = ""
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
         end
 
         it { should_not be_valid }
       end
 
-      describe "student invitations should be valid with student entries without validation_bypass" do
+      describe "student invitations should be valid with student entries without saved" do
         before do
           # save in type mode
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
@@ -843,14 +843,14 @@ describe Invitation do
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.recipient_emails = ""
-          @invitation.validation_bypass = false
+          @invitation.saved = false
           @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
         end
 
         it { should be_valid }
       end
 
-      describe "student invitations should be valid with student entries with validation_bypass" do
+      describe "student invitations should be valid with student entries with saved" do
         before do
           # save in type mode
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
@@ -859,7 +859,7 @@ describe Invitation do
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.recipient_emails = ""
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
         end
 
@@ -874,7 +874,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = false
+          @invitation.saved = false
           @invitation.recipient_emails = "abc@abc.com"
         end
 
@@ -889,7 +889,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
           @invitation.save
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
-          @invitation.validation_bypass = true
+          @invitation.saved = true
           @invitation.recipient_emails = "abc@abc.com"
         end
 

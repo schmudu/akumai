@@ -18,22 +18,22 @@ describe StudentEntry do
   describe "valid" do
     before do
       @student_entry.email = @email_valid
-      @student_entry.validation_bypass = false
+      @student_entry.saved = false
       @student_entry.invitation_id = @invitation.id
       @student_entry.student_id = "aaa0001"
     end
 
     it { should be_valid }
 
-    describe "with false validation_bypass" do
+    describe "with false saved" do
 
     end
 
-    describe "with true validation_bypass" do
+    describe "with true saved" do
       describe "email attribute" do
         describe "nil email" do
           before do 
-            @student_entry.validation_bypass = true
+            @student_entry.saved = true
             @student_entry.email = nil 
           end
           it { should be_valid }
@@ -41,7 +41,7 @@ describe StudentEntry do
 
         describe "blank email" do
           before do
-            @student_entry.validation_bypass = true
+            @student_entry.saved = true
             @student_entry.email = ""
           end 
           it { should be_valid }
@@ -49,7 +49,7 @@ describe StudentEntry do
 
         describe "invalid email" do
           before do
-            @student_entry.validation_bypass = true
+            @student_entry.saved = true
             @student_entry.email = "abcd@abc"
           end 
           it { should be_valid }
@@ -57,7 +57,7 @@ describe StudentEntry do
 
         describe "multiple emails" do
           before do
-            @student_entry.validation_bypass = true
+            @student_entry.saved = true
             @student_entry.email = "abc@abc.com, def@def.com"
           end 
           it { should be_valid }
@@ -68,7 +68,7 @@ describe StudentEntry do
             @student_email = "abc@abc.com"
             @student_entry_original = FactoryGirl.create(:student_entry, :email => @student_email, :invitation_id => @invitation.id, :student_id => "b001")
             @student_entry_duplicate = FactoryGirl.build(:student_entry, :email => @student_email, :invitation_id => @invitation.id, :student_id => "c001")
-            @student_entry_duplicate.validation_bypass = true
+            @student_entry_duplicate.saved = true
           end
 
           it "duplicate email" do
@@ -80,7 +80,7 @@ describe StudentEntry do
       describe "student_id" do
         describe "set to nil" do
           before do 
-            @student_entry.validation_bypass = true
+            @student_entry.saved = true
             @student_entry.student_id = nil 
           end
           it { should be_valid }
@@ -88,7 +88,7 @@ describe StudentEntry do
 
         describe "set to blank" do
           before do 
-            @student_entry.validation_bypass = true
+            @student_entry.saved = true
             @student_entry.student_id = ""
           end
           it { should be_valid }
@@ -99,7 +99,7 @@ describe StudentEntry do
             @student_id = "aa001"
             @student_entry_original = FactoryGirl.create(:student_entry, :email => @email_valid, :invitation_id => @invitation.id, :student_id => @student_id)
             @student_entry_duplicate = FactoryGirl.build(:student_entry, :email => "something@else.com", :invitation_id => @invitation.id, :student_id => @student_id)
-            @student_entry_duplicate.validation_bypass = true
+            @student_entry_duplicate.saved = true
           end
 
           it "duplicate student_id" do
@@ -113,14 +113,14 @@ describe StudentEntry do
   describe "invalid" do
     before do
       @student_entry.email = @email_valid
-      @student_entry.validation_bypass = false
+      @student_entry.saved = false
       @student_entry.invitation_id = @invitation.id
       @student_entry.student_id = "aaa0001"
     end
 
     it { should be_valid }
 
-    describe "with false validation_bypass" do
+    describe "with false saved" do
       describe "email attribute" do
         describe "nil email" do
           before { @student_entry.email = nil }
@@ -192,11 +192,11 @@ describe StudentEntry do
       end
     end
 
-    describe "with true validation_bypass" do
+    describe "with true saved" do
       describe "email and student id" do
         describe "set to nil even with validation bypass it should fail" do
           before do 
-            @student_entry.validation_bypass = true 
+            @student_entry.saved = true 
             @student_entry.email = nil
             @student_entry.student_id = nil
           end
@@ -206,7 +206,7 @@ describe StudentEntry do
 
         describe "set to blank even with validation bypass it should fail" do
           before do 
-            @student_entry.validation_bypass = true 
+            @student_entry.saved = true 
             @student_entry.email = ""
             @student_entry.student_id = nil
           end
@@ -219,7 +219,7 @@ describe StudentEntry do
         describe "set to nil even with validation bypass it should fail" do
           before do 
             @student_entry.invitation_id = nil 
-            @student_entry.validation_bypass = true 
+            @student_entry.saved = true 
           end
 
           it { should_not be_valid }
@@ -228,7 +228,7 @@ describe StudentEntry do
         describe "set to nil even with validation bypass it should fail" do
           before do 
             @student_entry.invitation_id = -99 
-            @student_entry.validation_bypass = true 
+            @student_entry.saved = true 
           end
 
           it { should_not be_valid }

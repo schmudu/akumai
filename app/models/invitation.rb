@@ -30,7 +30,12 @@ class Invitation < ActiveRecord::Base
   validate :invitation_types_have_correct_addresses, if: "is_passed_stage_type?"
 
   # stage validation - address
-  validate :has_valid_saved_addresses, if: "is_stage_address?"
+  #validate :has_valid_saved_addresses, if: "is_stage_address?"
+  validate :has_valid_saved_addresses, if: "is_passed_stage_type?"
+
+  # stage validation - review
+  validate :not_in_saved_state, if: "is_stage_review?"
+  validate :non_existence_of_student_entries_in_saved_state, if: "is_stage_review?"
 =begin
   validates :program_id, presence: true
   validates :user_level, presence: true
@@ -130,7 +135,7 @@ class Invitation < ActiveRecord::Base
     def has_valid_saved_addresses
       if (saved == false)
         #no bypass
-        if has_student_entries?
+        if user_level_is_student?
           student_entries.each do |entry|
             if (!entry.valid? || entry.saved)
               # if entry is invalid or is bypassing validation, then error b/c this invitation does not have bypass
@@ -161,6 +166,11 @@ class Invitation < ActiveRecord::Base
       false
     end
 
+    def is_stage_review?
+      return true if status == ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+      false
+    end
+
     def is_stage_type?
       return true if status == ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
       false
@@ -182,6 +192,16 @@ class Invitation < ActiveRecord::Base
 
     def non_existence_of_email_recipients
       errors.add(:recipient_emails, I18n.t('invitations.form.errors.non_existence_of_email_recipients')) if has_email_recipients?
+    end
+
+    def non_existence_of_student_entries_in_saved_state
+      student_entries.each do |entry|
+        errors.add(:id, I18n.t('invitations.form.errors.invitation_cannot_have_entries_with_saved_state')) if entry.saved == true
+      end
+    end
+
+    def not_in_saved_state
+      errors.add(:saved, I18n.t('invitations.form.errors.invitation_saved_state')) if saved == true
     end
 
     def presence_of_email_or_recipient

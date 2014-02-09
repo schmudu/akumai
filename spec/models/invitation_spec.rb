@@ -895,11 +895,581 @@ describe Invitation do
 
         it { should_not be_valid }
       end
-
     end
   end
 
   describe "at review stage" do
+    before do
+      @invitation.name = "Random Invitation"
+      @invitation.creator_id = @admin_in_program.id
+      @invitation.program_id = @program.id
+      @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+      @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+      @invitation.recipient_emails = "abc@abc.com"
+    end
+
+    it { should be_valid }
+
+    describe "creator id" do
+      describe "set to staff inviting students" do
+        before do 
+          @invitation.recipient_emails = ""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @staff_in_program.id 
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com", :saved => false)
+        end
+        it { should be_valid }
+      end
+
+      describe "set to staff inviting students with saved state2" do
+        before do 
+          @invitation.recipient_emails = ""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @staff_in_program.id 
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com", :saved => true)
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to admin inviting students" do
+        before do 
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.creator_id = @admin_in_program.id 
+          @invitation.save
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+        end
+
+        it { should be_valid }
+      end
+
+      describe "set to admin inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @admin_in_program.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to admin inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @admin_in_program.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to superuser inviting students" do
+        before do 
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.save
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.creator_id = @superuser.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to superuser inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @superuser.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to superuser inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @superuser.id 
+        end
+        it { should be_valid }
+      end
+
+      describe "set to nil" do
+        # test saved
+        before { @invitation.creator_id = nil }
+        it { should_not be_valid }
+      end
+
+      describe "set to nil with saved" do
+        # test saved
+        before do 
+          @invitation.creator_id = nil 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to non-existent user id" do
+        before { @invitation.creator_id = -99 }
+        it { should_not be_valid }
+      end
+
+      describe "set to non-existent user id with saved" do
+        before do
+          @invitation.creator_id = -99 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to student user who does not have privileges to invite other users" do
+        before { @invitation.creator_id = @student_in_program.id }
+        it { should_not be_valid }
+      end
+
+      describe "set to student user who does not have privileges to invite other users with validation bypass" do
+        before do 
+          @invitation.creator_id = @student_in_program.id 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to none user inviting students" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+      
+      describe "set to none user inviting students with saved" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.creator_id = @user_outside_of_program.id 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+      
+      describe "set to none user inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+      
+      describe "set to none user inviting staff with saved" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @user_outside_of_program.id 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+      
+      describe "set to none user inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @user_outside_of_program.id 
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to none user inviting admin with saved" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @user_outside_of_program.id 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to staff inviting staff" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @student_in_program.id 
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to staff inviting staff with saved" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.creator_id = @student_in_program.id 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to staff inviting admin" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @student_in_program.id 
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to staff inviting admin with saved" do
+        before do 
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.creator_id = @student_in_program.id 
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+    end
+
+    describe "name attribute" do
+      describe "set to blank" do
+        before do 
+          @invitation.name = ""
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to blank with saved" do
+        before do 
+          @invitation.name = ""
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to nil" do
+        before do 
+          @invitation.name = nil
+        end
+        it { should_not be_valid }
+      end
+
+      describe "set to nil with saved" do
+        before do 
+          @invitation.name = nil
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+    end
+
+    describe "program_id" do
+      describe "program_id set to nil" do
+        before do 
+          @invitation.program_id = nil
+        end
+        it { should_not be_valid }
+      end
+
+      describe "program_id set to nil with saved" do
+        before do 
+          @invitation.program_id = nil
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+
+      describe "program_id set to non-existent program" do
+        before do 
+          @invitation.program_id = -99
+        end
+        it { should_not be_valid }
+      end
+
+      describe "program_id set to non-existent program with saved" do
+        before do 
+          @invitation.program_id = -99
+          @invitation.saved = true
+        end
+        it { should_not be_valid }
+      end
+    end
+
+    describe "student_entries and recipient_emails" do
+      describe "have one valid student entry without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+        end
+
+        it { should be_valid }
+      end
+
+      describe "have one valid student entry with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+          @invitation.saved = true
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "have one invalid student entry without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :saved => true)
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "have one invalid student entry with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = true
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :saved => true)
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "have one valid email recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = false
+          @invitation.recipient_emails = "abc@abc.com"
+        end
+
+        it { should be_valid }
+      end
+
+      describe "have one valid email recipients with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = true
+          @invitation.recipient_emails = "abc@abc.com"
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "have one invalid email recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = false
+          @invitation.recipient_emails = "abc"
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "have one invalid email recipients with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = true
+          @invitation.recipient_emails = "abc"
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "be valid with no student entries NOR email_recipients with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = true
+          @invitation.recipient_emails = ""
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "not be valid with no student entries NOR email_recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = false
+          @invitation.recipient_emails = ""
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "should not have email_recipients AND student entries" do
+        before do
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = true
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc", :saved => true)
+          @invitation.recipient_emails = "abc@abc.com"
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "admin invitations should not have student entries" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "admin invitations should not have student entries with saved" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @invitation.saved = true
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "staff invitations should not have student entries" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "staff invitations should not have student entries with saved" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @invitation.saved = true
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "student invitations should be valid with student entries without saved" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @invitation.saved = false
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+        end
+
+        it { should be_valid }
+      end
+
+      describe "student invitations should be valid with student entries with saved" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.recipient_emails = ""
+          @invitation.saved = true
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "student invitation with one valid email recipient should not be valid without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = false
+          @invitation.recipient_emails = "abc@abc.com"
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "student invitation with one valid email recipient should be valid with validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @invitation.saved = true
+          @invitation.recipient_emails = "abc@abc.com"
+        end
+
+        it { should_not be_valid }
+      end
+    end
   end
 =begin
   it { should respond_to(:recipient_email) }

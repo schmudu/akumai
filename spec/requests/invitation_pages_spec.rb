@@ -3,12 +3,27 @@ require 'spec_helper'
 require_relative '../../app/helpers/constants_helper'
 
 describe "InvitationPages" do
-  let(:user) { FactoryGirl.create(:user, superuser: false) }
-  let(:another_user) { FactoryGirl.create(:user, email: "another_user@abc.com", superuser: false) }
-  let(:student_user) { FactoryGirl.create(:user, superuser: false) }
+  let(:superuser) { FactoryGirl.create(:user, superuser: true) }
+  let(:user_staff) { FactoryGirl.create(:user, email: "another_user@abc.com", superuser: false) }
+  let(:user_student) { FactoryGirl.create(:user, superuser: false) }
+  let(:user_admin) { FactoryGirl.create(:user, superuser: false) }
   let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
-  before(:each) { login user }
+  let(:role_staff) { FactoryGirl.create(:role, :user_id => @user_staff.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)}
+  let(:role_admin) { FactoryGirl.create(:role, :user_id => @user_admin.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)}
+  let(:role_student) { FactoryGirl.create(:role, :user_id => @user_student.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => "a001")}
   subject { page }
+
+  describe "superuser" do
+    before(:each) do 
+      login superuser 
+      visit new_invitation_path
+    end
+    it { current_path.should == new_invitation_path }
+    
+    describe " inviting students" do
+
+    end
+  end
 =begin
   describe "invite users type" do
     describe "without logging in" do

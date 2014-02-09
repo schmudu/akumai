@@ -1,4 +1,5 @@
 namespace :db do
+  # run via: rake db:populate
   desc "Fill database with sample data"
   task populate: :environment do
     User.create!(email: "example@railstutorial.org",

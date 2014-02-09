@@ -9,7 +9,11 @@ Trio::Application.routes.draw do
   match '/invite_users/send',   to: 'invitations#send_invitations',   via: 'post', as: :invite_users_send
 =end
   
-  resources :invitations
+  resources :invitations do
+    collection do
+      post :address
+    end
+  end
   resources :programs
   match '/program_user_level', to:'programs#user_level', via: 'get'
   match '/dashboard',   to: 'users#dashboard',   via: 'get'

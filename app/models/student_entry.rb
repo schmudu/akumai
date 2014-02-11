@@ -1,4 +1,5 @@
 class StudentEntry < ActiveRecord::Base
+  # TODO add friendly_id to student entry
   include UsersHelper
   # note: column "saved" denotes whether the user has saved the student_entry
   #       this means that the student_entry is saved and has bypassed the validation stages

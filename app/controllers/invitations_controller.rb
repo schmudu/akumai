@@ -145,12 +145,25 @@ class InvitationsController < ApplicationController
   # GET /invitations/new
   def new
     @invitation = Invitation.new
+    @programs = current_user.staff_level_programs
+  end
+
+  # POST /invitations/address
+  def address
+    @invitation = Invitation.new(invitation_params)
+
+    if @invitation.save
+      redirect_to @invitation
+    else
+      @programs = current_user.staff_level_programs
+      render action: 'new' 
+    end
   end
 
   # GET /invitations/1/edit
   def edit
   end
-
+=begin
   # POST /invitations
   # POST /invitations.json
   def create
@@ -166,6 +179,7 @@ class InvitationsController < ApplicationController
       end
     end
   end
+=end
 
   # PATCH/PUT /invitations/1
   # PATCH/PUT /invitations/1.json

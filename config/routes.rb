@@ -9,7 +9,7 @@ Trio::Application.routes.draw do
   match '/invite_users/send',   to: 'invitations#send_invitations',   via: 'post', as: :invite_users_send
 =end
   
-  resources :invitations do
+  resources :invitations, except: :create do
     collection do
       post :address
     end

@@ -1,11 +1,26 @@
-= form_for(@invitation) do |f| 
-  = if @invitation.errors.any? 
-    #error_explanation
-      %h2
-        = pluralize(@invitation.errors.count, "error") %> prohibited this invitation from being saved:
-      %ul
-        =@invitation.errors.full_messages.each do |msg| 
-          %li
-            = msg 
+= @invitation.errors.messages[:program_id].nil?
+%br/
+/ errors
+= if @invitation.errors.any? 
+  #error_explanation
+    %h2= #{pluralize(@invitation.errors.count, "error")} prohibited this invitation from being saved:
+    %ul
+      -@invitation.errors.full_messages.each do |msg| 
+        %li= msg 
+
+/ form
+= form_for(@invitation, url: { action: :address }, html: {:class => 'form-horizontal', :id => 'invite_users'}) do |f| 
+
+  - if @invitation.errors.messages[:program_id].nil?
+    #program_group.control-group
+  - else
+    #program_group.error.control-group
+
+      = label_tag(:program, "Program", :class => 'control-label')
+      - unless params[:program_friendly].nil?
+        = select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: params[:program_friendly])) 
+      - else
+        = select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: session[:invite_users_program])) 
+
   .actions
-    = f.submit %>
+    = f.submit 

@@ -227,7 +227,7 @@ class InvitationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invitation_params
-      params[:invitation]
+      params.require(:invitation).permit(:name, :program_id)
     end
 
     def reset_session_variables

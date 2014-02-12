@@ -20,7 +20,14 @@ describe "InvitationPages" do
     end
     it { current_path.should == new_invitation_path }
     
-    describe " inviting students" do
+    describe "inviting students" do
+      describe "content" do
+        it { should have_content(I18n.t('invitations.form.messages.steps', index:1))}
+        it { should have_xpath("//label[@class='control-label' and contains(.,'#{I18n.t('terms.program')}')]") }
+        it { save_and_open_page }
+        #it { should have_xpath("//input[@type='radio' and @id='level_admin']") }
+      end
+
 
     end
   end

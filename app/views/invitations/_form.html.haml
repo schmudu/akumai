@@ -1,4 +1,7 @@
-= @invitation.errors.messages[:program_id].nil?
+= @invitation.inspect
+%br/
+= params[:invitation].inspect
+
 %br/
 / errors
 = if @invitation.errors.any? 
@@ -11,16 +14,16 @@
 / form
 = form_for(@invitation, url: { action: :address }, html: {:class => 'form-horizontal', :id => 'invite_users'}) do |f| 
 
-  - if @invitation.errors.messages[:program_id].nil?
-    #program_group.control-group
-  - else
-    #program_group.error.control-group
+  #program_group.control-group{:class => @invitation.errors.messages[:name].nil? ? "" : "error"}
+    / name
+    = f.label(:name, t('terms.name'), :class => 'control-label')
+    = f.text_field(:name, :value => 'something')
 
-      = label_tag(:program, "Program", :class => 'control-label')
-      - unless params[:program_friendly].nil?
-        = select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: params[:program_friendly])) 
-      - else
-        = select_tag(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: session[:invite_users_program])) 
+  #program_group.control-group{:class => @invitation.errors.messages[:program_id].nil? ? "" : "error"}
+    / program
+    = f.label(:program, t('terms.program'), :class => 'control-label')
+    - selected = !params[:invitation][:program_id].nil? ? params[:invitation][:program_id] : @invitation.program_id
+    = f.select(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.slug] }.insert(0, "Select Program"), selected: selected)) 
 
   .actions
     = f.submit 

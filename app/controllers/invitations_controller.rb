@@ -150,7 +150,8 @@ class InvitationsController < ApplicationController
 
   # POST /invitations/address
   def address
-    @invitation = Invitation.new(invitation_params)
+    creator_hash = {:creator_id => current_user.id }
+    @invitation = Invitation.new(invitation_params_address.merge(creator_hash))
 
     if @invitation.save
       redirect_to @invitation
@@ -163,23 +164,6 @@ class InvitationsController < ApplicationController
   # GET /invitations/1/edit
   def edit
   end
-=begin
-  # POST /invitations
-  # POST /invitations.json
-  def create
-    @invitation = Invitation.new(invitation_params)
-
-    respond_to do |format|
-      if @invitation.save
-        format.html { redirect_to @invitation, notice: 'Invitation was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @invitation }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @invitation.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-=end
 
   # PATCH/PUT /invitations/1
   # PATCH/PUT /invitations/1.json
@@ -206,7 +190,6 @@ class InvitationsController < ApplicationController
   end
 
   def cancel
-    reset_session_variables
     #redirect_to dashboard_path
     respond_to do |format|
       msg = { :text => "success" }
@@ -220,21 +203,15 @@ class InvitationsController < ApplicationController
         (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STAFF))
       return false
     end
-    # Use callbacks to share common setup or constraints between actions.
+    
     def set_invitation
       @invitation = Invitation.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def invitation_params
-      params.require(:invitation).permit(:name, :program_id)
-    end
-
-    def reset_session_variables
-      # DUPLICATION_UPDATE any new invitation session variables add UsersHelper
-      session.delete(:invite_users_invitation_type)
-      session.delete(:invite_users_program)
-      session.delete(:invite_users_program_name)
+    def invitation_params_address
+      puts "params inspect:#{params.inspect}"
+      params.require(:invitation).permit(:name, :program_id, :user_level)
     end
 
     def valid_invitation_recipients?(sender, emails, program_slug, invitation_level)

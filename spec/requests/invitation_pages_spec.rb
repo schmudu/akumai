@@ -3,11 +3,14 @@ require 'spec_helper'
 require_relative '../../app/helpers/constants_helper'
 
 describe "InvitationPages" do
-  let(:superuser) { FactoryGirl.create(:user, superuser: true) }
-  let(:user_staff) { FactoryGirl.create(:user, email: "another_user@abc.com", superuser: false) }
-  let(:user_student) { FactoryGirl.create(:user, superuser: false) }
-  let(:user_admin) { FactoryGirl.create(:user, superuser: false) }
-  let(:program) { FactoryGirl.create(:program, name:"Program_Name") }
+  before do
+    @program = Program.create(:name => "Program Name") 
+  end
+  let(:staff) { FactoryGirl.create(:user, :email => "staff@abc.com", :superuser => true) }
+  let(:superuser) { FactoryGirl.create(:user, :email => "superuser@abc.com", :superuser => true) }
+  let(:user_student) { FactoryGirl.create(:user, email: "student@abc.com", superuser: false) }
+  let(:user_admin) { FactoryGirl.create(:user, email: "admin@abc.com", superuser: false) }
+  let(:program) { FactoryGirl.create(:program, name:"Program Name") }
   let(:role_staff) { FactoryGirl.create(:role, :user_id => @user_staff.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)}
   let(:role_admin) { FactoryGirl.create(:role, :user_id => @user_admin.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)}
   let(:role_student) { FactoryGirl.create(:role, :user_id => @user_student.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => "a001")}
@@ -24,8 +27,19 @@ describe "InvitationPages" do
       describe "content" do
         it { should have_content(I18n.t('invitations.form.messages.steps', index:1))}
         it { should have_xpath("//label[@class='control-label' and contains(.,'#{I18n.t('terms.program')}')]") }
+      end
+
+      describe "valid input to address_invitations_path" do
+        before do
+          fill_in "invitation_name", :with => "Test Invitation"
+          #find("option[value='#{program.id}']").click
+          select("#{@program.name}", from: 'invitation_program_id')
+          choose('radio_student')
+          click_button I18n.t('terms.next')
+        end
+
         it { save_and_open_page }
-        #it { should have_xpath("//input[@type='radio' and @id='level_admin']") }
+        it { current_path.should == address_invitations_path }
       end
 
 

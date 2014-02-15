@@ -1,6 +1,8 @@
 class Program < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
+
+  # TODO - test destroy attributes
   has_many :invitations
   has_many :roles
   has_many :users, through: :roles

@@ -19,8 +19,12 @@ describe InvitationsController do
       get("/invitations/1/edit").should route_to("invitations#edit", :id => "1")
     end
 
-    it "routes to #create" do
-      post("/invitations").should route_to("invitations#create")
+    it "routes to #address" do
+      post("/invitations/address").should route_to("invitations#address")
+    end
+
+    it "routes to #review" do
+      post("/invitations/review").should route_to("invitations#review")
     end
 
     it "routes to #update" do

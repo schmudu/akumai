@@ -12,6 +12,7 @@ Trio::Application.routes.draw do
   resources :invitations, except: :create do
     collection do
       post :address
+      post :review
     end
   end
   resources :programs

@@ -154,7 +154,7 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.new(invitation_params_address.merge(creator_hash))
 
     if @invitation.save
-      redirect_to @invitation
+      #redirect_to @invitation
     else
       @programs = current_user.staff_level_programs
       render action: 'new' 
@@ -210,7 +210,6 @@ class InvitationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invitation_params_address
-      puts "params inspect:#{params.inspect}"
       params.require(:invitation).permit(:name, :program_id, :user_level)
     end
 

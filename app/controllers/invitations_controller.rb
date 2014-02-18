@@ -154,11 +154,15 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.new(invitation_params_address.merge(creator_hash))
 
     if @invitation.save
+      @program = Program.find_by_id(@invitation.program_id)
       #redirect_to @invitation
     else
       @programs = current_user.staff_level_programs
       render action: 'new' 
     end
+  end
+
+  def review
   end
 
   # GET /invitations/1/edit

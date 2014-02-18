@@ -3,8 +3,8 @@ class Program < ActiveRecord::Base
   friendly_id :name, use: :slugged
 
   # TODO - test destroy attributes
-  has_many :invitations
-  has_many :roles
+  has_many :invitations, dependent: :destroy
+  has_many :roles, dependent: :destroy
   has_many :users, through: :roles
 
   validates :name, presence: true

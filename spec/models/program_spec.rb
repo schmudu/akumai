@@ -15,6 +15,26 @@ describe Program do
 
   it { should be_valid }
 
+  describe "relationships" do
+    before do
+      @user = FactoryGirl.create(:user)
+      @superuser = FactoryGirl.create(:user, :superuser => true)
+      @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
+      @invitation = FactoryGirl.create(:invitation, :name => "Test Invitation", :creator_id => @superuser.id, :program_id => @program.id, :status => ConstantsHelper::INVITATION_STATUS_SETUP_TYPE, :user_level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+    end
+
+    it { Role.count.should == 1 }
+    it {Invitation.count.should == 1 }
+
+    it "should decrement the roles count by -1" do
+      expect{@program.destroy}.to change{Role.count}.by(-1)
+    end
+
+    it "should decrement the invitations count by -1" do
+      expect{@program.destroy}.to change{Invitation.count}.by(-1)
+    end
+  end
+
   describe "name validations" do
     describe "should not be valid with empty name" do
       before { @program.name = "" }

@@ -32,7 +32,6 @@ describe "InvitationPages" do
       describe "valid input to address_invitations_path" do
         before do
           fill_in "invitation_name", :with => "Test Invitation"
-          #find("option[value='#{program.id}']").click
           select("#{@program.name}", from: 'invitation_program_id')
           choose('radio_student')
           click_button I18n.t('terms.next')

@@ -4,17 +4,7 @@
 %h2= "Review Invitations ( #{t('invitations.form.messages.steps', index:2)} )"
 
 .row#review_instructions
-  - if (@invitation.user_level == ConstantsHelper::ROLE_LEVEL_ADMIN)
-    = t('invitations.form.title.enter_email_addresses.admin')
-  - elsif (@invitation.user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
-    = t('invitations.form.title.enter_email_addresses.staff')
-
-- if (@invitation.user_level == ConstantsHelper::ROLE_LEVEL_ADMIN)
-  %br/
-  %br/
-  .row.label.label-warning
-    .span12
-      %h5= t('invitations.form.warnings.admin_invitations') 
+  = t('invitations.form.title.enter_email_addresses.students')
 
 / errors
 = if @invitation.errors.any? 

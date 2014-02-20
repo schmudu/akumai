@@ -13,6 +13,7 @@ Trio::Application.routes.draw do
     collection do
       post :address
       post :review
+      post :confirm
     end
   end
   resources :programs

@@ -33,12 +33,22 @@ describe "InvitationPages" do
         before do
           fill_in "invitation_name", :with => "Test Invitation"
           select("#{@program.name}", from: 'invitation_program_id')
-          choose('radio_student')
+          choose('radio_staff')
           click_button I18n.t('terms.next')
         end
 
-        it { save_and_open_page }
         it { current_path.should == address_invitations_path }
+
+        describe "valid input to review_invitations_path" do
+          before do
+            fill_in "invitation_recipient_emails", :with => "abc@abc.com"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+          end
+          it { save_and_open_page }
+          it { current_path.should == review_invitations_path }
+        end
+
+
       end
 
 

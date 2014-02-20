@@ -17,14 +17,14 @@
 <% end %>
 
 <br/><br/>
-<%= form_tag({:action => "send_invitations", :controller => "invitations"},{:class => 'form-horizontal', :id => 'review_invitations'}) do %>
+<%= form_tag({:action => "confirm"},{:class => 'form-horizontal', :id => 'review_invitations'}) do %>
   <!-- PROGRAM -->
   <div id="program_group" class="row">
     <div class="span4 form-label">
       <span class="form-label text-info"><%= t('terms.program') %>:</span>
     </div>
     <div class="span8">
-      <span><%= session[:invite_users_program_name] %></span>
+      <span><%= @program.name %></span>
     </div>
   </div>
 
@@ -34,7 +34,7 @@
       <span class="form-label text-info"><%= t('terms.invitation_type') %>:</span>
     </div>
     <div class="span8">
-      <span><%= user_level(session[:invite_users_invitation_type].to_s) %></span>
+      <span><%= user_level_to_s(@invitation.user_level) %></span>
     </div>
   </div>
 
@@ -70,7 +70,7 @@
       <%= link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn btn-cancel") %>
     </div>
     <div class="span6">
-      <%= link_to(I18n.t('terms.back'), invite_users_address_path, :class => "btn") %>
+      <%= link_to(I18n.t('terms.back'), address_invitations_path, :class => "btn") %>
       <%= submit_tag(I18n.t('invitations.form.buttons.send_invitations'), :class => 'btn btn-success') %>
     </div>
   </div>

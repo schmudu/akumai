@@ -9,14 +9,17 @@
 / errors
 = if @invitation.errors.any? 
   #error_explanation
-    %h2= #{pluralize(@invitation.errors.count, "error")} prohibited this invitation from being saved:
+    %h2= "#{pluralize(@invitation.errors.count, "error")} prohibited this invitation from being saved:"
     %ul
       -@invitation.errors.full_messages.each do |msg| 
         %li= msg 
 
 %br/
 %br/
-= form_for(@invitation, url: {:action => :review }, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
+= form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
+  / id
+  = hidden_field_tag(:id, @invitation.slug)
+
   / program
   #program_group.row
     .span4.form-label

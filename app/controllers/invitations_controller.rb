@@ -1,7 +1,7 @@
 class InvitationsController < ApplicationController
   include HashHelper, InvitationsHelper, UsersHelper 
   before_filter :authenticate_user!
-  before_action :set_invitation, only: [:show, :edit, :update, :destroy]
+  before_action :set_invitation, only: [:show, :edit, :update, :destroy, :review, :confirm]
 
   def invite_users_type
     @errors = {}
@@ -158,11 +158,28 @@ class InvitationsController < ApplicationController
       #redirect_to @invitation
     else
       @programs = current_user.staff_level_programs
-      render action: 'new' 
+      #render action: 'new' 
+      render :new
     end
   end
 
   def review
+    level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS }
+    unless @invitation.update(invitation_params_review.merge(level_hash))
+      render :address
+    else
+      @program = Program.find_by_id(@invitation.program_id)
+      @emails = clean_and_split_email_address_to_a(@invitation.recipient_emails)
+    end
+  end
+
+  def confirm
+    level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW }
+    unless @invitation.update(invitation_params_send.merge(level_hash))
+      render :review
+    else
+      #puts "=== recipient emails:#{@invitation.recipient_emails}"
+    end
   end
 
   # GET /invitations/1/edit
@@ -215,6 +232,14 @@ class InvitationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def invitation_params_address
       params.require(:invitation).permit(:name, :program_id, :user_level)
+    end
+
+    def invitation_params_review
+      params.require(:invitation).permit(:recipient_emails)
+    end
+
+    def invitation_params_send
+      params.require(:invitation).permit(:something)
     end
 
     def valid_invitation_recipients?(sender, emails, program_slug, invitation_level)

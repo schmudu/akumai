@@ -44,6 +44,35 @@ describe "InvitationPages" do
             fill_in "invitation_recipient_emails", :with => "abc@abc.com"
             click_button I18n.t('invitations.form.buttons.review_invitations')
           end
+          it { current_path.should == review_invitations_path }
+        end
+
+
+      end
+
+
+    end
+    describe "inviting staff" do
+      describe "content" do
+        it { should have_content(I18n.t('invitations.form.messages.steps', index:1))}
+        it { should have_xpath("//label[@class='control-label' and contains(.,'#{I18n.t('terms.program')}')]") }
+      end
+
+      describe "valid input to address_invitations_path" do
+        before do
+          fill_in "invitation_name", :with => "Test Invitation"
+          select("#{@program.name}", from: 'invitation_program_id')
+          choose('radio_staff')
+          click_button I18n.t('terms.next')
+        end
+
+        it { current_path.should == address_invitations_path }
+
+        describe "valid input to review_invitations_path" do
+          before do
+            fill_in "invitation_recipient_emails", :with => "abc@abc.com"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+          end
           it { save_and_open_page }
           it { current_path.should == review_invitations_path }
         end

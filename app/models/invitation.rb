@@ -9,6 +9,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :program
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
   has_many :student_entries, dependent: :destroy
+  accepts_nested_attributes_for :student_entries, reject_if: lambda { |attr| attr[:email].blank? && attr[:student_id].blank? }
 
 
   # validation rules
@@ -70,6 +71,11 @@ class Invitation < ActiveRecord::Base
   # Friendly_Id code to only update the url for new records
   def should_generate_new_friendly_id?
     new_record? || slug.blank?
+  end
+
+  def is_for_student?
+    return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
+    false
   end
 
   private
@@ -135,25 +141,33 @@ class Invitation < ActiveRecord::Base
     def has_valid_saved_addresses
       if (saved == false)
         #no bypass
-        if user_level_is_student?
-          student_entries.each do |entry|
-            if (!entry.valid? || entry.saved)
-              # if entry is invalid or is bypassing validation, then error b/c this invitation does not have bypass
-              errors.add(:id, I18n.t('invitations.form.errors.has_invalid_student_entries')) 
-              return
+        if is_for_student?
+          if (student_entries.count == 0)
+            errors.add(:student_entries, "must have at least one student entry.")
+          else
+            student_entries.each do |entry|
+              if (!entry.valid? || entry.saved)
+                # if entry is invalid or is bypassing validation, then error b/c this invitation does not have bypass
+                errors.add(:id, I18n.t('invitations.form.errors.has_invalid_student_entries')) 
+                return
+              end
             end
           end
         else
           #email_recipients, need to validate
           result = self.valid_email_addresses?(recipient_emails)
-          errors.add(:recipient_emails, I18n.t('invitations.form.errors.email_format')) if (result[:valid] == false)
+          if ((result[:emails].nil?) || (result[:emails].count == 0))
+            errors.add(:recipient_emails, "must have at least one email in invitation.")
+          else
+            errors.add(:recipient_emails, I18n.t('invitations.form.errors.email_format')) if (result[:valid] == false)
+          end
         end
       end
     end
 
     def invitation_types_have_correct_addresses
-      errors.add(:recipient_emails, I18n.t('invitations.form.errors.non_student_has_student_entries')) if ((user_level_is_admin_or_staff?) && has_student_entries?)
-      errors.add(:recipient_emails, I18n.t('invitations.form.errors.students_have_email_addresses')) if(user_level_is_student? && has_email_recipients?)
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.non_student_has_student_entries')) if ((!is_for_student?) && has_student_entries?)
+      errors.add(:recipient_emails, I18n.t('invitations.form.errors.students_have_email_addresses')) if(is_for_student? && has_email_recipients?)
     end
 
     def is_passed_stage_type?
@@ -256,15 +270,5 @@ class Invitation < ActiveRecord::Base
       end
 
       errors[:error_duplicate_invitation] = "true" unless invitations.empty?
-    end
-
-    def user_level_is_admin_or_staff?
-      return true if (user_level == ConstantsHelper::ROLE_LEVEL_ADMIN || user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
-      false
-    end
-
-    def user_level_is_student?
-      return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
-      false
     end
 end

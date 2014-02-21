@@ -24,7 +24,7 @@
   #program_group.row
     .span4.form-label
       %span{:class => "form-label text-info"}
-        = "#{t('terms.program')} :"
+        = "#{t('terms.program')}"
     .span8
       %span
         - unless session[:invite_users_program_name].nil?
@@ -36,18 +36,32 @@
   #invitation_group.row
     .span4.form-label
       %span{:class => "form-label text-info"}
-        = "#{t('terms.invitation_type')} :"
+        = "#{t('terms.invitation_type')}"
     .span8
       %span
         = user_level_to_s(@invitation.user_level)
+
+  / divider
+  .row
+    .span2
+    .span10.divider_line
 
   / address
   #invitation_group.row
     #email_group.span4.form-label.control-group{:class => @invitation.errors.messages[:recipient_emails].nil? ? "" : "error" }
       %span{:class=>"form-label text-info"}
-        = "#{t('terms.email_addresses')} :"
+        = "#{t('invitations.form.prompt.student_entries')}"
     .span8
-      = f.text_area(:recipient_emails, :rows => "10") 
+      %table.table.table-striped#student_entries
+        %thead
+          %tr
+            %th Student ID
+            %th Student Email
+        = f.fields_for :student_entries do |se_form| 
+          %tr
+            %td= se_form.text_field :email
+            %td= se_form.text_field :student_id
+
 
   .row
     .span4

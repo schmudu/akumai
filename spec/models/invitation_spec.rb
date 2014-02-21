@@ -775,6 +775,37 @@ describe Invitation do
         it { should be_valid }
       end
 
+      describe "staff invitation not be valid with no student entries NOR email_recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.saved = false
+          @invitation.recipient_emails = ""
+          puts "inspect?#{@invitation.valid?} inspect?:#{@invitation.errors.inspect}"
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "student invitation not be valid with no student entries NOR email_recipients without validation bypass" do
+        before do
+          # save in type mode
+          @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @invitation.saved = false
+          @invitation.recipient_emails = ""
+        end
+
+        it { should_not be_valid }
+      end
+
       describe "not be valid with no student entries NOR email_recipients without validation bypass" do
         before do
           # save in type mode
@@ -784,6 +815,7 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.saved = false
           @invitation.recipient_emails = ""
+          puts "inspect?#{@invitation.valid?} inspect?:#{@invitation.errors.inspect}"
         end
 
         it { should_not be_valid }

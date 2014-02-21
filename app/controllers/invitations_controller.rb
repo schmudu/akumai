@@ -155,7 +155,7 @@ class InvitationsController < ApplicationController
 
     if @invitation.save
       @program = Program.find_by_id(@invitation.program_id)
-      #redirect_to @invitation
+      ConstantsHelper::INVITATION_STUDENT_ENTRIES_DEFAULT.times { @invitation.student_entries.build } if @invitation.is_for_student?  # auto-populate entries
     else
       @programs = current_user.staff_level_programs
       #render action: 'new' 
@@ -165,11 +165,14 @@ class InvitationsController < ApplicationController
 
   def review
     level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS }
-    unless @invitation.update(invitation_params_review.merge(level_hash))
-      render :address
-    else
-      @program = Program.find_by_id(@invitation.program_id)
+    @program = Program.find_by_id(@invitation.program_id)
+    if @invitation.update(invitation_params_review.merge(level_hash))
+      logger.info "===UPDATE SUCCESSFUL. #{@invitation.inspect} valid?#{@invitation.valid?} student_entries?#{@invitation.student_entries.count}"
       @emails = clean_and_split_email_address_to_a(@invitation.recipient_emails)
+    else
+      logger.info "===UPDATE UNSUCCESSFUL. #{@invitation.inspect}"
+      ConstantsHelper::INVITATION_STUDENT_ENTRIES_DEFAULT.times { @invitation.student_entries.build } if @invitation.is_for_student?  # auto-populate entries
+      render :address
     end
   end
 
@@ -235,7 +238,7 @@ class InvitationsController < ApplicationController
     end
 
     def invitation_params_review
-      params.require(:invitation).permit(:recipient_emails)
+      params.require(:invitation).permit(:recipient_emails, student_entries_attributes: [:email, :student_id])
     end
 
     def invitation_params_send

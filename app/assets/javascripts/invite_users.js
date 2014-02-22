@@ -90,6 +90,23 @@ $(document).ready(function(){
       });
   });
 
+  $("#add_student_entries").click(function(){
+    alert("inserting");
+    // insert additional student entry rows
+    var last_entry_row = $(".last_row").prev();
+    var last_entry_id = last_entry_row.children(":first").children(":first").attr("id");
+    var string_start = "attributes_";
+    var start_length = string_start.length;
+    var index_start =  last_entry_id.indexOf(string_start) + start_length;
+    var string_end = "_email";
+    var index_end = last_entry_id.indexOf(string_end);
+    var last_row_num = last_entry_id.substr(index_start, index_end-index_start);
+    //alert("last row number: " + last_row_num);
+
+    var element_insert = $("<tr><td>Hello there</td><td></td></tr>");
+    element_insert.insertAfter(last_entry_row);
+
+  });
 
   $(".btn-cancel").attr('href', '#');
 

@@ -143,7 +143,7 @@ class Invitation < ActiveRecord::Base
         #no bypass
         if is_for_student?
           if (student_entries.count == 0)
-            errors.add(:student_entries, "must have at least one student entry.")
+            errors.add(:student_entries, I18n.t('invitations.form.errors.existence_student_entry'))
           else
             student_entries.each do |entry|
               if (!entry.valid? || entry.saved)
@@ -157,7 +157,7 @@ class Invitation < ActiveRecord::Base
           #email_recipients, need to validate
           result = self.valid_email_addresses?(recipient_emails)
           if ((result[:emails].nil?) || (result[:emails].count == 0))
-            errors.add(:recipient_emails, "must have at least one email in invitation.")
+            errors.add(:recipient_emails, I18n.t('invitations.form.errors.existence_email'))
           else
             errors.add(:recipient_emails, I18n.t('invitations.form.errors.email_format')) if (result[:valid] == false)
           end

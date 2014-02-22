@@ -1,5 +1,6 @@
 - provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:1)})") 
 = javascript_include_tag "form_utilities"
+= javascript_include_tag "invitations"
 
 %h2= "Review Invitations ( #{t('invitations.form.messages.steps', index:2)} )"
 
@@ -61,6 +62,11 @@
           %tr
             %td= se_form.text_field :email
             %td= se_form.text_field :student_id
+  #invitation_action.row
+    .span4
+    .span8
+      %a.btn#add_student_entries Add Entries
+            
 
 
   .row

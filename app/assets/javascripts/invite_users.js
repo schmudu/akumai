@@ -51,6 +51,38 @@ function setInvitationLevel(program_value){
     });
   }
 
+function insertStudentEntryRow(row_number){
+  var element_insert = $("<tr>\
+    <td>\
+      <input id='invitation_student_entries_attributes_" + row_number +  "_student_email' \
+        name='invitation[student_entries_attributes][" + row_number + "][student_email]'\
+        type='text' value='Student Email'> \
+    </td>\
+    <td>\
+      <input id='invitation_student_entries_attributes_" + row_number + "_student_id'\
+        name='invitation[student_entries_attributes][" + row_number + "][student_id]' \
+        type='text' value='Student ID'> \
+    </td>");
+  $("#student_entries").append(element_insert);
+
+  // listeners
+  // email
+  $("#invitation_student_entries_attributes_" + row_number + "_student_email").bind("click focus", function(){
+    setFormTextFocus("#invitation_student_entries_attributes_" + row_number + "_student_email", STUDENT_INVITATION_DEFAULT_EMAIL);
+  });
+  $("#invitation_student_entries_attributes_" + row_number + "_student_email").bind("blur", function(){
+    setFormTextBlur("#invitation_student_entries_attributes_" + row_number + "_student_email", STUDENT_INVITATION_DEFAULT_EMAIL);
+  });
+
+  // id
+  $("#invitation_student_entries_attributes_" + row_number + "_student_id").bind("click focus", function(){
+    setFormTextFocus("#invitation_student_entries_attributes_" + row_number + "_student_id", STUDENT_INVITATION_DEFAULT_ID);
+  });
+  $("#invitation_student_entries_attributes_" + row_number + "_student_id").bind("blur", function(){
+    setFormTextBlur("#invitation_student_entries_attributes_" + row_number + "_student_id", STUDENT_INVITATION_DEFAULT_ID);
+  });
+}
+
 $(document).ready(function(){
   function getHost(href) {
     var l = document.createElement("a");
@@ -91,21 +123,26 @@ $(document).ready(function(){
   });
 
   $("#add_student_entries").click(function(){
-    alert("inserting");
     // insert additional student entry rows
-    var last_entry_row = $(".last_row").prev();
+
+    // retrieve last row
+    var last_entry_row = $("#student_entries tr").last();
     var last_entry_id = last_entry_row.children(":first").children(":first").attr("id");
     var string_start = "attributes_";
+
+    // get last row number from id
     var start_length = string_start.length;
     var index_start =  last_entry_id.indexOf(string_start) + start_length;
     var string_end = "_email";
     var index_end = last_entry_id.indexOf(string_end);
     var last_row_num = last_entry_id.substr(index_start, index_end-index_start);
-    //alert("last row number: " + last_row_num);
 
-    var element_insert = $("<tr><td>Hello there</td><td></td></tr>");
-    element_insert.insertAfter(last_entry_row);
-
+    // insert row (5 of them)
+    insertStudentEntryRow(eval(Number(last_row_num)+1));
+    insertStudentEntryRow(eval(Number(last_row_num)+2));
+    insertStudentEntryRow(eval(Number(last_row_num)+3));
+    insertStudentEntryRow(eval(Number(last_row_num)+4));
+    insertStudentEntryRow(eval(Number(last_row_num)+5));
   });
 
   $(".btn-cancel").attr('href', '#');

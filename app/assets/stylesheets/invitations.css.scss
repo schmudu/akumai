@@ -22,6 +22,7 @@ ul{
 }
 
 table#student_entries{
+  margin-bottom: 0px;
   th{
     vertical-align: text-top;
     padding-top: 0px;
@@ -29,3 +30,8 @@ table#student_entries{
     padding-left: 20px;
   }
 }
+
+#invitation_action{
+  text-align: right;
+}
+

@@ -222,6 +222,17 @@ class InvitationsController < ApplicationController
   end
 
   private
+    def remove_default_params_review
+      if @invitation.is_for_student?
+        params[:invitation][:student_entries_attributes].each do |key, attr|
+          attr[:email] = "" if attr[:email] == ConstantsHelper::INVITATION_DEFAULT_STUDENT_EMAIL
+          attr[:student_id] = "" if attr[:student_id] == ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID
+        end
+      else
+        #attr[:student_id] = "" if attr[:student_id] == ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID
+      end
+    end
+
     def is_non_student?
       return true if ((session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_ADMIN) ||
         (session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STAFF))
@@ -238,6 +249,7 @@ class InvitationsController < ApplicationController
     end
 
     def invitation_params_review
+      remove_default_params_review
       params.require(:invitation).permit(:recipient_emails, student_entries_attributes: [:email, :student_id])
     end
 

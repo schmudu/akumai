@@ -56,18 +56,18 @@
       %table.table.table-striped#student_entries
         %thead
           %tr
-            %th Student ID
-            %th Student Email
+            %th= t('terms.student_email')
+            %th= t('terms.student_id')
         = f.fields_for :student_entries do |se_form| 
           %tr
-            %td= se_form.text_field :email
-            %td= se_form.text_field :student_id
+            %td= se_form.text_field :email, :value => (se_form.object.email.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_EMAIL : se_form.object.email)
+            %td= se_form.text_field :student_id, :value => (se_form.object.student_id.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID : se_form.object.student_id)
   #invitation_action.row
     .span4
     .span8
-      %a.btn#add_student_entries Add Entries
-            
-
+      %a.btn#add_student_entries= t('terms.add_rows')
+  %br/
+  %br/
 
   .row
     .span4

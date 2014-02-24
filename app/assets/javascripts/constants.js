@@ -6,6 +6,8 @@ var LEVEL_ROLE_STUDENT=0;
 
 // INVITATIONS
 var EMAIL_ADDRESSES_DEFAULT = "brian@yahoo.com,samantha@gmail.com";
+var STUDENT_INVITATION_DEFAULT_EMAIL = "Student Email";
+var STUDENT_INVITATION_DEFAULT_ID = "Student ID";
 
 // PATHS 
 var PATH_DASHBOARD = "/dashboard";

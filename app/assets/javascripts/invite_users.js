@@ -54,12 +54,12 @@ function setInvitationLevel(program_value){
 function insertStudentEntryRow(row_number){
   var element_insert = $("<tr>\
     <td>\
-      <input id='invitation_student_entries_attributes_" + row_number +  "_student_email' \
+      <input class='form_default_entry email_entry' id='invitation_student_entries_attributes_" + row_number +  "_student_email' \
         name='invitation[student_entries_attributes][" + row_number + "][student_email]'\
         type='text' value='Student Email'> \
     </td>\
     <td>\
-      <input id='invitation_student_entries_attributes_" + row_number + "_student_id'\
+      <input class='form_default_entry id_entry' id='invitation_student_entries_attributes_" + row_number + "_student_id'\
         name='invitation[student_entries_attributes][" + row_number + "][student_id]' \
         type='text' value='Student ID'> \
     </td>");
@@ -146,6 +146,52 @@ $(document).ready(function(){
   });
 
   $(".btn-cancel").attr('href', '#');
+
+  $(".email_entry").focus(function(){
+    var current_entry = $(this).val();
+
+    if(current_entry == STUDENT_INVITATION_DEFAULT_EMAIL){
+      // default entry, set class
+      $(this).val('');
+      $(this).removeClass("form_default_entry");
+    }
+  });
+
+  $(".email_entry").blur(function(){
+    var current_entry = $(this).val();
+
+    if((current_entry == STUDENT_INVITATION_DEFAULT_EMAIL) || (current_entry == '')){
+      // default entry, set class
+      $(this).val(STUDENT_INVITATION_DEFAULT_EMAIL);
+      $(this).addClass("form_default_entry");
+    }
+    else{
+      $(this).removeClass("form_default_entry");
+    }
+  });
+
+  $(".id_entry").focus(function(){
+    var current_entry = $(this).val();
+
+    if(current_entry == STUDENT_INVITATION_DEFAULT_ID){
+      // default entry, set class
+      $(this).val('');
+      $(this).removeClass("form_default_entry");
+    }
+  });
+
+  $(".id_entry").blur(function(){
+    var current_entry = $(this).val();
+
+    if((current_entry == STUDENT_INVITATION_DEFAULT_ID) || (current_entry == '')){
+      // default entry, set class
+      $(this).val(STUDENT_INVITATION_DEFAULT_ID);
+      $(this).addClass("form_default_entry");
+    }
+    else{
+      $(this).removeClass("form_default_entry");
+    }
+  });
 
   $("#email_addresses").focus(function(){
     setFormTextFocus("#email_addresses", EMAIL_ADDRESSES_DEFAULT);

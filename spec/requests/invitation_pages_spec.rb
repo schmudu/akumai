@@ -33,24 +33,51 @@ describe "InvitationPages" do
         before do
           fill_in "invitation_name", :with => "Test Invitation"
           select("#{@program.name}", from: 'invitation_program_id')
-          choose('radio_staff')
+          choose('radio_student')
           click_button I18n.t('terms.next')
         end
 
         it { current_path.should == address_invitations_path }
 
-        describe "valid input to review_invitations_path" do
+        describe "invalid input to review_invitations_path2" do
           before do
-            fill_in "invitation_recipient_emails", :with => "abc@abc.com"
+            fill_in "invitation_student_entries_attributes_0_email", :with => ""
+            fill_in "invitation_student_entries_attributes_0_student_id", :with => ""
             click_button I18n.t('invitations.form.buttons.review_invitations')
           end
+          it { current_path.should == address_invitations_path }
+        end
+
+        describe "valid input to review_invitations_path3" do
+          before do
+            fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
+            fill_in "invitation_student_entries_attributes_0_student_id", :with => "a001"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+          end
+          it { save_and_open_page }
           it { current_path.should == review_invitations_path }
         end
 
+        describe "valid input should increase the number of student entries" do
+          it "should increase student entry cound" do
+            expect do
+              fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
+              fill_in "invitation_student_entries_attributes_0_student_id", :with => "a001"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end.to change{StudentEntry.count}.by(1)
+          end
+        end
 
+        describe "invalid input should not increase the number of student entries" do
+          it "should increase student entry cound" do
+            expect do
+              fill_in "invitation_student_entries_attributes_0_email", :with => ""
+              fill_in "invitation_student_entries_attributes_0_student_id", :with => ""
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end.to change{StudentEntry.count}.by(0)
+          end
+        end
       end
-
-
     end
     describe "inviting staff" do
       describe "content" do
@@ -73,7 +100,6 @@ describe "InvitationPages" do
             fill_in "invitation_recipient_emails", :with => "abc@abc.com"
             click_button I18n.t('invitations.form.buttons.review_invitations')
           end
-          it { save_and_open_page }
           it { current_path.should == review_invitations_path }
         end
 

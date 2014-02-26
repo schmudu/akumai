@@ -386,9 +386,12 @@ describe Invitation do
     describe "creator id" do
       describe "set to staff inviting students" do
         before do 
-          @invitation.recipient_emails = ""
-          @invitation.saved = true
           @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+          @invitation.recipient_emails =""
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+          @invitation.save
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com")
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.creator_id = @staff_in_program.id 
         end
         it { should be_valid }
@@ -785,7 +788,6 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.saved = false
           @invitation.recipient_emails = ""
-          puts "inspect?#{@invitation.valid?} inspect?:#{@invitation.errors.inspect}"
         end
 
         it { should_not be_valid }
@@ -815,7 +817,6 @@ describe Invitation do
           @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
           @invitation.saved = false
           @invitation.recipient_emails = ""
-          puts "inspect?#{@invitation.valid?} inspect?:#{@invitation.errors.inspect}"
         end
 
         it { should_not be_valid }

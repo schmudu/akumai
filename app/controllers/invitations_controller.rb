@@ -164,6 +164,7 @@ class InvitationsController < ApplicationController
   end
 
   def review
+    #validate_student_entries_attributes_for_review_stage if @invitation.is_for_student?
     level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS }
     @program = Program.find_by_id(@invitation.program_id)
     if @invitation.update(invitation_params_review.merge(level_hash))
@@ -250,11 +251,20 @@ class InvitationsController < ApplicationController
 
     def invitation_params_review
       remove_default_params_review
+      validate_student_entries_attributes_for_review_stage if @invitation.is_for_student?
       params.require(:invitation).permit(:recipient_emails, student_entries_attributes: [:email, :student_id])
     end
 
     def invitation_params_send
       params.require(:invitation).permit(:something)
+    end
+
+    def validate_student_entries_attributes_for_review_stage
+      # iterate through student attributes if none of them are set then add error
+      params[:invitation][:student_entries_attributes].each do |key, attr|
+        return if (!attr[:email].blank? && !attr[:student_id].blank?)
+      end
+      @invitation.errors.add(:student_entries_attributes, "something is wrong") 
     end
 
     def valid_invitation_recipients?(sender, emails, program_slug, invitation_level)

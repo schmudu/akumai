@@ -1,3 +1,4 @@
+= "inspection:#{@invitation.errors.inspect}\n"
 - provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:1)})") 
 = javascript_include_tag "form_utilities"
 = javascript_include_tag "invitations"
@@ -14,7 +15,6 @@
     %ul
       -@invitation.errors.full_messages.each do |msg| 
         %li= msg 
-
 %br/
 %br/
 = form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|

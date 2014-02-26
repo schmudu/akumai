@@ -18,6 +18,7 @@ class Invitation < ActiveRecord::Base
   # during stage ADDRESSES: user can bypass validation if they want to save their progress (see saved column)
   # during stage REVIEW: all attributes need to be validated
   # general validation
+  
   validates_presence_of :creator_id, :program_id, :name
   validate :has_only_email_recipients_or_student_entries,
             :existence_of_program,
@@ -31,7 +32,7 @@ class Invitation < ActiveRecord::Base
   validate :invitation_types_have_correct_addresses, if: "is_passed_stage_type?"
 
   # stage validation - address
-  #validate :has_valid_saved_addresses, if: "is_stage_address?"
+  validate :has_at_least_one_student_entry, if: "is_passed_stage_type?"
   validate :has_valid_saved_addresses, if: "is_passed_stage_type?"
 
   # stage validation - review
@@ -142,9 +143,11 @@ class Invitation < ActiveRecord::Base
       if (saved == false)
         #no bypass
         if is_for_student?
+=begin
           if (student_entries.count == 0)
             errors.add(:student_entries, I18n.t('invitations.form.errors.existence_student_entry'))
           else
+=end
             student_entries.each do |entry|
               if (!entry.valid? || entry.saved)
                 # if entry is invalid or is bypassing validation, then error b/c this invitation does not have bypass
@@ -152,7 +155,7 @@ class Invitation < ActiveRecord::Base
                 return
               end
             end
-          end
+          #end
         else
           #email_recipients, need to validate
           result = self.valid_email_addresses?(recipient_emails)
@@ -270,5 +273,12 @@ class Invitation < ActiveRecord::Base
       end
 
       errors[:error_duplicate_invitation] = "true" unless invitations.empty?
+    end
+
+    def has_at_least_one_student_entry
+      #puts "\n\n==AFTER VALIDATION: status:#{status} student_entries:#{self.student_entries.reject(&:marked_for_destruction?).count}\n\n"
+      if is_for_student?
+        errors.add(:base, "Need to have at least one student entries") if self.student_entries.reject(&:marked_for_destruction?).count < 1
+      end
     end
 end

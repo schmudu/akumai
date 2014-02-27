@@ -81,9 +81,7 @@ en:
         users:
           one: "%{count} user"
           other: "%{count} users"
-        invitations:
-          one: "Review the invitation details and press 'Send Invitation' to when you are ready."
-          other: "Review the invitation details and press 'Send Invitations' to when you are ready."
+        invitations: "Review the invitation details and press 'Send Invitation'."
       warnings:
         admin_invitations: "Warning: You are inviting Admin users.  Admin users have the ability to add/remove users as well as data."
       title:

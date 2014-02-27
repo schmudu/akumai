@@ -1,0 +1,4 @@
+- if @invitation.is_for_student?
+  = render 'form_invite_users_review_students'
+- else
+  = render 'form_invite_users_review_non_students'

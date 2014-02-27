@@ -168,18 +168,18 @@ class InvitationsController < ApplicationController
     level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS }
     @program = Program.find_by_id(@invitation.program_id)
     if @invitation.update(invitation_params_review.merge(level_hash))
-      logger.info "===UPDATE SUCCESSFUL. #{@invitation.inspect} valid?#{@invitation.valid?} student_entries?#{@invitation.student_entries.count}"
-      @emails = clean_and_split_email_address_to_a(@invitation.recipient_emails)
+      #logger.info "===UPDATE SUCCESSFUL. #{@invitation.inspect} valid?#{@invitation.valid?} student_entries?#{@invitation.student_entries.count}"
+      @emails = clean_and_split_email_address_to_a(@invitation.recipient_emails) if !@invitation.is_for_student?
     else
-      logger.info "===UPDATE UNSUCCESSFUL. #{@invitation.inspect}"
+      #logger.info "===UPDATE UNSUCCESSFUL. #{@invitation.inspect}"
       ConstantsHelper::INVITATION_STUDENT_ENTRIES_DEFAULT.times { @invitation.student_entries.build } if @invitation.is_for_student?  # auto-populate entries
       render :address
     end
   end
 
   def confirm
-    level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW }
-    unless @invitation.update(invitation_params_send.merge(level_hash))
+    level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW}
+    unless @invitation.update(level_hash)
       render :review
     else
       #puts "=== recipient emails:#{@invitation.recipient_emails}"
@@ -246,17 +246,13 @@ class InvitationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def invitation_params_address
-      params.require(:invitation).permit(:name, :program_id, :user_level)
+      params.require(:invitation).permit(:name, :program_id, :user_level, :status)
     end
 
     def invitation_params_review
       remove_default_params_review
       validate_student_entries_attributes_for_review_stage if @invitation.is_for_student?
-      params.require(:invitation).permit(:recipient_emails, student_entries_attributes: [:email, :student_id])
-    end
-
-    def invitation_params_send
-      params.require(:invitation).permit(:something)
+      params.require(:invitation).permit(:recipient_emails, :status, student_entries_attributes: [:email, :student_id])
     end
 
     def validate_student_entries_attributes_for_review_stage

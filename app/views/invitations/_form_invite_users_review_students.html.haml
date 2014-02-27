@@ -1,22 +1,15 @@
-- provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:1)})") 
+- provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:3)})") 
 = javascript_include_tag "form_utilities"
 = javascript_include_tag "invitations"
 
-%h2= "Review Invitations ( #{t('invitations.form.messages.steps', index:2)} )"
+%h2= "Review Invitations ( #{t('invitations.form.messages.steps', index:3)} )"
 
 .row#review_instructions
-  = t('invitations.form.title.enter_email_addresses.students')
+  = t('invitations.form.review.invitations')
 
-/ errors
-- if @invitation.errors.any? 
-  #error_explanation
-    %h2= "#{pluralize(@invitation.errors.count, "error")} prohibited this invitation from being saved:"
-    %ul
-      -@invitation.errors.full_messages.each do |msg| 
-        %li= msg
 %br/
 %br/
-= form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
+= form_for(@invitation, url: {action: :confirm }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
   / id
   = hidden_field_tag(:id, @invitation.slug)
 
@@ -41,6 +34,15 @@
       %span
         = user_level_to_s(@invitation.user_level)
 
+  / number of invites
+  #invitation_group.row
+    .span4.form-label
+      %span{:class => "form-label text-info"}
+        = "#{t('terms.number_of_invitations')}"
+    .span8
+      %span
+        = @invitation.student_entries.count
+
   / divider
   .row
     .span2
@@ -57,14 +59,11 @@
           %tr
             %th= t('terms.student_email')
             %th= t('terms.student_id')
-        = f.fields_for :student_entries do |se_form| 
+        = @invitation.student_entries do |entry| 
           %tr
-            %td= se_form.text_field :email, :value => (se_form.object.email.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_EMAIL : se_form.object.email), :class => (se_form.object.email.blank? ? "form_default_entry email_entry" : "email_entry")
-            %td= se_form.text_field :student_id, :value => (se_form.object.student_id.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID : se_form.object.student_id), :class => (se_form.object.student_id.blank? ? "form_default_entry id_entry" : "id_entry")
-  #invitation_action.row
-    .span4
-    .span8
-      %a.btn#add_student_entries= t('terms.add_rows')
+            %td= entry.email
+            %td= entry.student_id
+
   %br/
   %br/
 
@@ -74,4 +73,4 @@
       = link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn btn-cancel")
     .span6
       = link_to(I18n.t('terms.back'), address_invitations_path(@invitation), :class => "btn")
-      = f.submit(I18n.t('invitations.form.buttons.review_invitations'), :class => 'btn btn-success') 
+      = f.submit(I18n.t('invitations.form.buttons.send_invitations'), :class => 'btn btn-success') 

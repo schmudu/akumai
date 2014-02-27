@@ -39,26 +39,7 @@ describe "InvitationPages" do
 
         it { current_path.should == address_invitations_path }
 
-        describe "invalid input to review_invitations_path2" do
-          before do
-            fill_in "invitation_student_entries_attributes_0_email", :with => ""
-            fill_in "invitation_student_entries_attributes_0_student_id", :with => ""
-            click_button I18n.t('invitations.form.buttons.review_invitations')
-          end
-          it { current_path.should == address_invitations_path }
-        end
-
-        describe "valid input to review_invitations_path3" do
-          before do
-            fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
-            fill_in "invitation_student_entries_attributes_0_student_id", :with => "a001"
-            click_button I18n.t('invitations.form.buttons.review_invitations')
-          end
-          it { save_and_open_page }
-          it { current_path.should == review_invitations_path }
-        end
-
-        describe "valid input should increase the number of student entries" do
+        describe "valid input should increase the number of student entries by 1" do
           it "should increase student entry cound" do
             expect do
               fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
@@ -68,7 +49,43 @@ describe "InvitationPages" do
           end
         end
 
-        describe "invalid input should not increase the number of student entries" do
+        describe "valid input should increase the number of student entries by 2" do
+          it "should increase student entry cound" do
+            expect do
+              fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
+              fill_in "invitation_student_entries_attributes_0_student_id", :with => "a001"
+              fill_in "invitation_student_entries_attributes_1_email", :with => "abcd@abc.com"
+              fill_in "invitation_student_entries_attributes_1_student_id", :with => "a002"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end.to change{StudentEntry.count}.by(2)
+          end
+        end
+
+        describe "invalid input with blank email should not increase the number of student entries" do
+          it "should increase student entry cound" do
+            expect do
+              fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
+              fill_in "invitation_student_entries_attributes_0_student_id", :with => "a001"
+              fill_in "invitation_student_entries_attributes_1_email", :with => "abcd@abc.com"
+              fill_in "invitation_student_entries_attributes_1_student_id", :with => ""
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end.to change{StudentEntry.count}.by(0)
+          end
+        end
+
+        describe "invalid input with blank student id should not increase the number of student entries" do
+          it "should increase student entry cound" do
+            expect do
+              fill_in "invitation_student_entries_attributes_0_email", :with => ""
+              fill_in "invitation_student_entries_attributes_0_student_id", :with => "a001"
+              fill_in "invitation_student_entries_attributes_1_email", :with => "abcd@abc.com"
+              fill_in "invitation_student_entries_attributes_1_student_id", :with => "a002"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end.to change{StudentEntry.count}.by(0)
+          end
+        end
+
+        describe "blank input should not increase the number of student entries" do
           it "should increase student entry cound" do
             expect do
               fill_in "invitation_student_entries_attributes_0_email", :with => ""
@@ -77,8 +94,45 @@ describe "InvitationPages" do
             end.to change{StudentEntry.count}.by(0)
           end
         end
+
+        describe "invalid input without email should not increase the number of student entries" do
+          it "should increase student entry cound" do
+            expect do
+              fill_in "invitation_student_entries_attributes_0_email", :with => ""
+              fill_in "invitation_student_entries_attributes_0_student_id", :with => "a0001"
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end.to change{StudentEntry.count}.by(0)
+          end
+        end
+
+        describe "invalid input without student id should not increase the number of student entries" do
+          it "should increase student entry cound" do
+            expect do
+              fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
+              fill_in "invitation_student_entries_attributes_0_student_id", :with => ""
+              click_button I18n.t('invitations.form.buttons.review_invitations')
+            end.to change{StudentEntry.count}.by(0)
+          end
+        end
+
+        describe "valid input to review_invitations_path" do
+          before do
+            fill_in "invitation_student_entries_attributes_0_email", :with => "abc@abc.com"
+            fill_in "invitation_student_entries_attributes_0_student_id", :with => "a001"
+            click_button I18n.t('invitations.form.buttons.review_invitations')
+          end
+          it { current_path.should == review_invitations_path }
+
+          describe "valid input to confirm_invitations_path" do
+            before do
+              click_button I18n.t('invitations.form.buttons.send_invitations')
+            end
+            it { current_path.should == confirm_invitations_path }
+          end
+        end
       end
     end
+
     describe "inviting staff" do
       describe "content" do
         it { should have_content(I18n.t('invitations.form.messages.steps', index:1))}
@@ -101,12 +155,15 @@ describe "InvitationPages" do
             click_button I18n.t('invitations.form.buttons.review_invitations')
           end
           it { current_path.should == review_invitations_path }
+
+          describe "valid input to confirm_invitations_path" do
+            before do
+              click_button I18n.t('invitations.form.buttons.send_invitations')
+            end
+            it { current_path.should == confirm_invitations_path }
+          end
         end
-
-
       end
-
-
     end
   end
 =begin
@@ -687,7 +744,7 @@ describe "InvitationPages" do
 
               describe "content on page" do
                 it "should go to review invitations path" do
-                  current_path.should == send_invitations_path
+                  current_path.should == confirm_invitations_path
                 end
 
                 it { should have_content(I18n.t('invitations.form.messages.sent_invitations', count: 1)) }
@@ -707,7 +764,7 @@ describe "InvitationPages" do
 
               describe "content on page" do
                 it "should go to review invitations path" do
-                  current_path.should == send_invitations_path
+                  current_path.should == confirm_invitations_path
                 end
 
                 it { should have_content(I18n.t('invitations.form.messages.sent_invitations', count: 2)) }

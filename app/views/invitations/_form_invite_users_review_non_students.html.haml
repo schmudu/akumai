@@ -1,32 +1,20 @@
-- provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:1)})") 
-= javascript_include_tag "form_utilities"
+- provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:3)})") 
 
-%h2= "Review Invitations ( #{t('invitations.form.messages.steps', index:2)} )"
+%h2= "Review Invitations ( #{t('invitations.form.messages.steps', index:3)} )"
 
 .row#review_instructions
-  - if (@invitation.user_level == ConstantsHelper::ROLE_LEVEL_ADMIN)
-    = t('invitations.form.title.enter_email_addresses.admin')
-  - elsif (@invitation.user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
-    = t('invitations.form.title.enter_email_addresses.staff')
+  = t('invitations.form.review.invitations')
 
 - if (@invitation.user_level == ConstantsHelper::ROLE_LEVEL_ADMIN)
   %br/
   %br/
   .row.label.label-warning
     .span12
-      %h5= t('invitations.form.warnings.admin_invitations') 
-
-/ errors
-- if @invitation.errors.any? 
-  #error_explanation
-    %h2= "#{pluralize(@invitation.errors.count, "error")} prohibited this invitation from being saved:"
-    %ul
-      -@invitation.errors.full_messages.each do |msg| 
-        %li= msg 
+    %h5= t('invitations.form.warnings.admin_invitations') 
 
 %br/
 %br/
-= form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
+= form_for(@invitation, url: {action: :confirm }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
   / id
   = hidden_field_tag(:id, @invitation.slug)
 
@@ -51,13 +39,24 @@
       %span
         = user_level_to_s(@invitation.user_level)
 
+  / number of invites
+  #invitation_group.row
+    .span4.form-label
+      %span{:class => "form-label text-info"}
+        = "#{t('terms.number_of_invitations')}"
+    .span8
+      %span
+        = @emails.count
+
   / address
   #invitation_group.row
     #email_group.span4.form-label.control-group{:class => @invitation.errors.messages[:recipient_emails].nil? ? "" : "error" }
       %span{:class=>"form-label text-info"}
         = "#{t('terms.email_addresses')} :"
     .span8
-      = f.text_area(:recipient_emails, :rows => "10") 
+      %ul
+        - @emails.each do |email|
+          %li= email
 
   .row
     .span4
@@ -65,4 +64,4 @@
       = link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn btn-cancel")
     .span6
       = link_to(I18n.t('terms.back'), address_invitations_path(@invitation), :class => "btn")
-      = f.submit(I18n.t('invitations.form.buttons.review_invitations'), :class => 'btn btn-success') 
+      = f.submit(I18n.t('invitations.form.buttons.send_invitations'), :class => 'btn btn-success') 

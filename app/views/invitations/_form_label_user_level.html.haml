@@ -1,0 +1,7 @@
+#invitation_group.row
+  .span4.form-label
+    %span{:class => "form-label text-info"}
+      = "#{t('terms.invitation_type')}"
+  .span8
+    %span
+      = user_level_to_s(@invitation.user_level)

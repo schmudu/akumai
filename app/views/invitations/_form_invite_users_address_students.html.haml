@@ -7,39 +7,15 @@
 .row#review_instructions
   = t('invitations.form.title.enter_email_addresses.students')
 
-/ errors
-- if @invitation.errors.any? 
-  #error_explanation
-    %h2= "#{pluralize(@invitation.errors.count, "error")} prohibited this invitation from being saved:"
-    %ul
-      -@invitation.errors.full_messages.each do |msg| 
-        %li= msg
+= render 'form_errors'
 %br/
 %br/
 = form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
   / id
   = hidden_field_tag(:id, @invitation.slug)
 
-  / program
-  #program_group.row
-    .span4.form-label
-      %span{:class => "form-label text-info"}
-        = "#{t('terms.program')}"
-    .span8
-      %span
-        - unless session[:invite_users_program_name].nil?
-          = session[:invite_users_program_name]
-        - else
-          = @program.name
-
-  / user_level
-  #invitation_group.row
-    .span4.form-label
-      %span{:class => "form-label text-info"}
-        = "#{t('terms.invitation_type')}"
-    .span8
-      %span
-        = user_level_to_s(@invitation.user_level)
+  = render 'form_label_program'
+  = render 'form_label_user_level'
 
   / divider
   .row
@@ -68,10 +44,4 @@
   %br/
   %br/
 
-  .row
-    .span4
-    .span2
-      = link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn btn-cancel")
-    .span6
-      = link_to(I18n.t('terms.back'), address_invitations_path(@invitation), :class => "btn")
-      = f.submit(I18n.t('invitations.form.buttons.review_invitations'), :class => 'btn btn-success') 
+  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f

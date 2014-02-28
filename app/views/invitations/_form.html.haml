@@ -5,7 +5,7 @@
 
   / name
   #program_group.control-group{:class => @invitation.errors.messages[:name].nil? ? "" : "error"}
-    = f.label(:name, t('terms.name'), :class => 'control-label')
+    = f.label(:name, t('terms.invitation_name'), :class => 'control-label')
     - name_value = @invitation.name.blank? ? ConstantsHelper::INVITATION_NAME_DEFAULT : @invitation.name
     = f.text_field(:name, :value => name_value)
 

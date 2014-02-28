@@ -27,7 +27,7 @@
       %span{:class=>"form-label text-info"}
         = "#{t('terms.email_addresses')} :"
     .span8
-      = f.text_area(:recipient_emails, :rows => "10") 
+      = f.text_area(:recipient_emails, :rows => "10", :value => (@invitation.recipient_emails.blank? ? ConstantsHelper::INVITATION_DEFAULT_NON_STUDENT_EMAIL : @invitation.recipient_emails), :id => "email_addresses") 
 
 
-  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f
+  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.review_invitations')

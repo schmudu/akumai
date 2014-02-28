@@ -1,4 +1,3 @@
-= "#{@invitation.student_entries.inspect}\n\n"
 - provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:3)})") 
 = javascript_include_tag "form_utilities"
 = javascript_include_tag "invitations"
@@ -35,7 +34,7 @@
           %tr
             %th= t('terms.student_email')
             %th= t('terms.student_id')
-        - @invitation.student_entries do |entry| 
+        - @invitation.student_entries.each do |entry| 
           %tr
             %td= entry.email
             %td= entry.student_id
@@ -43,4 +42,4 @@
   %br/
   %br/
 
-  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f
+  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.send_invitations')

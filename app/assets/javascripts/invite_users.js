@@ -125,6 +125,8 @@ $(document).ready(function(){
   $("#add_student_entries").click(function(){
     // insert additional student entry rows
 
+    // TODO - get invidation id number and include it as a parameter to the insertStudentEntryRow method
+
     // retrieve last row
     var last_entry_row = $("#student_entries tr").last();
     var last_entry_id = last_entry_row.children(":first").children(":first").attr("id");
@@ -194,17 +196,17 @@ $(document).ready(function(){
   });
 
   $("#email_addresses").focus(function(){
-    setFormTextFocus("#email_addresses", EMAIL_ADDRESSES_DEFAULT);
+    setFormTextFocus("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
   });
 
   $("#email_addresses").click(function(){
-    setFormTextFocus("#email_addresses", EMAIL_ADDRESSES_DEFAULT);
+    setFormTextFocus("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
   });
 
   $("#email_addresses").blur(function(){
-    setFormTextBlur("#email_addresses", EMAIL_ADDRESSES_DEFAULT);
+    setFormTextBlur("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
   });
 
   // init methods
-  setFormTextBlur("#email_addresses", EMAIL_ADDRESSES_DEFAULT);
+  setFormTextBlur("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
 });

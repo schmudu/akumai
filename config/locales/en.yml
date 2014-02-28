@@ -97,6 +97,7 @@ en:
     add_rows: "Add Rows"
     back: "Back"
     email_addresses: "Email Addresses"
+    invitation_name: "Invitation Name"
     invitation_type: "Invitation Type"
     next: "Next"
     number_of_invitations: "Number of invitations"

@@ -27,5 +27,5 @@
         - @emails.each do |email|
           %li= email
 
-  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f
+  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.send_invitations') 
 

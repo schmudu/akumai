@@ -36,7 +36,9 @@
         = f.fields_for :student_entries do |se_form| 
           %tr
             %td= se_form.text_field :email, :value => (se_form.object.email.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_EMAIL : se_form.object.email), :class => (se_form.object.email.blank? ? "form_default_entry email_entry" : "email_entry")
-            %td= se_form.text_field :student_id, :value => (se_form.object.student_id.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID : se_form.object.student_id), :class => (se_form.object.student_id.blank? ? "form_default_entry id_entry" : "id_entry")
+            %td
+              = se_form.text_field :student_id, :value => (se_form.object.student_id.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID : se_form.object.student_id), :class => (se_form.object.student_id.blank? ? "form_default_entry id_entry" : "id_entry")
+              = se_form.hidden_field(:invitation_id, :value => @invitation.id)
   #invitation_action.row
     .span4
     .span8
@@ -44,4 +46,4 @@
   %br/
   %br/
 
-  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f
+  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.review_invitations') 

@@ -1,6 +1,0 @@
-<% if session[:invite_users_invitation_type].to_i == ConstantsHelper::ROLE_LEVEL_STUDENT %>
-  <%= render 'form_invite_users_address_students' %>
-<% else %>
-  <%= render 'form_invite_users_address_non_students' %>
-<% end %>
-

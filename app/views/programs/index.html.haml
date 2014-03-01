@@ -1,0 +1,15 @@
+- provide(:title, "Programs")
+%h1 Listing programs
+
+= link_to 'Create Program', new_program_path
+= will_paginate
+
+  %ul
+    - @programs.each do |program|
+      %li= link_to program.name, program
+
+= will_paginate
+
+%br/
+
+= link_to 'New Program', new_program_path

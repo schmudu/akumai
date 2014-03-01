@@ -28,7 +28,7 @@ describe InvitationsController do
     end
 
     it "routes to #send" do
-      post("/invitations/send").should route_to("invitations#send")
+      post("/invitations/confirm").should route_to("invitations#confirm")
     end
 
     it "routes to #update" do

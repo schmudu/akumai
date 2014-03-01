@@ -213,18 +213,18 @@ $(document).ready(function(){
     setFormTextBlur("#invitation_name", INVITATION_NAME_DEFAULT);
   });
 
-  $("#email_addresses").focus(function(){
-    setFormTextFocus("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
+  $("#invitation_recipient_emails").focus(function(){
+    setFormTextFocus("#invitation_recipient_emails", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
   });
 
-  $("#email_addresses").click(function(){
-    setFormTextFocus("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
+  $("#invitation_recipient_emails").click(function(){
+    setFormTextFocus("#invitation_recipient_emails", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
   });
 
-  $("#email_addresses").blur(function(){
-    setFormTextBlur("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
+  $("#invitation_recipient_emails").blur(function(){
+    setFormTextBlur("#invitation_recipient_emails", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
   });
 
   // init methods
-  setFormTextBlur("#email_addresses", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
+  setFormTextBlur("#invitation_recipient_emails", INVITATION_DEFAULT_NON_STUDENT_EMAIL);
 });

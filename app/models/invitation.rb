@@ -9,7 +9,9 @@ class Invitation < ActiveRecord::Base
   belongs_to :program
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
   has_many :student_entries, dependent: :destroy
-  accepts_nested_attributes_for :student_entries, reject_if: lambda { |attr| attr[:email].blank? && attr[:student_id].blank? }
+  accepts_nested_attributes_for :student_entries, 
+      reject_if: lambda { |attr| ((attr[:email].blank? && attr[:student_id].blank?) || Invitation.duplicate_entry(attr[:invitation_id], attr[:email], attr[:student_id])) }
+        
 
 
   # validation rules
@@ -53,6 +55,13 @@ class Invitation < ActiveRecord::Base
   #callbacks
   #after_validation :create_code
   #before_create :create_code
+
+  def self.duplicate_entry(invitation_id, email, student_id)
+    puts "\n\n=====invitation_id:#{invitation_id}"
+    student_entries = StudentEntry.where("invitation_id = ? AND email = ? AND student_id = ?", invitation_id, email, student_id)
+    return true unless student_entries.empty?
+    false
+  end
 
   def has_email_recipients?
     return false if (recipient_emails.nil? || recipient_emails.empty?)

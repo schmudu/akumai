@@ -252,7 +252,7 @@ class InvitationsController < ApplicationController
     def invitation_params_review
       remove_default_params_review
       validate_student_entries_attributes_for_review_stage if @invitation.is_for_student?
-      params.require(:invitation).permit(:recipient_emails, :status, student_entries_attributes: [:email, :student_id])
+      params.require(:invitation).permit(:recipient_emails, :status, student_entries_attributes: [:invitation_id, :email, :student_id])
     end
 
     def validate_student_entries_attributes_for_review_stage

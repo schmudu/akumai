@@ -70,33 +70,69 @@ describe Invitation do
 
   # test relationships
   describe "relationships" do
-    before do
-      @invitation.name = "Random Invitation"
-      @invitation.creator_id = @admin_in_program.id
-      @invitation.program_id = @program.id
-      @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
-      @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
-      @invitation.recipient_emails = "abc@abc.com"
-      @invitation.recipient_emails = ""
-      @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
-      @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
-      @invitation.creator_id = @staff_in_program.id 
-      @invitation.save
-      @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
-      @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com", :saved => false)
-      end
-    it { should be_valid }
+    describe "with a student entry" do
+      before do
+        @invitation.name = "Random Invitation"
+        @invitation.creator_id = @admin_in_program.id
+        @invitation.program_id = @program.id
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+        @invitation.recipient_emails = "abc@abc.com"
+        @invitation.recipient_emails = ""
+        @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+        @invitation.creator_id = @staff_in_program.id 
+        @invitation.save
+        end
 
-    describe "student entries" do
-      it do
-        Invitation.count.should == 1
-        StudentEntry.count.should == 1
+      describe "student entries" do
+        before do
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+          @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com", :saved => false)
+        end
+
+        it { should be_valid }
+        it do
+          Invitation.count.should == 1
+          StudentEntry.count.should == 1
+        end
+
+        it "should decrement the student entry count by -1" do
+          expect{@invitation.destroy}.to change{StudentEntry.count}.by(-1)
+        end
       end
 
-      it "should decrement the student entry count by -1" do
-        expect{@invitation.destroy}.to change{StudentEntry.count}.by(-1)
+=begin
+      describe "with valid student entry attributes" do
+        before do
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @params = { :student_entries_attributes => { "0" => { :email => "def@def.com", :student_id => "a0001", :invitation_id => @invitation.id} } } 
+          @invitation.update @params
+        end
+
+        it "should be valid with attributes" do
+          puts "====attributes:#{@invitation.student_entries.inspect}\n\n"
+          @invitation.should be_valid
+        end
       end
+
+      describe "with invalid student entry attributes" do
+        describe "with duplicate email addresses" do
+        before do
+          @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS
+          @params = { :student_entries_attributes => { "0" => { :email => "abc@abc.com", :student_id => "a0001", :invitation_id => @invitation.id},
+                                                        "1" => { :email => "abc@abc.com", :student_id => "a0001", :invitation_id => @invitation.id} } } 
+          @invitation.update @params
+        end
+
+        it "should be valid with attributes" do
+          puts "====attributes:#{@invitation.student_entries.inspect}\n\n"
+          @invitation.should_not be_valid
+        end
+        end
+      end
+=end
     end
+
   end
 
   describe "validation at type stage" do

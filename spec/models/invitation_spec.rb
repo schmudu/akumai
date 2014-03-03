@@ -30,6 +30,7 @@ describe Invitation do
   it { should respond_to(:slug) }
   it { should respond_to(:student_entries) }
   it { should respond_to(:user_level) }
+  it { should respond_to(:invites) }
 
   # test instance methods
   describe "instance methods" do
@@ -82,7 +83,7 @@ describe Invitation do
         @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
         @invitation.creator_id = @staff_in_program.id 
         @invitation.save
-        end
+      end
 
       describe "student entries" do
         before do

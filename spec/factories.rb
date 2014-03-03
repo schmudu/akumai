@@ -16,6 +16,13 @@ FactoryGirl.define do
     user_level ConstantsHelper::ROLE_LEVEL_STUDENT 
   end
 
+  factory :invite do
+    code ""
+    email "test@abc.com"
+    student_id ""
+    user_level ConstantsHelper::ROLE_LEVEL_STAFF
+  end
+
   factory :program do
     sequence(:name) { |n| "TRIO Program UCSD_#{n}" }
   end

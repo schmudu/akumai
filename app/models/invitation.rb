@@ -9,6 +9,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :program
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
   has_many :student_entries, dependent: :destroy
+  has_many :invites, dependent: :destroy
   accepts_nested_attributes_for :student_entries, 
       reject_if: lambda { |attr| ((attr[:email].blank? && attr[:student_id].blank?) || Invitation.duplicate_entry(attr[:invitation_id], attr[:email], attr[:student_id])) }
         

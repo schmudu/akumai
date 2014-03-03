@@ -96,7 +96,7 @@ describe Invite do
         it { should_not be_valid}
       end
 
-      describe "should not be set to admin" do
+      describe "should not be set to superuser" do
         before do
           @invite.user_level = ConstantsHelper::ROLE_LEVEL_SUPERUSER
         end
@@ -106,7 +106,71 @@ describe Invite do
     end
 
     describe "student_id" do
-      pending "only required if user level is set to STUDENT"
+      describe "admin user level" do
+        before do
+          @invite.user_level = ConstantsHelper::ROLE_LEVEL_ADMIN
+        end
+
+        describe "should not be blank" do
+          before do
+            @invite.student_id = ""
+          end
+
+          it { should be_valid}
+        end
+
+        describe "should not be nil" do
+          before do
+            @invite.student_id = nil
+          end
+
+          it { should be_valid}
+        end
+      end
+
+      describe "staff user level" do
+        before do
+          @invite.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+        end
+
+        describe "should not be blank" do
+          before do
+            @invite.student_id = ""
+          end
+
+          it { should be_valid}
+        end
+
+        describe "should not be nil" do
+          before do
+            @invite.student_id = nil
+          end
+
+          it { should be_valid}
+        end
+      end
+
+      describe "student user level" do
+        before do
+          @invite.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+        end
+
+        describe "should not be blank" do
+          before do
+            @invite.student_id = ""
+          end
+
+          it { should_not be_valid}
+        end
+
+        describe "should not be nil" do
+          before do
+            @invite.student_id = nil
+          end
+
+          it { should_not be_valid}
+        end
+      end
     end
   end
 end

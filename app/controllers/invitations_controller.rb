@@ -30,7 +30,6 @@ class InvitationsController < ApplicationController
       ConstantsHelper::INVITATION_STUDENT_ENTRIES_DEFAULT.times { @invitation.student_entries.build } if @invitation.is_for_student?  # auto-populate entries
     else
       @programs = current_user.staff_level_programs
-      #render action: 'new' 
       render :new
     end
   end
@@ -40,10 +39,8 @@ class InvitationsController < ApplicationController
     level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS }
     @program = Program.find_by_id(@invitation.program_id)
     if @invitation.update(invitation_params_review.merge(level_hash))
-      #logger.info "===UPDATE SUCCESSFUL. #{@invitation.inspect} valid?#{@invitation.valid?} student_entries?#{@invitation.student_entries.count}"
       @emails = clean_and_split_email_address_to_a(@invitation.recipient_emails) if !@invitation.is_for_student?
     else
-      #logger.info "===UPDATE UNSUCCESSFUL. #{@invitation.inspect}"
       ConstantsHelper::INVITATION_STUDENT_ENTRIES_DEFAULT.times { @invitation.student_entries.build } if @invitation.is_for_student?  # auto-populate entries
       render :address
     end
@@ -54,10 +51,7 @@ class InvitationsController < ApplicationController
     unless @invitation.update(level_hash)
       render :review
     else
-      #puts "=== recipient emails:#{@invitation.recipient_emails}"
-      # send out emails, ex:
-      # InvitationMailer.invitation_email_new_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
-      # InvitationMailer.invitation_email_registered_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
+      @invitation.create_and_send_invites
     end
   end
 

@@ -31,6 +31,7 @@ describe Invitation do
   it { should respond_to(:student_entries) }
   it { should respond_to(:user_level) }
   it { should respond_to(:invites) }
+  it { should respond_to(:create_and_send_invites) }
 
   # test instance methods
   describe "instance methods" do
@@ -65,6 +66,29 @@ describe Invitation do
           @test_invitation = FactoryGirl.create(:invitation, :creator_id => @staff_in_program.id, :program_id => @program.id)
         end
         it { expect(@test_invitation.has_student_entries?).to eq(false) }
+      end
+    end
+
+    describe "create_and_send_invites" do
+      before do
+        @invitation.name = "Random Invitation"
+        @invitation.creator_id = @admin_in_program.id
+        @invitation.program_id = @program.id
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+        @invitation.recipient_emails = ""
+        @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+        @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+        @invitation.creator_id = @staff_in_program.id 
+        @invitation.save
+        @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
+        @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com", :saved => false)
+        @invitation.save
+      end
+
+      it "should increase student entry count" do
+        expect do
+          @invitation.create_and_send_invites
+        end.to change{Invite.count}.by(1)
       end
     end
   end

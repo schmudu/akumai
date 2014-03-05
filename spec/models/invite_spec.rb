@@ -3,14 +3,14 @@ require_relative '../../app/helpers/constants_helper'
 
 describe Invite do
   before do
-    @admin_in_program = FactoryGirl.create(:user, :email => "admin_in_program@example.com")
+    @superuser = FactoryGirl.create(:user, :superuser => true)
     @program = FactoryGirl.create(:program)
-    @invitation = FactoryGirl.build(:invitation)
+    @invitation = Invitation.new
     @invitation.name = "Random Invitation"
-    @invitation.creator_id = @admin_in_program.id
+    @invitation.creator_id = @superuser.id
     @invitation.program_id = @program.id
     @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
-    @invitation.recipient_emails = "abc@abc.com"
+    @invitation.recipient_emails = ""
     @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
     @invitation.save
     @invite = FactoryGirl.build(:invite)
@@ -23,6 +23,7 @@ describe Invite do
   it { should respond_to(:email) }
   it { should respond_to(:student_id) }
   it { should respond_to(:user_level?) }
+  it { should respond_to(:invitation_id?) }
 
   describe "attributes" do
     before do
@@ -73,6 +74,32 @@ describe Invite do
       describe "should not be invalid email" do
         before do
           @invite.email = "asdfasd.com"
+        end
+
+        it { should_not be_valid}
+      end
+    end
+
+    describe "invitation_id" do
+      describe "should not be blank" do
+        before do
+          @invite.invitation_id = ""
+        end
+
+        it { should_not be_valid}
+      end
+
+      describe "should not be nil" do
+        before do
+          @invite.invitation_id = nil
+        end
+
+        it { should_not be_valid}
+      end
+
+      describe "should not reference non-existent invitation" do
+        before do
+          @invite.invitation_id = -99
         end
 
         it { should_not be_valid}

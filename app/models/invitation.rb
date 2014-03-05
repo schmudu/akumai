@@ -10,6 +10,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
   has_many :student_entries, dependent: :destroy
   has_many :invites, dependent: :destroy
+  #validates_associated :invites
   accepts_nested_attributes_for :student_entries, 
       reject_if: lambda { |attr| ((attr[:email].blank? && attr[:student_id].blank?) || Invitation.duplicate_entry(attr[:invitation_id], attr[:email], attr[:student_id])) }
         
@@ -58,7 +59,6 @@ class Invitation < ActiveRecord::Base
   #before_create :create_code
 
   def self.duplicate_entry(invitation_id, email, student_id)
-    puts "\n\n=====invitation_id:#{invitation_id}"
     student_entries = StudentEntry.where("invitation_id = ? AND email = ? AND student_id = ?", invitation_id, email, student_id)
     return true unless student_entries.empty?
     false
@@ -74,19 +74,24 @@ class Invitation < ActiveRecord::Base
     false
   end
 
+  def is_for_student?
+    return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
+    false
+  end
+
   def recipient
     return recipient_email unless recipient_email.blank?
     user = User.find_by_id(recipient_id)
   end
 
+  def create_and_send_invites
+    # InvitationMailer.invitation_email_new_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
+    # InvitationMailer.invitation_email_registered_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
+  end
+
   # Friendly_Id code to only update the url for new records
   def should_generate_new_friendly_id?
     new_record? || slug.blank?
-  end
-
-  def is_for_student?
-    return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
-    false
   end
 
   private

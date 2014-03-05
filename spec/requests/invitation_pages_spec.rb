@@ -162,6 +162,14 @@ describe "InvitationPages" do
             end
             it { current_path.should == confirm_invitations_path }
           end
+
+          describe "should increase the invite count" do
+            it "should increase student entry count" do
+              expect do
+                click_button I18n.t('invitations.form.buttons.send_invitations')
+              end.to change{Invite.count}.by(1)
+            end
+          end
         end
       end
     end

@@ -43,21 +43,6 @@ class Invitation < ActiveRecord::Base
   # stage validation - review
   validate :not_in_saved_state, if: "is_stage_review?"
   validate :non_existence_of_student_entries_in_saved_state, if: "is_stage_review?"
-=begin
-  validates :program_id, presence: true
-  validates :user_level, presence: true
-  validate :admin_and_staff_must_not_have_student_id,
-            :existence_of_program, 
-            :presence_of_email_or_recipient, 
-            :student_role_must_have_student_id,
-            :user_level_value, 
-            :user_does_not_have_role_in_program, 
-            :user_does_not_have_duplicate_invitation 
-=end
-
-  #callbacks
-  #after_validation :create_code
-  #before_create :create_code
 
   def self.duplicate_entry(invitation_id, email, student_id)
     student_entries = StudentEntry.where("invitation_id = ? AND email = ? AND student_id = ?", invitation_id, email, student_id)
@@ -90,7 +75,25 @@ class Invitation < ActiveRecord::Base
     user = User.find_by_id(recipient_id)
   end
 
-  def create_and_send_invites
+  def create_invites
+    if self.is_for_student?
+      student_entries.each do |entry|
+        Invite.create(:invitation_id => id,
+                :email => entry.email,
+                :student_id => entry.student_id,
+                :user_level => user_level,
+                :code => generate_code)
+      end
+
+    else
+      @emails = clean_and_split_email_address_to_a recipient_emails
+      @email.each do |email|
+        Invite.create(:invitation_id => id,
+                :email => email,
+                :user_level => user_level,
+                :code => generate_code)
+      end
+    end
     # InvitationMailer.invitation_email_new_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
     # InvitationMailer.invitation_email_registered_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
   end
@@ -130,28 +133,11 @@ class Invitation < ActiveRecord::Base
       when ConstantsHelper::ROLE_LEVEL_ADMIN
         return
       end
-        
-=begin
-      # students and those with no role cannot create invitations
-      errors.add(:creator_id, I18n.t('invitations.form.errors.invitation_type_invalid')) if ((creator_role == ConstantsHelper::ROLE_LEVEL_NO_ROLE) || (creator_role == ConstantsHelper::ROLE_LEVEL_STUDENT))
-
-      # student invitation valid since only staff or higher would get to this point
-      return if (user_level == ConstantsHelper::ROLE_LEVEL_STUDENT)
-
-      # staff invitation
-      if (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)
-        errors.add(:creator_id, I18n.t('invitations.form.errors.privileges_staff')) if (creator_id == ConstantsHelper::ROLE_LEVEL_STAFF)
-      end
-
-      # admin invitation
-      errors.add(:creator_id, I18n.t('invitations.form.errors.privileges_admin')) if ((creator_id != ConstantsHelper::ROLE_LEVEL_ADMIN) && (creator_id != ConstantsHelper::ROLE_LEVEL_SUPERUSER))
-=end
     end
 
     def generate_code
       o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
       code = (0...10).map{ o[rand(o.length)] }.join
-      #puts "\nGENERATING CODE:#{code}"
       return code
     end
 

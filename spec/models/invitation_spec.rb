@@ -40,7 +40,7 @@ describe Invitation do
   it { should respond_to(:student_entries) }
   it { should respond_to(:user_level) }
   it { should respond_to(:invites) }
-  it { should respond_to(:create_and_send_invites) }
+  it { should respond_to(:create_invites) }
 
   # test instance methods
   describe "instance methods" do
@@ -78,7 +78,7 @@ describe Invitation do
       end
     end
 
-    describe "create_and_send_invites" do
+    describe "create_invites" do
       before do
         @invitation.name = "Random Invitation"
         @invitation.creator_id = @admin_in_program.id
@@ -91,13 +91,14 @@ describe Invitation do
         @invitation.save
         @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW
         @student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "abc@abc.com", :saved => false)
+        @another_student_entry = FactoryGirl.create(:student_entry, :invitation_id => @invitation.id, :email => "def@def.com", :student_id => "aaa", :saved => false)
         @invitation.save
       end
 
       it "should increase student entry count" do
         expect do
-          @invitation.create_and_send_invites
-        end.to change{Invite.count}.by(1)
+          @invitation.create_invites
+        end.to change{Invite.count}.by(2)
       end
     end
   end
@@ -445,7 +446,6 @@ describe Invitation do
         @invitation.save
         @invite.invitation_id = @invitation.id
         @invite.save
-        puts "===count:#{@invitation.has_invites?}"
       end
 
       it { should_not be_valid }

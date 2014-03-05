@@ -1,6 +1,6 @@
 class InvitationMailer < ActionMailer::Base
   include ConstantsHelper
-  default from: ConstantsHelper::INVITATION_SENDER_EMAIL
+  default from: ConstantsHelper::INVITE_SENDER_EMAIL
   after_action :set_mail_to_sent
 
   def invitation_email_new_user(sender_email, recipient_email, invitation_code, invitation_slug)

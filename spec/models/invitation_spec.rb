@@ -13,6 +13,14 @@ describe Invitation do
     @role_staff = FactoryGirl.create(:role, :user_id => @staff_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STAFF, :student_id => nil)
     @role_student = FactoryGirl.create(:role, :user_id => @student_in_program.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
     @invitation = Invitation.new
+
+    #invite
+    @invite = FactoryGirl.build(:invite)
+    @invite.code = "abc"
+    @invite.email = "abc@abc.com"
+    @invite.student_id = "abc01"
+    @invite.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+    #@invite.invitation_id = @invitation.id
   end
 
   subject { @invitation }
@@ -22,6 +30,7 @@ describe Invitation do
   it { should respond_to(:creator_id) }
   it { should respond_to(:has_email_recipients?) }
   it { should respond_to(:has_student_entries?) }
+  it { should respond_to(:invites) }
   it { should respond_to(:name) }
   it { should respond_to(:program_id) }
   it { should respond_to(:recipient_emails) }
@@ -428,6 +437,17 @@ describe Invitation do
       before do
         @invitation.recipient_emails = "abc@abc.com"
       end
+      it { should_not be_valid }
+    end
+
+    describe "the invitation cannot be updated at the type stage if it has invites" do
+      before do
+        @invitation.save
+        @invite.invitation_id = @invitation.id
+        @invite.save
+        puts "===count:#{@invitation.has_invites?}"
+      end
+
       it { should_not be_valid }
     end
   end
@@ -1021,6 +1041,16 @@ describe Invitation do
         it { should_not be_valid }
       end
     end
+
+    describe "the invitation cannot be updated at the address stage if it has invites" do
+      before do
+        @invitation.save
+        @invite.invitation_id = @invitation.id
+        @invite.save
+      end
+
+      it { should_not be_valid }
+    end
   end
 
   describe "at review stage" do
@@ -1594,6 +1624,16 @@ describe Invitation do
 
         it { should_not be_valid }
       end
+    end
+
+    describe "the invitation cannot be updated at the review stage if it has invites" do
+      before do
+        @invitation.save
+        @invite.invitation_id = @invitation.id
+        @invite.save
+      end
+
+      it { should be_valid }
     end
   end
 =begin

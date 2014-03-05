@@ -24,7 +24,8 @@ class Invitation < ActiveRecord::Base
   # general validation
   
   validates_presence_of :creator_id, :program_id, :name
-  validate :has_only_email_recipients_or_student_entries,
+  validate  :already_has_invites,
+            :has_only_email_recipients_or_student_entries,
             :existence_of_program,
             :existence_of_creator,
             :creator_privileges
@@ -67,6 +68,11 @@ class Invitation < ActiveRecord::Base
   def has_email_recipients?
     return false if (recipient_emails.nil? || recipient_emails.empty?)
     true
+  end
+
+  def has_invites?
+    return true if self.invites.count > 0
+    false
   end
 
   def has_student_entries?
@@ -295,5 +301,10 @@ class Invitation < ActiveRecord::Base
       if is_for_student?
         errors.add(:base, "Need to have at least one student entries") if self.student_entries.reject(&:marked_for_destruction?).count < 1
       end
+    end
+
+    def already_has_invites
+      errors.add(:base, "Invitations cannot be updated if it has already been sent.") if ((status == ConstantsHelper::INVITATION_STATUS_SETUP_TYPE || status == ConstantsHelper::INVITATION_STATUS_SETUP_ADDRESS) && 
+            (has_invites?))
     end
 end

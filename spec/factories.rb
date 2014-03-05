@@ -12,7 +12,7 @@ FactoryGirl.define do
     program_id 1
     name "Random Invitation"
     recipient_emails ""
-    status ConstantsHelper::INVITATION_STATUS_CREATED
+    status ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
     user_level ConstantsHelper::ROLE_LEVEL_STUDENT 
   end
 

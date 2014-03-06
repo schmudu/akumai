@@ -11,6 +11,12 @@ class Invite < ActiveRecord::Base
   validate :validate_email,
     :existence_of_invitation
 
+  def self.generate_code
+    o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+    code = (0...10).map{ o[rand(o.length)] }.join
+    return code
+  end
+
   private
     def existence_of_invitation
       result = Invitation.where("id = ?", invitation_id)

@@ -51,7 +51,7 @@ class InvitationsController < ApplicationController
     unless @invitation.update(level_hash)
       render :review
     else
-      @invitation.create_and_send_invites
+      @invitation.create_invites
     end
   end
 

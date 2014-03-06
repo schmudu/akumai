@@ -82,16 +82,16 @@ class Invitation < ActiveRecord::Base
                 :email => entry.email,
                 :student_id => entry.student_id,
                 :user_level => user_level,
-                :code => generate_code)
+                :code => Invite.generate_code)
       end
 
     else
       @emails = clean_and_split_email_address_to_a recipient_emails
-      @email.each do |email|
+      @emails.each do |email|
         Invite.create(:invitation_id => id,
                 :email => email,
                 :user_level => user_level,
-                :code => generate_code)
+                :code => Invite.generate_code)
       end
     end
     # InvitationMailer.invitation_email_new_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
@@ -106,10 +106,6 @@ class Invitation < ActiveRecord::Base
   private
     def admin_and_staff_must_not_have_student_id
       errors.add(:student_id, "student id must not be set for admin nor staff") if ((!user_level.nil?) && ((user_level == ConstantsHelper::ROLE_LEVEL_ADMIN) || (user_level == ConstantsHelper::ROLE_LEVEL_STAFF)) && (!student_id.nil?))
-    end
-
-    def create_code
-      self.code = generate_code
     end
 
     def creator_privileges
@@ -133,12 +129,6 @@ class Invitation < ActiveRecord::Base
       when ConstantsHelper::ROLE_LEVEL_ADMIN
         return
       end
-    end
-
-    def generate_code
-      o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
-      code = (0...10).map{ o[rand(o.length)] }.join
-      return code
     end
 
     def has_only_email_recipients_or_student_entries

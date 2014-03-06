@@ -30,4 +30,5 @@ Trio::Application.configure do
   # mailer
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :file
+  ActionMailer::Base.file_settings = { :location => Rails.root.join('tmp/mails') }
 end

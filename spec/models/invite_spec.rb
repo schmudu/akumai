@@ -37,20 +37,24 @@ describe Invite do
     it { should be_valid }
 
     describe "code" do
-      describe "should not be blank" do
+      describe "should not be blank after save" do
         before do
           @invite.code = ""
+          @invite.save
         end
 
-        it { should_not be_valid}
+        its(:code) { should_not be_nil }
+        its(:code) { should_not be_blank }
       end
 
-      describe "should not be nil" do
+      describe "should not re-populate after another save" do
         before do
-          @invite.code = nil
+          @invite.save
+          @code_first = @invite.code
+          @invite.save
         end
 
-        it { should_not be_valid}
+        its(:code) { should == @code_first }
       end
     end
 

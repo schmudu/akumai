@@ -81,8 +81,7 @@ class Invitation < ActiveRecord::Base
         Invite.create(:invitation_id => id,
                 :email => entry.email,
                 :student_id => entry.student_id,
-                :user_level => user_level,
-                :code => Invite.generate_code)
+                :user_level => user_level)
       end
 
     else
@@ -90,12 +89,9 @@ class Invitation < ActiveRecord::Base
       @emails.each do |email|
         Invite.create(:invitation_id => id,
                 :email => email,
-                :user_level => user_level,
-                :code => Invite.generate_code)
+                :user_level => user_level)
       end
     end
-    # InvitationMailer.invitation_email_new_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
-    # InvitationMailer.invitation_email_registered_user(current_user.email, email_address, invitation.code, invitation.slug).deliver
   end
 
   # Friendly_Id code to only update the url for new records

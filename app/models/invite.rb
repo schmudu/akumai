@@ -1,9 +1,12 @@
 class Invite < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :status, use: :slugged
+  friendly_id :email, use: :slugged
   
   include UsersHelper
   belongs_to :invitation
+
+  before_validation :generate_code
+  after_create :send_invite
   
   validates_presence_of :code, :email, :invitation_id
   validates_presence_of :student_id, :if => :is_for_student?
@@ -11,16 +14,16 @@ class Invite < ActiveRecord::Base
   validate :validate_email,
     :existence_of_invitation
 
-  def self.generate_code
-    o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
-    code = (0...10).map{ o[rand(o.length)] }.join
-    return code
-  end
-
   private
     def existence_of_invitation
       result = Invitation.where("id = ?", invitation_id)
       errors.add(:base, "Invitation id does not reference an existing  invitation.") if result.empty?
+    end
+
+    def generate_code
+      return unless new_record?
+      o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
+      self.code = (0...10).map{ o[rand(o.length)] }.join
     end
 
     def validate_email
@@ -31,5 +34,15 @@ class Invite < ActiveRecord::Base
     def is_for_student?
       return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
       false
+    end
+
+    def send_invite
+      logger.info "=====SENDING INVITE:\n\n"
+      registered_user = User.where("email = ?", self.email)
+      if registered_user.empty?
+        InviteMailer.send_user_registered(self).deliver
+      else
+        InviteMailer.send_user_unregistered(self).deliver
+      end
     end
 end

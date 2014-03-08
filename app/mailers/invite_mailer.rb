@@ -12,6 +12,6 @@ class InviteMailer < ActionMailer::Base
     @invite_code = invite.code
     @invite_id = invite.slug
     puts "sending unregistered invite"
-    delay.mail(to: invite.email, subject: "Does this unregistered work?")
+    mail(to: invite.email, subject: "Does this unregistered work?")
   end
 end

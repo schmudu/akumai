@@ -23,3 +23,14 @@ DUPLICATION_UPDATE - Noted where duplication in code, namely because of differen
 To get a list of the custom annotations in the project that I used run the following command in the terminal:
 rake notes:custom ANNOTATION=JAVASCRIPT_TEST
 
+= Resque
+Installation
+1) Installed Redis with:
+  brew install redis
+2) Added resque to Gemfile with line:
+  gem 'resque'
+3) Added file /lib/tasks/resque.rake
+4) Start redis server with the following command in the terminal:
+  redis-server
+4) Started a worker with the following line ('mail' is the queue name)
+  QUEUE=mail rake environment resque:work

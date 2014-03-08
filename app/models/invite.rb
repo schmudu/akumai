@@ -37,11 +37,12 @@ class Invite < ActiveRecord::Base
     end
 
     def send_invite
-      logger.info "=====SENDING INVITE:\n\n"
       registered_user = User.where("email = ?", self.email)
       if registered_user.empty?
+        logger.info "=====SENDING INVITE:\n\n"
         Resque.enqueue(MailInviteUserUnregisteredJob, self.id)
       else
+        logger.info "=====REGISTERD SENDING INVITE:\n\n"
         InviteMailer.send_user_registered(self)
       end
     end

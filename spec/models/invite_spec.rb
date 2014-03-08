@@ -207,18 +207,17 @@ describe Invite do
 
   describe "delayed jobs creation" do
     before do
+      ResqueSpec.reset!
       @invite.code = "abc"
       @invite.email = "abc@abc.com"
       @invite.student_id = "abc01"
       @invite.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
       @invite.invitation_id = @invitation.id
-      Delayed::Worker.delay_jobs = false
     end
 
     it "queues mail when a contact is created" do
-      expect {
-        @invite.save
-      }.to change{Delayed::Job.count}.by(1)
+      @invite.save
+      MailInviteUserUnregisteredJob.should have_queued(@invite.id).in(:mail)
     end
   end
 end

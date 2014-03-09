@@ -47,11 +47,16 @@ class InvitationsController < ApplicationController
   end
 
   def confirm
-    level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW}
-    unless @invitation.update(level_hash)
-      render :review
+    if @invitation.has_invites?
+      flash[:notice] = I18n.t('invitations.form.errors.invites_already_created')
     else
-      @invitation.create_invites
+      level_hash = {:status => ConstantsHelper::INVITATION_STATUS_SETUP_REVIEW}
+      unless @invitation.update(level_hash)
+        render :review
+      else
+        flash[:notice] = I18n.t('invitations.form.messages.invites_sent')
+        @invitation.create_invites
+      end
     end
   end
 

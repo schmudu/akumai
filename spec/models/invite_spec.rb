@@ -24,6 +24,8 @@ describe Invite do
   it { should respond_to(:student_id) }
   it { should respond_to(:user_level?) }
   it { should respond_to(:invitation_id?) }
+  it { should respond_to(:resque_attempts) }
+  it { should respond_to(:increment_attempts) }
 
   describe "attributes" do
     before do

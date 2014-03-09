@@ -1,6 +1,11 @@
 require_relative '../app/helpers/constants_helper'
 
 FactoryGirl.define do
+  factory :error do
+    resource "Invite"
+    comment "Invite #1 is not valid"
+  end
+
   factory :user do
     sequence(:email) { |n| "michael_#{n}@example.com"}
     password "foobar123"

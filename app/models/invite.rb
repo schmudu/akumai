@@ -14,6 +14,10 @@ class Invite < ActiveRecord::Base
   validate :validate_email,
     :existence_of_invitation
 
+  def increment_attempts
+    self.update_attribute(:resque_attempts, resque_attempts+1)
+  end
+
   private
     def existence_of_invitation
       result = Invitation.where("id = ?", invitation_id)
@@ -39,10 +43,8 @@ class Invite < ActiveRecord::Base
     def send_invite
       registered_user = User.where("email = ?", self.email)
       if registered_user.empty?
-        logger.info "=====SENDING INVITE:\n\n"
         Resque.enqueue(MailInviteUserUnregisteredJob, self.id)
       else
-        logger.info "=====REGISTERD SENDING INVITE:\n\n"
         InviteMailer.send_user_registered(self)
       end
     end

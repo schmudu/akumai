@@ -11,7 +11,6 @@ class InviteMailer < ActionMailer::Base
   def send_user_unregistered invite
     @invite_code = invite.code
     @invite_id = invite.slug
-    puts "sending unregistered invite"
     mail(to: invite.email, subject: "Does this unregistered work?")
   end
 end

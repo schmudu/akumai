@@ -6,6 +6,11 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
+# Load yaml configuration settings
+CONFIG = YAML.load(File.read(File.join(File.dirname(__FILE__), 'application.yml')))[Rails.env]
+CONFIG.merge! CONFIG.fetch(Rails.env, {})
+CONFIG.symbolize_keys!
+
 module Trio
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -20,5 +25,7 @@ module Trio
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+
+    config.action_mailer.default_url_options = {host: CONFIG[:mailer_host]}
   end
 end

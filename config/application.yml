@@ -1,0 +1,6 @@
+development:
+  mailer_host: www.dev.com
+test:
+  mailer_host: www.test.com
+production:
+  mailer_host: www.prod.com

@@ -1,0 +1,6 @@
+development:
+  host: www.dev.com
+test:
+  host: www.test.com
+production:
+  host: www.prod.com

@@ -34,3 +34,7 @@ Installation
   redis-server
 4) Started a worker with the following line ('mail' is the queue name)
   QUEUE=mail rake environment resque:work
+
+= Application settings
+Run the following command:
+cp config/application.example.yml config/application.yml

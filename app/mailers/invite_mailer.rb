@@ -3,14 +3,13 @@ class InviteMailer < ActionMailer::Base
   default from: "from@example.com"
 
   def send_user_registered invite
-    @invite_code = invite.code
-    @invite_id = invite.slug
+    @invite = invite
     mail(to: invite.email, subject: "Does this work?")
   end
 
   def send_user_unregistered invite
-    @invite_code = invite.code
-    @invite_id = invite.slug
+    query_params = {id: invite.id, code: invite.code, email: invite.email}.to_query
+    @link = "#{invite_show_url}?#{query_params}"
     mail(to: invite.email, subject: "Does this unregistered work?")
   end
 end

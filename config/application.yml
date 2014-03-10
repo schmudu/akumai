@@ -1,5 +1,5 @@
 development:
-  mailer_host: www.dev.com
+  mailer_host: localhost:3000
 test:
   mailer_host: www.test.com
 production:

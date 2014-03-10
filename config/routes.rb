@@ -1,5 +1,16 @@
 Trio::Application.routes.draw do
 =begin
+  get "invite/show"
+  get "invite/accept"
+  get "invite/reject"
+  get "invite/signup"
+=end
+namespace :invite do
+  get "show"
+  get "signup"
+  post "respond"
+end
+=begin
   #invitations
   match '/invite_users/review',   to: 'invitations#review_invitations',   via: [:get, :post], as: :invite_users_review
   match '/invite_users/type',   to: 'invitations#invite_users_type',   via: 'get', as: :invite_users_type

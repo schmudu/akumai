@@ -1,4 +1,5 @@
 class InviteController < ApplicationController
+  before_filter :authenticate_user!, except: [:signup]
   def show
   end
 
@@ -6,5 +7,6 @@ class InviteController < ApplicationController
   end
 
   def signup
+    @user = User.new
   end
 end

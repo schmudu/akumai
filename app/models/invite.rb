@@ -14,6 +14,10 @@ class Invite < ActiveRecord::Base
   validate :validate_email,
     :existence_of_invitation
 
+  def program
+    self.invitation.program
+  end
+
   def increment_attempts
     self.update_attribute(:resque_attempts, resque_attempts+1)
   end

@@ -2,5 +2,18 @@
 %div You have been sent an invitation to Kathy's Project.
 
 %div Click the following link to view the invitation:
-= link_to("View Invite", @link.html_safe)
+= link_to("View Invitation", @link.html_safe)
+%br/
+%br/
+Invitation Details:
+%table
+  %tr
+    %td Program Name: 
+    %td= @invite.program.name
+  %tr
+    %td Email: 
+    %td= @invite.email
+  %tr
+    %td Code: 
+    %td= @invite.code
 

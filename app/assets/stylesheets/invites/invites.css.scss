@@ -1,0 +1,33 @@
+// Place all the styles related to the Invite controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+form#invite_signup{
+  div#email_group{
+    ul{
+      margin: 0 0 0 20px;
+    }
+    div.span8{
+      margin-left: 0px;
+    }
+  }
+}
+
+div#invite_instructions{
+  text-align: center;
+  font-weight: bold;
+}
+
+ul{
+  margin: 0px;
+}
+
+#invite_action{
+  text-align: right;
+}
+
+form.single_action{
+  input[type="submit"]{
+    margin-left: 210px !important;
+  }
+}
+

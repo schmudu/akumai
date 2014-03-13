@@ -1,7 +1,7 @@
-= stylesheet_link_tag "invites/invite"
+= stylesheet_link_tag "invites"
 
 .row#invite_instructions
-  = t('invitations.form.title.enter_email_addresses.admin')
+  = t('invites.form.title.enter_invite_info')
 
 %br/
 %br/
@@ -15,34 +15,34 @@
       %h3= t('terms.account_information')
 
   / email
-  #email_group.control-group{:class => @user.errors.messages[:email].nil? ? "" : "error"}
+  .control-group{:class => @user.errors.messages[:email].nil? ? "" : "error"}
     .span1
     .span3.form-label
       = f.label(:email, t('terms.email'), :class => 'control-label')
     .span6
       %span
-        - email_value = @user.email.blank? ? ConstantsHelper::INVITATION_NAME_DEFAULT : @user.email
+        - email_value = @user.email.blank? ? ConstantsHelper::INVITE_DEFAULT_EMAIL : @user.email
         = f.text_field(:email, :value => email_value)
 
   / password
-  #password_group.control-group{:class => @user.errors.messages[:password].nil? ? "" : "error"}
+  .control-group{:class => @user.errors.messages[:password].nil? ? "" : "error"}
     .span1
     .span3.form-label= f.label(:password, t('terms.password'), :class => 'control-label')
     .span6
       %span
-        - password_value = @user.password.blank? ? ConstantsHelper::INVITATION_NAME_DEFAULT : @user.password
-        = f.text_field(:password, :value => password_value)
+        - password_value = @user.password.blank? ? "" : @user.password
+        = f.password_field(:password, :value => password_value)
 
 
   / password_confirmation
-  #password_confirmation_group.control-group{:class => @user.errors.messages[:password_confirmation].nil? ? "" : "error"}
+  .control-group{:class => @user.errors.messages[:password_confirmation].nil? ? "" : "error"}
     .span1
     .span3.form-label
       = f.label(:password_confirmation, t('terms.password_confirmation'), :class => 'control-label')
     .span6
       %span
-        - password_confirmation = @user.password_confirmation.blank? ? ConstantsHelper::INVITATION_NAME_DEFAULT : @user.password_confirmation
-        = f.text_field(:password_confirmation, :value => password_value)
+        - password_confirmation = @user.password_confirmation.blank? ? "" : @user.password_confirmation
+        = f.password_field(:password_confirmation, :value => password_value)
 
   / divider
   .row
@@ -50,11 +50,21 @@
     .span10.divider_line
     .span1
 
-  / header - account info
+  / header - invite info
   .row
     .span1
     .span5
       %h3= t('terms.invite_information')
+
+  / invite code
+  .control-group{:class => @user.errors.messages[:email].nil? ? "" : "error"}
+    .span1
+    .span3.form-label
+      = f.label(:email, t('terms.email'), :class => 'control-label')
+    .span6
+      %span
+        - invite_code = @user.email.blank? ? ConstantsHelper::INVITE_DEFAULT_EMAIL : @user.email
+        = f.text_field(:email, :value => email_value)
 
 
   / action

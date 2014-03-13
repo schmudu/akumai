@@ -1,9 +1,9 @@
+=begin
 require "spec_helper"
 require_relative '../../app/helpers/constants_helper'
 
 describe InvitationMailer do
   describe "invitation_email" do
-=begin
     before(:each) do
       @sender = FactoryGirl.create(:user)
       @user = FactoryGirl.create(:user)
@@ -50,6 +50,6 @@ describe InvitationMailer do
       expect(@email_content[:html]).to include(@sender.email)
       pending
     end
-=end
   end
 end
+=end

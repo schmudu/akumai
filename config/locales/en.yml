@@ -92,6 +92,10 @@ en:
           staff: "Enter the email addresses for the staff users you would like to invite to the program."
           students: "Enter the email addresses and student IDs for the students you would like to invite to the program."
         review: "Review the invitation information."
+  invites:
+    form:
+      title:
+        enter_invite_info: "Enter your account information and information provided on the invite you received."
   student_entries:
     errors:
       either_student_id_or_email: "Either Student ID or Email attribute must be set to save student entry."

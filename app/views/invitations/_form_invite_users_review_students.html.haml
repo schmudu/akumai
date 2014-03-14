@@ -1,6 +1,8 @@
+- content_for :head do
+  = javascript_include_tag "forms"
+  = javascript_include_tag "invitations"
+
 - provide(:title, "Review Invitations (#{I18n.t('invitations.form.messages.steps', index:3)})") 
-= javascript_include_tag "form_utilities"
-= javascript_include_tag "invitations"
 
 %h2= "Review Invitations ( #{t('invitations.form.messages.steps', index:3)} )"
 

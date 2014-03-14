@@ -1,4 +1,4 @@
-// This is a manifest file that'll be compiled into invitations.js, which will include all the files
+// This is a manifest file that'll be compiled into invites.js, which will include all the files
 // listed below.
 //
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
@@ -10,4 +10,4 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require ./invitations/invitations
+//= require ./invites/invites

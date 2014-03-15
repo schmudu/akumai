@@ -34,7 +34,7 @@ end
 namespace :test do
   #run via: rake RAILS_ENV=development test:create_invite
   desc "Create test invitation and invite"
-  task create_invite: :environment do
+  task create_invite_staff: :environment do
     @superuser = User.find_by_email("superuser@abc.com")
     @program = Program.first
     if @superuser.nil? || @program.nil?
@@ -54,6 +54,31 @@ namespace :test do
     @invite.email = "doodle@abc.com"
     @invite.student_id = "abc01"
     @invite.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+    @invite.invitation_id = @invitation.id
+    @invite.save
+  end
+
+  desc "Create test invitation and invite for student"
+  task create_invite_student: :environment do
+    @superuser = User.find_by_email("superuser@abc.com")
+    @program = Program.first
+    if @superuser.nil? || @program.nil?
+      puts "Need program and superuser to complete this task #{environment}"
+      next
+    end
+    @invitation = Invitation.new
+    @invitation.name = "Random Invitation"
+    @invitation.creator_id = @superuser.id
+    @invitation.program_id = @program.id
+    @invitation.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+    @invitation.recipient_emails = ""
+    @invitation.status = ConstantsHelper::INVITATION_STATUS_SETUP_TYPE
+    @invitation.save
+    @invite = Invite.new
+    @invite.code = "abc"
+    @invite.email = "doodle@abc.com"
+    @invite.student_id = "abc01"
+    @invite.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
     @invite.invitation_id = @invitation.id
     @invite.save
   end

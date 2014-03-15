@@ -22,6 +22,11 @@ class Invite < ActiveRecord::Base
     self.update_attribute(:resque_attempts, resque_attempts+1)
   end
 
+  def is_for_student?
+    return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
+    false
+  end
+
   private
     def existence_of_invitation
       result = Invitation.where("id = ?", invitation_id)
@@ -37,11 +42,6 @@ class Invite < ActiveRecord::Base
     def validate_email
       return if email.blank?
       errors.add(:base, I18n.t('invitations.form.errors.email_format')) unless valid_email? email
-    end
-
-    def is_for_student?
-      return true if user_level == ConstantsHelper::ROLE_LEVEL_STUDENT
-      false
     end
 
     def send_invite

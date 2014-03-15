@@ -26,6 +26,8 @@ module ConstantsHelper
   EMAIL_REGEX = /^(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})$/i
   INVITE_SENDER_EMAIL = "notifications@trios.com"
   INVITE_DEFAULT_EMAIL = "Enter your email"
+  INVITE_DEFAULT_CODE = "Invite Code"
+  INVITE_DEFAULT_STUDENT_ID = "Program Student ID"
 
   # Resque
   MAX_NUMBER_OF_ATTEMPTS = 5

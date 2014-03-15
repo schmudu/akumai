@@ -29,7 +29,6 @@ describe "InvitePages" do
   before do
     @program = Program.create(:name => "Program Name") 
     @superuser = FactoryGirl.create(:user, :superuser => true)
-
     @password = "foobar123"
   end
   let(:superuser) { FactoryGirl.create(:user, :email => "superuser@abc.com", :superuser => true) }
@@ -41,35 +40,40 @@ describe "InvitePages" do
       describe "non-student invite" do
         before(:each) do 
           @invitation = create_test_invitation(@superuser.id, @program.id, ConstantsHelper::ROLE_LEVEL_STAFF)
-          @invite = create_test_invite(ConstantsHelper::ROLE_LEVEL_STAFF, @invitation_id)
-          visit invite_signup_path(:id => @invite.slug, :code => @invite.code, :email => @invite.email)
+          @invite = create_test_invite(ConstantsHelper::ROLE_LEVEL_STAFF, @invitation.id)
+          visit invites_signup_path(:id => @invite.slug, :code => @invite.code, :email => @invite.email)
         end
-        it { current_path.should == invite_signup_path }
-        it { should have_content(@invite.code)}
-        it { should have_content(@invite.email)}
+        it { current_path.should == invites_signup_path }
+        it { should have_xpath("//input[@id='invite_code' and @value='#{@invite.code}']") }
+        it { should have_xpath("//input[@id='user_email' and @value='#{@invite.email}']") }
       end
 
       describe "student invite" do
         before(:each) do 
-          @invitation = create_test_invitation(@superuser.id, @program.id, ConstantsHelper::ROLE_LEVEL_STAFF)
-          @invite = create_test_invite(ConstantsHelper::ROLE_LEVEL_STAFF, @invitation_id)
-          visit invite_signup_path(:id => @invite.slug, :code => @invite.code, :email => @invite.email)
+          @invitation = create_test_invitation(@superuser.id, @program.id, ConstantsHelper::ROLE_LEVEL_STUDENT)
+          @invite = create_test_invite(ConstantsHelper::ROLE_LEVEL_STUDENT, @invitation.id)
+          visit invites_signup_path(:id => @invite.slug, :code => @invite.code, :email => @invite.email)
         end
-        it { current_path.should == invite_signup_path }
-        it { should have_content(@invite.code)}
-        it { should have_content(@invite.email)}
+        it { current_path.should == invites_signup_path }
+        it { should have_xpath("//input[@id='invite_code' and @value='#{@invite.code}']") }
+        it { should have_xpath("//input[@id='user_email' and @value='#{@invite.email}']") }
         it { should have_content(I18n.t('terms.student_id'))}
       end
     end
     describe "submitting content" do
       describe "non-student invite" do
-        before do
+        before(:each) do 
+          @invitation = create_test_invitation(@superuser.id, @program.id, ConstantsHelper::ROLE_LEVEL_STAFF)
+          @invite = create_test_invite(ConstantsHelper::ROLE_LEVEL_STAFF, @invitation.id)
+          visit invites_signup_path(:id => @invite.slug, :code => @invite.code, :email => @invite.email)
           fill_in "user_email", :with => @invite.email
           fill_in "user_password", :with => @password
           fill_in "user_password_confirmation", :with => @password
           fill_in "invite_code", :with => @invite.code
-          click_button I18n.t('terms.next')
+          click_button I18n.t('terms.accept_invite')
         end
+
+        it { current_path.should == invites_respond_path }
 
         describe "valid content" do
         end
@@ -80,12 +84,16 @@ describe "InvitePages" do
 
       describe "student invite" do
         before do
+          @invitation = create_test_invitation(@superuser.id, @program.id, ConstantsHelper::ROLE_LEVEL_STUDENT)
+          @invite = create_test_invite(ConstantsHelper::ROLE_LEVEL_STUDENT, @invitation.id)
+          visit invites_signup_path(:id => @invite.slug, :code => @invite.code, :email => @invite.email)
           fill_in "user_email", :with => @invite.email
           fill_in "user_password", :with => @password
           fill_in "user_password_confirmation", :with => @password
           fill_in "invite_code", :with => @invite.code
           fill_in "invite_student_id", :with => @invite.student_id
         end
+        #it { save_and_open_page}
       end
     end
   end

@@ -1,4 +1,7 @@
-= stylesheet_link_tag "invites"
+- content_for :head do
+  = stylesheet_link_tag "invites"
+  = javascript_include_tag "forms"
+  = javascript_include_tag "invites"
 
 .row#invite_instructions
   = t('invites.form.title.enter_invite_info')
@@ -56,23 +59,34 @@
     .span5
       %h3= t('terms.invite_information')
 
+  / student id
+  - if(@real_invite.is_for_student?)
+    .control-group{:class => @user.errors.messages[:student_id].nil? ? "" : "error"}
+      .span1
+      .span3.form-label
+        = label_tag(:email, t('terms.student_id'), :class => 'control-label')
+      .span6
+        %span
+          - invite_student_id = @invite.student_id.blank? ? ConstantsHelper::INVITE_DEFAULT_STUDENT_ID : @invite.student_id
+          = text_field_tag(:invite_student_id, invite_student_id)
+
   / invite code
   .control-group{:class => @user.errors.messages[:email].nil? ? "" : "error"}
     .span1
     .span3.form-label
-      = f.label(:email, t('terms.email'), :class => 'control-label')
+      = label_tag(:email, t('terms.invite_code'), :class => 'control-label')
     .span6
       %span
-        - invite_code = @user.email.blank? ? ConstantsHelper::INVITE_DEFAULT_EMAIL : @user.email
-        = f.text_field(:email, :value => email_value)
+        - invite_code = @invite.code.blank? ? ConstantsHelper::INVITE_DEFAULT_CODE : @invite.code
+        = text_field_tag(:invite_code, invite_code)
 
 
   / action
   .row
     .span4
     .span1
-      = f.submit(t('terms.reject_invitation'), :class => 'btn btn-danger') 
+      = f.submit(t('terms.reject_invite'), :class => 'btn btn-danger') 
     .span2
     .span1
-      = f.submit(t('terms.accept_invitation'), :class => 'btn btn-success') 
+      = f.submit(t('terms.accept_invite'), :class => 'btn btn-success') 
     .span3

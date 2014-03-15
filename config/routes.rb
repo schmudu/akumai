@@ -1,24 +1,9 @@
 Trio::Application.routes.draw do
-=begin
-  get "invite/show"
-  get "invite/accept"
-  get "invite/reject"
-  get "invite/signup"
-=end
-namespace :invite do
-  get "show"
-  get "signup"
-  post "respond"
-end
-=begin
-  #invitations
-  match '/invite_users/review',   to: 'invitations#review_invitations',   via: [:get, :post], as: :invite_users_review
-  match '/invite_users/type',   to: 'invitations#invite_users_type',   via: 'get', as: :invite_users_type
-  match '/invite_users/address',   to: 'invitations#invite_users_address',   via: [:get, :post], as: :invite_users_address
-  match '/invite_users/cancel',   to: 'invitations#cancel',   via: 'get'
-  #match '/send_invitations',   to: 'invitations#send_invitations',   via: 'post'
-  match '/invite_users/send',   to: 'invitations#send_invitations',   via: 'post', as: :invite_users_send
-=end
+  namespace :invites do
+    get "show"
+    get "signup"
+    post "respond"
+  end
   
   resources :invitations, except: :create do
     collection do

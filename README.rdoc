@@ -35,6 +35,14 @@ Installation
 4) Started a worker with the following line ('mail' is the queue name)
   QUEUE=mail rake environment resque:work
 
+  or
+
+  VVERBOSE=1 QUEUE=mail rake environment resque:work
+
+  if you want the console to output everything
+
+Reminder: Any changes to the environment and Redis needs to be restarted
+
 = Application settings
 Run the following command:
 cp config/application.example.yml config/application.yml

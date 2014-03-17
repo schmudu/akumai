@@ -9,7 +9,7 @@
 %br/
 %br/
 / form
-= form_for(@user, url: { action: :respond }, html: {:class => 'form-horizontal', :id => 'invite_signup'}) do |f| 
+= form_for(@user, url: { action: :respond_signup }, html: {:class => 'form-horizontal', :id => 'invite_signup'}) do |f| 
 
   / header - account info
   .row
@@ -80,12 +80,13 @@
         - invite_code = @invite.code.blank? ? ConstantsHelper::INVITE_DEFAULT_CODE : @invite.code
         = text_field_tag(:invite_code, invite_code)
 
+  = hidden_field_tag(:invite_id, @real_invite.slug)
 
   / action
   .row
     .span4
     .span1
-      = f.submit(t('terms.reject_invite'), :class => 'btn btn-danger') 
+      = f.submit(t('terms.reject_invite'), :class => 'btn btn-danger', :name => 'reject') 
     .span2
     .span1
       = f.submit(t('terms.accept_invite'), :class => 'btn btn-success') 

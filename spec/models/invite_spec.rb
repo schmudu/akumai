@@ -19,6 +19,7 @@ describe Invite do
   subject { @invite }
 
   # attributes
+  it { should respond_to(:matches) }
   it { should respond_to(:code) }
   it { should respond_to(:email) }
   it { should respond_to(:student_id) }
@@ -205,6 +206,10 @@ describe Invite do
         end
       end
     end
+  end
+
+  describe "instance methods" do
+    pending "need to have method that verifies that two invites match"
   end
 
   describe "delayed jobs creation" do

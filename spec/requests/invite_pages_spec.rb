@@ -70,12 +70,22 @@ describe "InvitePages" do
           fill_in "user_password", :with => @password
           fill_in "user_password_confirmation", :with => @password
           fill_in "invite_code", :with => @invite.code
-          click_button I18n.t('terms.accept_invite')
         end
 
-        it { current_path.should == invites_respond_path }
 
         describe "valid content" do
+          it "should increase role count" do
+            expect do
+              click_button I18n.t('terms.accept_invite')
+            end.to change{Role.count}.by(1)
+          end
+
+          it "should increase user count" do
+            expect do
+              click_button I18n.t('terms.accept_invite')
+            end.to change{User.count}.by(1)
+          end
+          it { current_path.should == invites_respond_path }
         end
 
         describe "invalid content" do

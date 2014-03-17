@@ -10,8 +10,8 @@ describe InvitesController do
       get("/invites/signup").should route_to("invites#signup")
     end
 
-    it "routes to #show" do
-      post("/invites/respond").should route_to("invites#respond")
+    it "routes to #respond_signupt" do
+      post("/invites/respond_signup").should route_to("invites#respond_signup")
     end
   end
 end

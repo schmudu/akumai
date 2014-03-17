@@ -118,7 +118,6 @@ class InvitationsController < ApplicationController
       @invitation = Invitation.friendly.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def invitation_params_address
       params.require(:invitation).permit(:name, :program_id, :user_level, :status)
     end

@@ -2,7 +2,7 @@ Trio::Application.routes.draw do
   namespace :invites do
     get "show"
     get "signup"
-    post "respond"
+    post "respond_signup"
   end
   
   resources :invitations, except: :create do

@@ -97,7 +97,7 @@ describe "InvitePages" do
                 click_button I18n.t('terms.accept_invite')
               end
 
-              it { current_path.should == invites_respond_signup_path }
+              it { current_path.should == dashboard_path }
               it "should set invite status to accepted" do
                 expect(@invite.reload.status).to eq(ConstantsHelper::INVITE_STATUS_ACCEPTED) 
               end
@@ -110,6 +110,7 @@ describe "InvitePages" do
 
             end
 
+            it { current_path.should == invites_respond_signup_path }
             it "should set invite status to rejection" do
               expect(@invite.reload.status).to eq(ConstantsHelper::INVITE_STATUS_REJECTED) 
             end

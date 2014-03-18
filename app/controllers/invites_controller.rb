@@ -10,7 +10,6 @@ class InvitesController < ApplicationController
     @invite = Invite.new(invite_params_respond_invite)
     if params[:reject].nil? 
       # accept
-        \nreference invite:#{@referenced_invite.inspect} \ntest_invite:#{@invite.inspect}")
       if @user.valid? && @referenced_invite.matches?(@invite, true)
         @referenced_invite.update_attribute(:status, ConstantsHelper::INVITE_STATUS_ACCEPTED)
         @user.save
@@ -18,13 +17,13 @@ class InvitesController < ApplicationController
           :program_id => @referenced_invite.program.id, 
           :level => @invite.user_level, 
           :student_id => @invite.student_id)
-        # TODO - login user and redirect to dashboard
+        sign_in @user
+        redirect_to dashboard_path
       else
         flash[:notice] = "There is something wrong with the invite parameters1."
 
       end
     else
-        \nreference invite:#{@referenced_invite.inspect} \ntest_invite:#{@invite.inspect}")
       # reject
       if @referenced_invite.matches?(@invite, false)
         @referenced_invite.update_attribute(:status, ConstantsHelper::INVITE_STATUS_REJECTED)

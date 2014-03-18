@@ -19,7 +19,7 @@ describe Invite do
   subject { @invite }
 
   # attributes
-  it { should respond_to(:matches) }
+  it { should respond_to(:matches?) }
   it { should respond_to(:code) }
   it { should respond_to(:email) }
   it { should respond_to(:student_id) }
@@ -209,7 +209,61 @@ describe Invite do
   end
 
   describe "instance methods" do
-    pending "need to have method that verifies that two invites match"
+    before do
+      @invite.code = "abc"
+      @invite.email = "abc@abc.com"
+      @invite.student_id = "abc01"
+      @invite.user_level = ConstantsHelper::ROLE_LEVEL_STUDENT
+      @invite.invitation_id = @invitation.id
+      @invite.save
+    end
+
+    describe "matches?" do
+      before do
+        @test_invite = FactoryGirl.build(:invite)
+        @test_invite.code = @invite.code
+        @test_invite.email = @invite.email
+        @test_invite.student_id = @invite.student_id
+      end
+
+      it { expect(@invite.matches?(@test_invite)).to eq(true) }
+
+      describe "code doesn't match should return false" do
+        before do
+          @test_invite.code = @invite.code + "abc"
+        end
+        it { expect(@invite.matches?(@test_invite)).to eq(false) }
+      end
+
+      describe "email doesn't match should return false" do
+        before do
+          @test_invite.email = "some@random.email"
+        end
+        it { expect(@invite.matches?(@test_invite)).to eq(false) }
+      end
+
+      describe "student id doesn't match should return false" do
+        before do
+          @test_invite.student_id = @invite.student_id + "abc"
+        end
+        it { expect(@invite.matches?(@test_invite, true)).to eq(false) }
+      end
+
+      describe "student id doesn't match should return false" do
+        before do
+          @test_invite.student_id = @invite.student_id + "abc"
+        end
+        it { expect(@invite.matches?(@test_invite, false)).to eq(true) }
+      end
+
+      describe "student id doesn't match for non-student should return true b/c it doesn't matter" do
+        before do
+          @invite.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+          @test_invite.student_id = @invite.student_id + "abc"
+        end
+        it { expect(@invite.matches?(@test_invite)).to eq(true) }
+      end
+    end
   end
 
   describe "delayed jobs creation" do

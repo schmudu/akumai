@@ -4,6 +4,9 @@ class InvitesController < ApplicationController
   end
 
   def respond_signup
+    if params[:reject] do
+    else
+    end
 =begin
     @referenced_invite = Invite.friendly.find(params[:invite_id])
     @user = User.new(invite_params_respond_user)

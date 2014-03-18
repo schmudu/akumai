@@ -27,6 +27,20 @@ class Invite < ActiveRecord::Base
     false
   end
 
+  def matches? (test_invite, test_student_id = false)
+    # this only tests whether or not invite matches email, 
+    # code and student_id (for student invites)
+    match_email = test_invite.email == self.email ? true : false
+    match_code = test_invite.code == self.code ? true : false
+    match_student_id = test_invite.student_id == self.student_id ? true : false
+    if self.is_for_student? && test_student_id
+      return true if (match_code && match_email && match_student_id)
+    else
+      return true if (match_code && match_email)
+    end
+    false
+  end
+
   private
     def existence_of_invitation
       result = Invitation.where("id = ?", invitation_id)

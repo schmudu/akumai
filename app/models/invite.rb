@@ -33,6 +33,7 @@ class Invite < ActiveRecord::Base
     match_email = test_invite.email == self.email ? true : false
     match_code = test_invite.code == self.code ? true : false
     match_student_id = test_invite.student_id == self.student_id ? true : false
+    logger.info "matches? email:#{match_email} code:#{match_code} student_id:#{match_student_id}"
     if self.is_for_student? && test_student_id
       return true if (match_code && match_email && match_student_id)
     else
@@ -49,6 +50,7 @@ class Invite < ActiveRecord::Base
 
     def generate_code
       return unless new_record?
+      logger.info "\nGENERATING NEW CODE"
       o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
       self.code = (0...10).map{ o[rand(o.length)] }.join
     end

@@ -60,7 +60,7 @@
       %h3= t('terms.invite_information')
 
   / student id
-  - if(@real_invite.is_for_student?)
+  - if(@referenced_invite.is_for_student?)
     .control-group{:class => @user.errors.messages[:student_id].nil? ? "" : "error"}
       .span1
       .span3.form-label
@@ -80,7 +80,7 @@
         - invite_code = @invite.code.blank? ? ConstantsHelper::INVITE_DEFAULT_CODE : @invite.code
         = text_field_tag(:invite_code, invite_code)
 
-  = hidden_field_tag(:invite_id, @real_invite.slug)
+  = hidden_field_tag(:invite_id, @referenced_invite.slug)
 
   / action
   .row

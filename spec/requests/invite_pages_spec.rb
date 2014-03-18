@@ -36,6 +36,9 @@ describe "InvitePages" do
   subject { page }
 
   describe "signup path" do
+    before do
+      login superuser
+    end
     describe "content" do
       describe "non-student invite" do
         before(:each) do 
@@ -74,18 +77,43 @@ describe "InvitePages" do
 
 
         describe "valid content" do
-          it "should increase role count" do
-            expect do
-              click_button I18n.t('terms.accept_invite')
-            end.to change{Role.count}.by(1)
+          describe "accept click" do
+            it "should increase role count" do
+              expect do
+                click_button I18n.t('terms.accept_invite')
+              end.to change{Role.count}.by(1)
+            end
+
+            #it {save_and_open_page}
+
+            it "should increase user count" do
+              expect do
+                click_button I18n.t('terms.accept_invite')
+              end.to change{User.count}.by(1)
+            end
+
+            describe "path and invite status" do
+              before do
+                click_button I18n.t('terms.accept_invite')
+              end
+
+              it { current_path.should == invites_respond_signup_path }
+              it "should set invite status to accepted" do
+                expect(@invite.reload.status).to eq(ConstantsHelper::INVITE_STATUS_ACCEPTED) 
+              end
+            end
           end
 
-          it "should increase user count" do
-            expect do
-              click_button I18n.t('terms.accept_invite')
-            end.to change{User.count}.by(1)
+          describe "reject click" do
+            before do
+              click_button I18n.t('terms.reject_invite')
+
+            end
+
+            it "should set invite status to rejection" do
+              expect(@invite.reload.status).to eq(ConstantsHelper::INVITE_STATUS_REJECTED) 
+            end
           end
-          it { current_path.should == invites_respond_path }
         end
 
         describe "invalid content" do

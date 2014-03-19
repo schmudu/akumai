@@ -18,28 +18,20 @@ class InvitesController < ApplicationController
           :level => @invite.user_level, 
           :student_id => @invite.student_id)
         sign_in @user
+        flash[:notice] = I18n.t('invites.form.messages.accepted_signup')
         redirect_to dashboard_path
       else
-        flash[:notice] = "There is something wrong with the invite parameters1."
-
+        render :signup
       end
     else
       # reject
       if @referenced_invite.matches?(@invite, false)
         @referenced_invite.update_attribute(:status, ConstantsHelper::INVITE_STATUS_REJECTED)
-        flash[:notice] = "The invite has been rejected."
+        flash[:notice] = I18n.t('invites.form.messages.rejected_signup')
       else
-        flash[:notice] = "There is something wrong with the invite parameters2."
+        render :signup
       end
     end
-=begin
-=end
-=begin
-    if @invite.matches(@real_invite) do
-    else
-      render :signup
-    end
-=end
   end
 
   def signup

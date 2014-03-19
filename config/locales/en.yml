@@ -94,6 +94,12 @@ en:
         review: "Review the invitation information."
   invites:
     form:
+      errors:
+        inactive: "This invite is no longer valid.  Please click on the link in the email you received to try again or contact your program administrator if the issue persists."
+        invite_params: "There is a technical issue with the invite parameters.  Try clicking the link in the email again or contact the program administrator if the issue persists."
+      messages:
+        accepted_signup: "The invite has been accepted."
+        rejected_signup: "Thank you for your response.  The invite has been rejected."
       title:
         enter_invite_info: "Enter your account information and information provided on the invite you received."
   student_entries:

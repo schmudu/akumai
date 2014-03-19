@@ -14,6 +14,12 @@ class Invite < ActiveRecord::Base
   validate :validate_email,
     :existence_of_invitation
 
+  def active?
+    # invites can only be responded to when the invite has been sent
+    return true if self.status == ConstantsHelper::INVITE_STATUS_SENT
+    false
+  end
+
   def program
     self.invitation.program
   end
@@ -39,6 +45,7 @@ class Invite < ActiveRecord::Base
     else
       return true if (match_code && match_email)
     end
+    test_invite.errors.add(:base, I18n.t('invites.form.errors.invite_params'))
     false
   end
 

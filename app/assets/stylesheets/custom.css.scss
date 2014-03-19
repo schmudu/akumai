@@ -156,6 +156,16 @@ div.form-label{
   font-weight: bold;
 }
 
+form div.form-value{
+  height: 30px;
+}
+
+form span.form-value{
+  height: 30px;
+  padding-top: 5px;
+  display: block;
+}
+
 form div.row{
   margin-bottom: 20px;
 }

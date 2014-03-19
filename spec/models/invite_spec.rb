@@ -19,6 +19,7 @@ describe Invite do
   subject { @invite }
 
   # attributes
+  it { should respond_to(:active?) }
   it { should respond_to(:matches?) }
   it { should respond_to(:code) }
   it { should respond_to(:email) }
@@ -262,6 +263,43 @@ describe Invite do
           @test_invite.student_id = @invite.student_id + "abc"
         end
         it { expect(@invite.matches?(@test_invite)).to eq(true) }
+      end
+    end
+
+    describe "active?" do
+      describe "status of created should return false" do
+        before do
+          @invite.status = ConstantsHelper::INVITE_STATUS_CREATED
+        end
+        it { expect(@invite.active?).to eq(false) }
+      end
+
+      describe "status of sent should return true" do
+        before do
+          @invite.status = ConstantsHelper::INVITE_STATUS_SENT
+        end
+        it { expect(@invite.active?).to eq(true) }
+      end
+
+      describe "status of accepted should return false" do
+        before do
+          @invite.status = ConstantsHelper::INVITE_STATUS_ACCEPTED
+        end
+        it { expect(@invite.active?).to eq(false) }
+      end
+
+      describe "status of rejected should return false" do
+        before do
+          @invite.status = ConstantsHelper::INVITE_STATUS_REJECTED
+        end
+        it { expect(@invite.active?).to eq(false) }
+      end
+
+      describe "status of expired should return false" do
+        before do
+          @invite.status = ConstantsHelper::INVITE_STATUS_EXPIRED
+        end
+        it { expect(@invite.active?).to eq(false) }
       end
     end
   end

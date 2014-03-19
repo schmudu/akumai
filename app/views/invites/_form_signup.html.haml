@@ -63,8 +63,8 @@
       = f.label(:password_confirmation, t('terms.password_confirmation'), :class => 'control-label')
     .span6
       %span
-        - password_confirmation = @user.password_confirmation.blank? ? "" : @user.password_confirmation
-        = f.password_field(:password_confirmation, :value => password_value)
+        - password_confirmation_value = @user.password_confirmation.blank? ? "" : @user.password_confirmation
+        = f.password_field(:password_confirmation, :value => password_confirmation_value)
 
   / student id
   - if(@referenced_invite.is_for_student?)

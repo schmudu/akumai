@@ -43,6 +43,16 @@ Installation
 
 Reminder: Any changes to the environment and Redis needs to be restarted
 
+= Staging Environment
+The Staging environment has a username and password set as local variables on Heroku.  The name of the environment variables are:
+TRIO_APP_USERNAME
+TRIO_APP_PASSWORD
+
+To set the environment variable on Heroku type the following command:
+heroku config:set TRIO_APP_USERNAME=username
+heroku config:set TRIO_APP_PASSWORD=my_secret_password
+
+
 = Application settings
 Run the following command:
 cp config/application.example.yml config/application.yml

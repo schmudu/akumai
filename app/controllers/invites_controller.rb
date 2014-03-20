@@ -27,7 +27,7 @@ class InvitesController < ApplicationController
       # reject
       if @referenced_invite.matches?(@invite, false)
         @referenced_invite.update_attribute(:status, ConstantsHelper::INVITE_STATUS_REJECTED)
-        flash[:notice] = I18n.t('invites.form.messages.rejected_signup')
+        flash.now[:notice] = I18n.t('invites.form.messages.rejected_signup')
       else
         render :signup
       end

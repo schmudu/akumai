@@ -9,5 +9,5 @@ $(document).ready(function(){
 
   $("#invite_student_id").blur(function(){
     setFormTextBlur("#invite_student_id", INVITE_DEFAULT_STUDENT_ID);
-  }); 
+  });
 });

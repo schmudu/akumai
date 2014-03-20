@@ -8,7 +8,6 @@ gem 'bootstrap-sass', '2.3.2.2'
 
 # Use sqlite3 as the database for Active Record
 group :development, :test do
-  gem 'pg', '0.17.0'
   gem 'rspec-rails', '2.14.0'
 end
 
@@ -20,6 +19,7 @@ group :test do
   gem 'factory_girl_rails', '4.2.1'
 end
 
+gem 'pg', '0.17.0'
 gem 'resque', '1.25.2'
 gem 'haml', '4.0.5'
 gem 'sass-rails', '4.0.1'
@@ -41,7 +41,6 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '0.17.0'
   gem 'rails_12factor'
 end
 

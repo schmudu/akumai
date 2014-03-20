@@ -49,8 +49,10 @@ TRIO_APP_USERNAME
 TRIO_APP_PASSWORD
 
 To set the environment variable on Heroku type the following command:
-heroku config:set TRIO_APP_USERNAME=username
-heroku config:set TRIO_APP_PASSWORD=my_secret_password
+heroku config:set --app trio-staging TRIO_APP_USERNAME=username
+heroku config:set --app trio-staging TRIO_APP_PASSWORD=my_secret_password
+heroku config:set --app trio-staging RAILS_ENV=staging
+heroku config:set --app trio-staging RACK_ENV=staging
 
 
 = Application settings

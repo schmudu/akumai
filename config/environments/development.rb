@@ -1,10 +1,7 @@
 Trio::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Simple authentication
-  config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-    [u, p] == [ENV['TRIO_APP_USERNAME'], ENV['TRIO_APP_PASSWORD']]
-  end
+  
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.

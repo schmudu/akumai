@@ -7,7 +7,7 @@ require 'rails/all'
 Bundler.require(:default, Rails.env)
 
 # Load yaml configuration settings
-CONFIG = YAML.load(File.read(File.join(File.dirname(__FILE__), 'config', 'application.yml')))[Rails.env]
+CONFIG = YAML.load(File.read(File.join(File.dirname(__FILE__), 'application.yml')))[Rails.env]
 CONFIG.merge! CONFIG.fetch(Rails.env, {})
 CONFIG.symbolize_keys!
 

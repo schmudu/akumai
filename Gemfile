@@ -40,8 +40,12 @@ group :doc do
   gem 'sdoc', '0.3.20', require: false
 end
 
+group :staging do
+  gem 'rails_12factor', '0.0.2'
+end
+
 group :production do
-  gem 'rails_12factor'
+  gem 'rails_12factor', '0.0.2'
 end
 
 # Use ActiveModel has_secure_password

@@ -62,5 +62,24 @@ describe "ProgramPages" do
       it { should have_title(full_title(program.name)) }
       it { should have_link("Invite Users", invitations_path(program.id)) }
     end
+
+    describe "new page" do
+      before do
+        visit new_program_path
+        fill_in "program_name", :with => "Some Random Program"
+      end
+
+      it "should increase the program count" do
+        expect do
+          click_button I18n.t('terms.create_program')
+        end.to change{Program.count}.by(1)
+      end
+
+      it "should increase the role count" do
+        expect do
+          click_button I18n.t('terms.create_program')
+        end.to change{Role.count}.by(1)
+      end
+    end
   end
 end

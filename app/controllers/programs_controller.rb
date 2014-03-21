@@ -41,14 +41,11 @@ class ProgramsController < ApplicationController
   def create
     @program = Program.new(program_params)
 
-    respond_to do |format|
-      if @program.save
-        format.html { redirect_to @program, notice: 'Program was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @program }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @program.errors, status: :unprocessable_entity }
-      end
+    if @program.save
+      Role.create(:user_id => current_user.id, :program_id => @program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN)
+      redirect_to @program, notice: 'Program was successfully created.'
+    else
+      render action: 'new' 
     end
   end
 

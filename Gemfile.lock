@@ -213,7 +213,7 @@ DEPENDENCIES
   pg (= 0.17.0)
   rails (= 4.0.0)
   rails_12factor (= 0.0.2)
-  redis
+  redis (= 3.0.7)
   resque (= 1.25.2)
   resque_spec (= 0.15.0)
   rspec-rails (= 2.14.0)

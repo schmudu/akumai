@@ -58,6 +58,9 @@ heroku config:set --app trio-staging RACK_ENV=staging
 To stop app from serving requests:
   heroku ps:scale web=0 --app trio-production
 
+To restart services:
+  heroku ps:scale web=1 --app trio-production
+
 = Application settings
 Run the following command:
 cp config/application.example.yml config/application.yml

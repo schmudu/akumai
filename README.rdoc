@@ -64,6 +64,9 @@ To stop app from serving requests:
 To restart services:
   heroku ps:scale web=1 --app trio-production
 
+To scale up resque workers (1 in this example):
+  heroku ps:scale resque=1 --app trio-production
+
 = Application settings
 Run the following command:
 cp config/application.example.yml config/application.yml

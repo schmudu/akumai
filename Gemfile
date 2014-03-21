@@ -41,7 +41,9 @@ group :doc do
   gem 'sdoc', '0.3.20', require: false
 end
 
-gem 'rails_12factor', '0.0.2', group: [:staging, :production]
+group: :staging, :production do
+  gem 'rails_12factor', '0.0.2'
+end
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

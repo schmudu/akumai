@@ -2,9 +2,7 @@ Trio::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Simple authentication
-  #config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
   config.middleware.insert_before(::Rack::Runtime, "::Rack::Auth::Basic", "Staging") do |u, p|
-  #config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do |u, p|
     [u, p] == [ENV['TRIO_APP_USERNAME'], ENV['TRIO_APP_PASSWORD']]
   end
   

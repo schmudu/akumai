@@ -65,7 +65,9 @@ To restart services:
   heroku ps:scale web=1 --app trio-production
 
 To scale up resque workers (1 in this example):
-  heroku ps:scale resque=1 --app trio-production
+  heroku ps:scale mailworker=1
+
+Note: The worker 'mailworker' is defined in the Procfile.  You can have as many workers as you like ($$$).
 
 = Application settings
 Run the following command:

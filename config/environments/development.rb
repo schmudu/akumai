@@ -26,20 +26,8 @@ Trio::Application.configure do
   config.assets.debug = true
 
   # dev mailer
-=begin
   config.action_mailer.delivery_method = :file
   config.action_mailer.perform_deliveries = true
   ActionMailer::Base.file_settings = { :location => Rails.root.join('tmp/mails') }
   config.action_mailer.raise_delivery_errors = true
-=end
-
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    domain:               ENV['TRIO_EMAIL_DOMAIN'],
-    user_name:            ENV['TRIO_EMAIL_USERNAME'],
-    password:             ENV['TRIO_EMAIL_PASSWORD'],
-    authentication:       'plain',
-    enable_starttls_auto: true  }
 end

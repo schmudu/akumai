@@ -84,6 +84,7 @@ Trio::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   # Actionmailer
+=begin
   config.action_mailer.delivery_method = :sendmail
   # Defaults to:
   # config.action_mailer.sendmail_settings = {
@@ -92,4 +93,14 @@ Trio::Application.configure do
   # }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
+=end
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               ENV['TRIO_EMAIL_DOMAIN'],
+    user_name:            ENV['TRIO_EMAIL_USERNAME'],
+    password:             ENV['TRIO_EMAIL_PASSWORD'],
+    authentication:       'plain',
+    enable_starttls_auto: true  }
 end

@@ -1,1 +1,1 @@
-worker: env QUEUE=* rake environment resque:work
+generalworker: env QUEUE=* rake environment resque:work

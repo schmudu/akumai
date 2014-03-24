@@ -1,1 +1,1 @@
-mailworker: env QUEUE=mail rake environment resque:work
+worker: env QUEUE=* rake environment resque:work

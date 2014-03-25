@@ -2,6 +2,8 @@ class InviteMailer < ActionMailer::Base
   include ConstantsHelper
   default from: "from@example.com"
 
+  after_action :set_sent_status
+
   def send_user_registered invite
     @invite = invite
     mail(to: invite.email, subject: "TRIO - Invitation")
@@ -13,4 +15,9 @@ class InviteMailer < ActionMailer::Base
     @invite = invite
     mail(to: invite.email, subject: "TRIO - Invitation")
   end
+
+  private
+    def set_sent_status
+      @invite.update_attribute(:status, ConstantsHelper::INVITE_STATUS_SENT)
+    end
 end

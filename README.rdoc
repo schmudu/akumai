@@ -57,7 +57,7 @@ heroku config:set --app trio-staging RAILS_ENV=staging
 heroku config:set --app trio-staging RACK_ENV=staging
 heroku config:set --app trio-staging TRIO_EMAIL_USERNAME=username
 heroku config:set --app trio-staging TRIO_EMAIL_PASSWORD=my_secret_password
-heroku config:set --app trio-staging TRIO_EMAIL_DOMAIN=my_secret_password
+heroku config:set --app trio-staging TRIO_EMAIL_DOMAIN=domain
 
 To set development environment variables, edit the .bash_profile file.  An example could be following:
 export TRIO_APP_USERNAME='my_secret_password'

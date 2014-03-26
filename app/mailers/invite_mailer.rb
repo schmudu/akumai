@@ -1,6 +1,6 @@
 class InviteMailer < ActionMailer::Base
   include ConstantsHelper
-  default from: "from@example.com"
+  default from: "no-reply@akumai.org"
 
   after_action :set_sent_status
 

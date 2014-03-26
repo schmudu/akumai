@@ -15,7 +15,7 @@ Trio::Application.routes.draw do
   resources :programs
   match '/program_user_level', to:'programs#user_level', via: 'get'
   match '/dashboard',   to: 'users#dashboard',   via: 'get'
-  devise_for :users
+  devise_for :users, controllers: { registrations: "users/registrations" }
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'  
   match '/help',    to: 'static_pages#help',    via: 'get'

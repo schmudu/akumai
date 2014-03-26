@@ -90,9 +90,11 @@ describe "InvitePages" do
             describe "path and invite status" do
               before do
                 click_button I18n.t('terms.accept_invite')
+                @user = User.last
               end
 
               it { current_path.should == dashboard_path }
+              it { MailRegistrationUserJob.should have_queued(@user.id).in(:mail) }
               it "should set invite status to accepted" do
                 expect(@invite.reload.status).to eq(ConstantsHelper::INVITE_STATUS_ACCEPTED) 
               end

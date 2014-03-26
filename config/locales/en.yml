@@ -123,6 +123,7 @@ en:
     password_confirmation: "Password Confirmation"
     program: "Program"
     reject_invite: "Reject Invite"
+    sign_up: "Sign up"
     student: "Student"
     student_email: "Student Email"
     student_id: "Student ID"

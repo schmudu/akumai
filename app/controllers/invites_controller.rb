@@ -18,6 +18,7 @@ class InvitesController < ApplicationController
           :level => @invite.user_level, 
           :student_id => @invite.student_id)
         sign_in @user
+        Resque.enqueue(MailRegistrationUserJob, @user.id)
         flash[:notice] = I18n.t('invites.form.messages.accepted_signup')
         redirect_to dashboard_path
       else

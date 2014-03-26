@@ -25,6 +25,7 @@ rake notes:custom ANNOTATION=JAVASCRIPT_TEST
 
 = Resque
 Installation
+
 1) Installed Redis with:
   brew install redis
 2) Added resque to Gemfile with line:
@@ -32,10 +33,10 @@ Installation
 3) Added file /lib/tasks/resque.rake
 4) Start redis server with the following command in the terminal:
   redis-server
-4) Started a worker with the following line ('mail' is the queue name)
+5) Started a worker with the following line ('mail' is the queue name)
   QUEUE=mail rake environment resque:work
 
-  or
+or
 
   VVERBOSE=1 QUEUE=mail rake environment resque:work
 
@@ -45,38 +46,34 @@ Reminder: Any changes to the environment and Redis needs to be restarted
 
 = Production and Staging Environment
 The Staging environment has a username and password set as local variables on Heroku.  The name of the environment variables are:
-TRIO_APP_USERNAME     # used for staging environment to password protect
-TRIO_APP_PASSWORD
-TRIO_EMAIL_USERNAME   # Google Apps username - used for sending out emails
-TRIO_EMAIL_PASSWORD   # Google Apps password - used for sending out emails
+  TRIO_APP_USERNAME     # used for staging environment to password protect
+  TRIO_APP_PASSWORD
+  TRIO_EMAIL_USERNAME   # Google Apps username - used for sending out emails
+  TRIO_EMAIL_PASSWORD   # Google Apps password - used for sending out emails
 
 To set the environment variable on Heroku type the following command:
-heroku config:set --app trio-staging TRIO_APP_USERNAME=username
-heroku config:set --app trio-staging TRIO_APP_PASSWORD=my_secret_password
-heroku config:set --app trio-staging RAILS_ENV=staging
-heroku config:set --app trio-staging RACK_ENV=staging
-heroku config:set --app trio-staging TRIO_EMAIL_USERNAME=username
-heroku config:set --app trio-staging TRIO_EMAIL_PASSWORD=my_secret_password
-heroku config:set --app trio-staging TRIO_EMAIL_DOMAIN=domain
+  heroku config:set --app trio-staging TRIO_APP_USERNAME=username
+  heroku config:set --app trio-staging TRIO_APP_PASSWORD=my_secret_password
+  heroku config:set --app trio-staging RAILS_ENV=staging
+  heroku config:set --app trio-staging RACK_ENV=staging
+  heroku config:set --app trio-staging TRIO_EMAIL_USERNAME=username
+  heroku config:set --app trio-staging TRIO_EMAIL_PASSWORD=my_secret_password
+  heroku config:set --app trio-staging TRIO_EMAIL_DOMAIN=domain
 
 To set development environment variables, edit the .bash_profile file.  An example could be following:
-export TRIO_APP_USERNAME='my_secret_password'
+  export TRIO_APP_USERNAME='my_secret_password'
 
 Add RedisCloud:
-heroku addons:add rediscloud
+  heroku addons:add rediscloud
 
 = Production Environment
 To stop app from serving requests:
-  heroku ps:scale web=0 --app trio-production
+  heroku ps:scale web=0 --app akumai-production
 
 To restart services:
-  heroku ps:scale web=1 --app trio-production
+  heroku ps:scale web=1 --app akumai-production
 
 To scale up resque workers (1 in this example):
   heroku ps:scale generalworker=1
 
 Note: The worker 'generalworker' is defined in the Procfile.  You can have as many workers as you like ($$$).
-
-= Application settings
-Run the following command:
-cp config/application.example.yml config/application.yml

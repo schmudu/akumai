@@ -1,4 +1,6 @@
 Trio::Application.routes.draw do
+  resources :datasets
+
   namespace :invites do
     get "show"
     get "signup"

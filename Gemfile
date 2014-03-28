@@ -19,6 +19,7 @@ group :test do
   gem 'factory_girl_rails', '4.2.1'
 end
 
+gem 'paperclip', '4.1.1'
 gem 'redis', '3.0.7'
 gem 'pg', '0.17.0'
 gem 'resque', '1.25.2'

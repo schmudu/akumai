@@ -30,4 +30,9 @@ Trio::Application.configure do
   config.action_mailer.perform_deliveries = true
   ActionMailer::Base.file_settings = { :location => Rails.root.join('tmp/mails') }
   config.action_mailer.raise_delivery_errors = true
+
+  # AWS - S3
+  config.paperclip_defaults = {
+   :path => '/tmp/akumai-dev/paperclip/'
+  }
 end

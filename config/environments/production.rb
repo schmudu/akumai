@@ -84,9 +84,9 @@ Trio::Application.configure do
   config.action_mailer.smtp_settings = {
     address:              'smtp.gmail.com',
     port:                 587,
-    domain:               ENV['TRIO_EMAIL_DOMAIN'],
-    user_name:            ENV['TRIO_EMAIL_USERNAME'],
-    password:             ENV['TRIO_EMAIL_PASSWORD'],
+    domain:               ENV['AKUMAI_EMAIL_DOMAIN'],
+    user_name:            ENV['AKUMAI_EMAIL_USERNAME'],
+    password:             ENV['AKUMAI_EMAIL_PASSWORD'],
     authentication:       'plain',
     enable_starttls_auto: true  }
 
@@ -97,5 +97,5 @@ Trio::Application.configure do
      :bucket => ENV['S3_BUCKET_NAME'],
      :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
      :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
-   }
+   }}
 end

@@ -19,7 +19,9 @@ group :test do
   gem 'factory_girl_rails', '4.2.1'
 end
 
+gem 'roo', '1.13.2'
 gem 'paperclip', '4.1.1'
+gem 'aws-sdk', '1.38.0'
 gem 'redis', '3.0.7'
 gem 'pg', '0.17.0'
 gem 'resque', '1.25.2'

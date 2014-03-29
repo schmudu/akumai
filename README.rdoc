@@ -46,22 +46,26 @@ Reminder: Any changes to the environment and Redis needs to be restarted
 
 = Production and Staging Environment
 The Staging environment has a username and password set as local variables on Heroku.  The name of the environment variables are:
-  TRIO_APP_USERNAME     # used for staging environment to password protect
-  TRIO_APP_PASSWORD
-  TRIO_EMAIL_USERNAME   # Google Apps username - used for sending out emails
-  TRIO_EMAIL_PASSWORD   # Google Apps password - used for sending out emails
+  AKUMAI_APP_USERNAME     # used for staging environment to password protect
+  AKUMAI_APP_PASSWORD
+  AKUMAI_EMAIL_USERNAME   # Google Apps username - used for sending out emails
+  AKUMAI_EMAIL_PASSWORD   # Google Apps password - used for sending out emails
 
 To set the environment variable on Heroku type the following command:
-  heroku config:set --app trio-staging TRIO_APP_USERNAME=username
-  heroku config:set --app trio-staging TRIO_APP_PASSWORD=my_secret_password
-  heroku config:set --app trio-staging RAILS_ENV=staging
-  heroku config:set --app trio-staging RACK_ENV=staging
-  heroku config:set --app trio-staging TRIO_EMAIL_USERNAME=username
-  heroku config:set --app trio-staging TRIO_EMAIL_PASSWORD=my_secret_password
-  heroku config:set --app trio-staging TRIO_EMAIL_DOMAIN=domain
+  heroku config:set --app akumai-staging AKUMAI_APP_USERNAME=username
+  heroku config:set --app akumai-staging AKUMAI_APP_PASSWORD=my_secret_password
+  heroku config:set --app akumai-staging RAILS_ENV=staging
+  heroku config:set --app akumai-staging RACK_ENV=staging
+  heroku config:set --app akumai-staging AKUMAI_EMAIL_USERNAME=username
+  heroku config:set --app akumai-staging AKUMAI_EMAIL_PASSWORD=my_secret_password
+  heroku config:set --app akumai-staging AKUMAI_EMAIL_DOMAIN=domain
+  heroku config:set --app akumai-staging S3_BUCKET_NAME=akumai_staging
+  heroku config:set --app akumai-staging AWS_ACCESS_KEY_ID=secret_key_id
+  heroku config:set --app akumai-staging AWS_SECRET_ACCESS_KEY=secret_key
+
 
 To set development environment variables, edit the .bash_profile file.  An example could be following:
-  export TRIO_APP_USERNAME='my_secret_password'
+  export AKUMAI_APP_USERNAME='my_secret_password'
 
 Add RedisCloud:
   heroku addons:add rediscloud
@@ -77,3 +81,14 @@ To scale up resque workers (1 in this example):
   heroku ps:scale generalworker=1
 
 Note: The worker 'generalworker' is defined in the Procfile.  You can have as many workers as you like ($$$).
+
+
+== S3
+Steps to save files to S3
+
+# Saving file to S3
+d = Dataset.new(:attachment => File.new("/tmp/hello_world.csv","r"))
+d.save
+
+# Importing file into Roo
+s = Roo::CSV.new(d.attachment.url(:original, false))

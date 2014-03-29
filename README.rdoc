@@ -52,13 +52,20 @@ The Staging environment has a username and password set as local variables on He
   AKUMAI_EMAIL_PASSWORD   # Google Apps password - used for sending out emails
 
 To set the environment variable on Heroku type the following command:
+# Used for protecting stage app
   heroku config:set --app akumai-staging AKUMAI_APP_USERNAME=username
   heroku config:set --app akumai-staging AKUMAI_APP_PASSWORD=my_secret_password
+
+# Sets environment type for staging app
   heroku config:set --app akumai-staging RAILS_ENV=staging
   heroku config:set --app akumai-staging RACK_ENV=staging
+
+# Sets email settings
   heroku config:set --app akumai-staging AKUMAI_EMAIL_USERNAME=username
   heroku config:set --app akumai-staging AKUMAI_EMAIL_PASSWORD=my_secret_password
   heroku config:set --app akumai-staging AKUMAI_EMAIL_DOMAIN=domain
+
+# Sets AWS S3 settings
   heroku config:set --app akumai-staging S3_BUCKET_NAME=akumai_staging
   heroku config:set --app akumai-staging AWS_ACCESS_KEY_ID=secret_key_id
   heroku config:set --app akumai-staging AWS_SECRET_ACCESS_KEY=secret_key

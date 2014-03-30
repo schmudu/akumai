@@ -15,6 +15,9 @@
 /log/*.log
 /tmp
 
+# Ignore uploaded files (will use AWS S3 instead)
+/public/system
+
 # Ignore other unneeded files
 database.yml
 doc/

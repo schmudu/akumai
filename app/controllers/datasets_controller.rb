@@ -1,4 +1,5 @@
 class DatasetsController < ApplicationController
+  include ValidUserHelper
   before_action :set_dataset, only: [:show, :edit, :update, :destroy]
 
   # GET /datasets

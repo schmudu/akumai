@@ -1,0 +1,45 @@
+require 'spec_helper'
+
+describe "Datasets" do
+=begin
+  before do
+    @program = Program.create(:name => "Program Name") 
+  end
+  let(:staff) { FactoryGirl.create(:user, :email => "staff@abc.com", :superuser => true) }
+  let(:superuser) { FactoryGirl.create(:user, :email => "superuser@abc.com", :superuser => true) }
+  let(:user_student) { FactoryGirl.create(:user, email: "student@abc.com", superuser: false) }
+  let(:user_admin) { FactoryGirl.create(:user, email: "admin@abc.com", superuser: false) }
+  let(:program) { FactoryGirl.create(:program, name:"Program Name") }
+  let(:role_staff) { FactoryGirl.create(:role, :user_id => @user_staff.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)}
+  let(:role_admin) { FactoryGirl.create(:role, :user_id => @user_admin.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => nil)}
+  let(:role_student) { FactoryGirl.create(:role, :user_id => @user_student.id, :program_id => program.id, :level => ConstantsHelper::ROLE_LEVEL_ADMIN, :student_id => "a001")}
+  subject { page }
+
+  describe "superuser" do
+    before(:each) do 
+      login superuser 
+      visit new_dataset_path
+    end
+
+    describe "attach csv file" do
+      before do
+        attach_file "dataset_attachment", '/tmp/hello_world.csv'
+        click_button "Create Dataset"
+      end
+
+      it { save_and_open_page }
+      it { should have_content('error')}
+      it { current_path.should == datasets_path }
+    end
+
+    describe "create dataset count" do
+      it "should increase dataset count" do
+        expect do
+          attach_file "attachment", '/tmp/hello_world.csv'
+          click_button "Create Dataset"
+        end.to change{Dataset.count}.by(1)
+      end
+    end
+  end
+=end
+end

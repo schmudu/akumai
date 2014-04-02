@@ -18,8 +18,10 @@ require 'spec_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
+
 describe DatasetsController do
 
+=begin
   # This should return the minimal set of attributes required to create a valid
   # Dataset. As you add validations to Dataset, be sure to
   # adjust the attributes here as well.
@@ -156,5 +158,6 @@ describe DatasetsController do
       response.should redirect_to(datasets_url)
     end
   end
+=end
 
 end

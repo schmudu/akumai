@@ -19,6 +19,12 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 en:
+  actions: 
+    datasets: "work with datasets"
+    invitations: "work with invitations"
+  access:
+    errors:
+      permissions: "You do not have the proper access to %{action}."
   forms: 
     buttons:
       cancel: "Cancel"

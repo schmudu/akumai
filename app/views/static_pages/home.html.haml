@@ -1,8 +1,14 @@
+- content_for :head do
+  = javascript_include_tag "angular"
+
 - provide(:title, "Home")
-.center.hero-unit
+.center.hero-unit{"ng-app" => ""}
   %h1 Welcome to the Sample App
 
   %h2
     This is the home page for Kathy's application.
+
+  %h2
+    {{ 2 + 2 }}
       
   = link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary btn-large"

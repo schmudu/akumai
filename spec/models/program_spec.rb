@@ -8,6 +8,7 @@ describe Program do
 
   subject { @program }
 
+  it { should respond_to(:datasets) }
   it { should respond_to(:name) }
   it { should respond_to(:users) }
   it { should respond_to(:roles) }

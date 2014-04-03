@@ -1,6 +1,9 @@
 require_relative '../app/helpers/constants_helper'
 
 FactoryGirl.define do
+  factory :dataset do
+  end
+
   factory :error do
     resource "Invite"
     comment "Invite #1 is not valid"

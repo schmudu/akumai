@@ -1,0 +1,56 @@
+- content_for :head do
+  = javascript_include_tag "angular_datepicker.js"
+
+= form_for(@dataset, :html => { :multipart => true, 'ng-app' => ""}) do |f| 
+  - if @dataset.errors.any? 
+    #error_explanation
+      %h2= "#{pluralize(@dataset.errors.count, "error")} prohibited this dataset from being saved:"
+
+      %ul
+        -@dataset.errors.full_messages.each do |msg|
+          %li= msg 
+
+  / program name
+  #program_group.row
+    .span4.form-label
+      %span{:class => "form-label text-info"}
+        = "#{t('terms.program')}"
+    .span8
+      %span
+      = f.label(:name, :value => @program.name)
+      = f.hidden_field(:program_id, :value => @program.id)
+
+  / effective date
+  #program_group.row{'ng-controller' => "DatepickerDemoCtrl"}
+    .span4.form-label
+      %span{:class => "form-label text-info"}
+        = "#{t('datasets.form.labels.effective_date')}"
+    .span8
+      %span
+      %h4 Popup
+      .row
+        .col-md-6
+          %p.input-group
+            %input.form-control{'type' => "text", 'datepicker-popup' => "{{format}}", 'ng-model' => "dt", 'is-open' => "opened", 'min' => "minDate", 'max' => "'2015-06-22'", 'datepicker-options' => "dateOptions", 'date-disabled' =>"disabled(date, mode)", 'ng-required' => "true", 'close-text' => "Close"}
+              %span.input-group-btn
+                %button.btn.btn-default{'ng-click' => "open($event)"}
+                  %i.glyphicon.glyphicon-calendar
+      .row
+        .col-md-6
+          %label 
+            Format: 
+          %select.form-control{'ng-model' => "format", 'ng-options' => "f for f in formats"}
+            %option
+
+  / file_attachment
+  #program_group.row
+    .span4.form-label
+      %span{:class => "form-label text-info"}
+        = "#{t('terms.file_attachment')}"
+    .span8
+      %span
+      = f.file_field :attachment
+
+
+  .actions
+    = f.submit

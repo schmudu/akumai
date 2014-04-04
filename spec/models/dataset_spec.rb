@@ -44,11 +44,6 @@ describe Dataset do
           it { should_not be_valid }
         end
 
-        describe "if set to blank" do
-          before { @dataset.attachment = "" }
-          it { should_not be_valid }
-        end
-
         describe "if set to doc file" do
           before { @dataset.attachment = File.open(get_attachment_file_path("hello_world.doc"),"r") }
           it { should_not be_valid }

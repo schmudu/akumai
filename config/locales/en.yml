@@ -25,6 +25,10 @@ en:
   access:
     errors:
       permissions: "You do not have the proper access to %{action}."
+  datasets:
+    form:
+      labels:
+        effective_date: "Effective Date:"
   forms: 
     buttons:
       cancel: "Cancel"
@@ -119,6 +123,7 @@ en:
     create_program: "Create Program"
     back: "Back"
     email_addresses: "Email Addresses"
+    file_attachment: "File Attachment"
     invitation_name: "Invitation Name"
     invitation_type: "Invitation Type"
     invite_code: "Invite Code"

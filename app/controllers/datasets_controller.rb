@@ -16,6 +16,7 @@ class DatasetsController < ApplicationController
   # GET /datasets/new
   def new
     @dataset = Dataset.new
+    @program = Program.friendly.find(params[:id])
   end
 
   # GET /datasets/1/edit

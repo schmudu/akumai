@@ -1,6 +1,17 @@
 - provide(:title, 'User Dashboard')
 %h1 User#dashboard
 %ul
-  %li= link_to "Create Program", new_program_path
-  %li= link_to "Edit Programs", programs_path
   %li= link_to "Invite Users", new_invitation_path
+  %li= link_to "Create Program", new_program_path
+%br/
+%br/
+%table.table.table-striped
+  %tr
+    %th Program Name
+    %th 
+  -@programs.each do |program|
+    %tr
+      %td
+        = program.name
+      %td
+        = link_to "Import Dataset", new_dataset_path(:id => program.slug)

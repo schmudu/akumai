@@ -10,10 +10,10 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require ./angular/
+//= require angular
 //= require angular/ui-bootstrap-tpls-0.9.0.min
 //= require jquery
 //= require jquery_ujs
-//= require_directory ./bootstrap
+//= require bootstrap
 //= require turbolinks
 //= require constants

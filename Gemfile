@@ -19,6 +19,10 @@ group :test do
   gem 'factory_girl_rails', '4.2.1'
 end
 
+gem 'sprockets', '2.11.0'
+gem 'sass'
+gem 'sass-rails', '4.0.1'
+gem 'bootstrap-sass', '3.1.1.0'
 gem 'roo', '1.13.2'
 gem 'paperclip', '4.1.1'
 gem 'aws-sdk', '1.38.0'
@@ -26,7 +30,6 @@ gem 'redis', '3.0.7'
 gem 'pg', '0.17.0'
 gem 'resque', '1.25.2'
 gem 'haml', '4.0.5'
-gem 'sass-rails', '4.0.1'
 gem 'uglifier', '2.2.1'
 gem 'coffee-rails', '4.0.1'
 # gem 'therubyracer', platforms: :ruby

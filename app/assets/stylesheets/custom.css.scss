@@ -1,4 +1,5 @@
 @import "bootstrap";
+@import "bootstrap/theme";
 
 /* mixins, variables, etc. */
 
@@ -57,7 +58,7 @@ h2 {
   margin-bottom: 30px;
   text-align: center;
   font-weight: normal;
-  color: $grayLight;
+  color: #eeeeee;
 }
 
 p {
@@ -98,11 +99,11 @@ footer {
   margin-top: 45px;
   padding-top: 5px;
   border-top: 1px solid $grayMediumLight;
-  color: $grayLight;
+  color: #eeeeee;
   a {
-    color: $gray;
+    color: #eeeeee;
     &:hover {
-      color: $grayDarker;
+      color: #999999;
     }
   }
   small {
@@ -138,11 +139,11 @@ footer {
 }
 
 .disabled{
-  color: $grayMediumLight;
+  color: #aaaaaa;
 }
 
 .form_default_entry{
-  color: $grayLight !important;
+  color: #999999;
 }
 
 form#invite_users{

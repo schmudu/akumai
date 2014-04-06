@@ -1,6 +1,37 @@
 - content_for :head do
   = javascript_include_tag "angular_datepicker.js"
 
+
+-# %form.form-horizontal{'role'=>"form"}
+
+.row
+  .col-md-2
+  .col-md-8
+    = form_for(@dataset, :html => {:role => "form", :class => "form-horizontal", :multipart => true, 'ng-app' => "datePickerApp"}) do |f| 
+      .form-group
+        %label.col-sm-3.control-label{'for'=>"programName"}= t('terms.program_name')
+        .col-sm-9
+          %label.form-control#programName= "#{@program.name}"
+          = f.hidden_field(:program_id, :value => @program.id)
+      %br/
+      .form-group
+        %label.col-sm-3.control-label{'for'=>"inputEmail3"}Email
+        .col-sm-9
+          %input.form-control#inputEmail3{'type'=> "email", 'placeholder' => "Email"}
+      %br/
+      .form-group
+        %label.col-sm-3.control-label{'for'=>"inputPassword3"}Password
+        .col-sm-9
+          %input.form-control#inputPassword3{'type'=>"password", 'placeholder'=>"Password"}
+      .form-group
+        .col-sm-offset-3.col-sm-9
+          %button.btn.btn-default{'type'=>"submit"}Sign in
+  .col-md-2
+
+%br/
+%br/
+%br/
+
 .row
   .col-md-2
   .col-md-8

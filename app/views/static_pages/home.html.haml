@@ -1,11 +1,6 @@
 - provide(:title, "Home")
 .center.hero-unit{"ng-app" => ""}
-  %h1 Welcome to the Sample App
+  %h1= "Welcome to #{t('terms.project_name')}"
 
-  %h2
-    This is the home page for Kathy's application.
-
-  %h2
-    {{ 2 + 2 }}
-      
+  %br/
   = link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary btn-large"

@@ -7,75 +7,27 @@
         %span.icon-bar
         %span.icon-bar
         %span.bar
-      %a.navbar-brand{'href'=>"#"} Project name
+      %a.navbar-brand{'href'=> root_path}= t('terms.project_name')
     .navbar-collapse.collapse
-      %ul.nav.navbar-nav
-        %li
-          %a{'href'=> "#"} Home
-        %li.active
-          %a{'href'=> "#"} About
-        %li.active
-          %a{'href'=> "#"} Contact
-        %li.dropdown
-          %a.dropdown-toggle{'href'=>"#", 'data-toggle' => "dropdown"}
-            Dropdown 
-            %b.caret
-          %ul.dropdown-menu
-            %li
-              %a{'href'=> "#"} Action
-            %li
-              %a{'href'=> "#"} Another Action
-            %li
-              %a{'href'=> "#"} Something else here
-            %li.divider
-            %li.dropdown-header Nav header
-            %li
-              %a{'href'=> "#"} Separated link
-            %li
-              %a{'href'=>"#"} Another separated link
+      - if user_signed_in?
+        %ul.nav.navbar-nav
+          %li.dropdown
+            %a.dropdown-toggle{'href'=>"#", 'data-toggle' => "dropdown"}
+              Dashboard
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to "Programs", programs_path 
+              %li= link_to "Invitations", invitations_path 
       %ul.nav.navbar-nav.navbar-right
-        %li
-          %a{'href'=>"../navbar/"} Default
-        %li.active
-          %a{'href'=>"./"} Static top
-        %li
-          %a{'href'=> "../navbar-fixed-top/"} Fixed top
-
--#.navbar.navbar-fixed-top.navbar-inverse
--#  .navbar-inner
--#    .container
--#      = link_to "sample app", root_path, id: "logo"
--#      %nav
--#        %ul.nav.pull-right
--#          %li= link_to "Help", help_path
--#          - if user_signed_in?
--#            %li.dropdown#fat-menu
--#              %a.dropdown-toggle(href="#" data-toggle="dropdown") 
--#                Dashboard
--#                %b.caret
--#              %ul.dropdown-menu
--#                %li= link_to "Dashboard Home", dashboard_path
--#                %li.divider
--#                %li= link_to "Programs", programs_path 
--#                %li= link_to "Admin", "#"
--#                %li= link_to "Staff", "#" 
--#                %li= link_to "Students", "#"
--#            %li.dropdown#fat-menu
--#              %a.dropdown-toggle(href="#" data-toggle="dropdown")
--#                = current_user.email 
--#                %b.caret
--#              %ul.dropdown-menu
--#                %li= link_to "Edit profile", edit_user_registration_path 
--#                %li.divider
--#                %li= link_to "Sign out", destroy_user_session_path, method: "delete"
--#          - else
--#            %li= link_to "Sign up", new_user_registration_path 
--#            %li= link_to "Login", new_user_session_path 
-
--#- if user_signed_in?
--#  .navbar#navbar_sub
--#    .navbar-inner
--#      .container#navbar_sub_container
--#        %nav
--#          %ul.nav.pull-right
--#            %li= link_to "Some User Function", "#" 
+        - if user_signed_in?
+          %li.dropdown
+            %a.dropdown-toggle{'href'=>"#", 'data-toggle' => "dropdown"}
+              = current_user.email
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to "Edit profile", edit_user_registration_path 
+              %li.divider
+              %li= link_to "Sign out", destroy_user_session_path, method: "delete"
+        - else
+          %li= link_to "Sign up", new_user_registration_path 
+          %li= link_to "Login", new_user_session_path 

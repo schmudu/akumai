@@ -1,7 +1,6 @@
-#program_group.row
-  .span4.form-label
-    %span{:class => "form-label text-info"}
-      = "#{t('terms.program')}"
-  .span8
-    %span
-      = @program.name
+-# program
+.form-group
+  = f.label(:program, t('terms.program'), :class =>'col-sm-3 control-label')
+  .col-sm-9
+    %label.form-control#programName= "#{@program.name}"
+%br/

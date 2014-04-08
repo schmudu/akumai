@@ -13,19 +13,18 @@
   / id
   = hidden_field_tag(:id, @invitation.slug)
 
-  = render 'form_label_program'
-  = render 'form_label_user_level'
-  = render 'form_label_number_of_invites', :count => @emails.count
+  = render 'form_label_program', :f => f
+  = render 'form_label_user_level', :f => f
+  = render 'form_label_number_of_invites', :f => f, :count => @emails.count
 
-  / address
-  #invitation_group.row
-    #email_group.span4.form-label.control-group{:class => @invitation.errors.messages[:recipient_emails].nil? ? "" : "error" }
-      %span{:class=>"form-label text-info"}
-        = "#{t('terms.email_addresses')} :"
-    .span8
-      %ul
+  -# address
+  .form-group{:class => @invitation.errors.messages[:recipient_emails].nil? ? "" : "error"}
+    = f.label(:name, t('terms.email_addresses'), :class =>'col-sm-3 control-label')
+    .col-sm-5
+      %ul#review_email_addresses
         - @emails.each do |email|
           %li= email
+  %br/
 
   = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.send_invitations') 
 

@@ -13,20 +13,21 @@
 
 %br/
 %br/
-= form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
-  / id
-  = hidden_field_tag(:id, @invitation.slug)
+.row
+  .col-md-2
+  .col-md-8
+    = form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
+      -# id
+      = hidden_field_tag(:id, @invitation.slug)
 
-  = render 'form_label_program'
-  = render 'form_label_user_level'
+      = render 'form_label_program', :f => f
+      = render 'form_label_user_level', :f => f
 
-  / address
-  #invitation_group.row
-    #email_group.span4.form-label.control-group{:class => @invitation.errors.messages[:recipient_emails].nil? ? "" : "error" }
-      %span{:class=>"form-label text-info"}
-        = "#{t('terms.email_addresses')} :"
-    .span8
-      = f.text_area(:recipient_emails, :rows => "10", :value => (@invitation.recipient_emails.blank? ? ConstantsHelper::INVITATION_DEFAULT_NON_STUDENT_EMAIL : @invitation.recipient_emails)) 
+      -# address
+      .form-group{:class => @invitation.errors.messages[:recipient_emails].nil? ? "" : "error"}
+        = f.label(:name, t('terms.email_addresses'), :class =>'col-sm-3 control-label')
+        .col-sm-9
+          = f.text_area(:recipient_emails, :cols => "80", :rows => "10", :value => (@invitation.recipient_emails.blank? ? ConstantsHelper::INVITATION_DEFAULT_NON_STUDENT_EMAIL : @invitation.recipient_emails)) 
+      %br/
 
-
-  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.review_invitations')
+      = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.review_invitations')

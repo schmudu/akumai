@@ -1,7 +1,6 @@
-.row
-  .span4
-  .span2
-    = link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn btn-cancel")
-  .span6
-    = link_to(I18n.t('terms.back'), back_page, :class => "btn")
-    = f.submit(forward_title, :class => 'btn btn-success') 
+.col-md-2
+.col-md-5
+  = link_to(I18n.t('forms.buttons.cancel'), dashboard_path, :class => "btn btn-cancel")
+.col-md-5
+  = link_to(I18n.t('terms.back'), back_page, :class => "btn")
+  = f.submit(forward_title, :class => 'btn btn-success') 

@@ -8,40 +8,49 @@
 = render 'form_errors'
 %br/
 %br/
-= form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
-  / id
-  = hidden_field_tag(:id, @invitation.slug)
+.row
+  .col-md-2
+  .col-md-8
+    = form_for(@invitation, url: {action: :review }, method: :post, html: {:class => 'form-horizontal', :id => 'review_invitations'}) do |f|
+      / id
+      = hidden_field_tag(:id, @invitation.slug)
 
-  = render 'form_label_program'
-  = render 'form_label_user_level'
+      = render 'form_label_program', :f => f
+      = render 'form_label_user_level', :f => f
 
-  / divider
-  .row
-    .span2
-    .span10.divider_line
+      / divider
+      .row
+        .span2
+        .span10.divider_line
 
-  / address
-  #invitation_group.row
-    #email_group.span4.form-label.control-group{:class => @invitation.errors.messages[:recipient_emails].nil? ? "" : "error" }
-      %span{:class=>"form-label text-info"}
-        = "#{t('invitations.form.prompt.student_entries')}"
-    .span8
-      %table.table.table-striped#student_entries
-        %thead
-          %tr
-            %th= t('terms.student_email')
-            %th= t('terms.student_id')
-        = f.fields_for :student_entries do |se_form| 
-          %tr
-            %td= se_form.text_field :email, :value => (se_form.object.email.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_EMAIL : se_form.object.email), :class => (se_form.object.email.blank? ? "form_default_entry email_entry" : "email_entry")
-            %td
-              = se_form.text_field :student_id, :value => (se_form.object.student_id.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID : se_form.object.student_id), :class => (se_form.object.student_id.blank? ? "form_default_entry id_entry" : "id_entry")
-              = se_form.hidden_field(:invitation_id, :value => @invitation.id)
-  #invitation_action.row
-    .span4
-    .span8
-      %a.btn#add_student_entries= t('terms.add_rows')
-  %br/
-  %br/
+      -# student entries title
+      .form-group
+        .col-sm-3
+          %span{:class=>"form-label text-info"}
+            %h4= "#{t('invitations.form.prompt.student_entries')}"
+        .col-sm-9
+      %br/
 
-  = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.review_invitations') 
+      -# student entries
+      .form-group
+        .col-sm-3
+        .col-sm-9
+          %table.table.table-striped#student_entries
+            %thead
+              %tr
+                %th= t('terms.student_email')
+                %th= t('terms.student_id')
+            = f.fields_for :student_entries do |se_form| 
+              %tr
+                %td= se_form.text_field :email, :value => (se_form.object.email.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_EMAIL : se_form.object.email), :class => (se_form.object.email.blank? ? "form_default_entry email_entry" : "email_entry")
+                %td
+                  = se_form.text_field :student_id, :value => (se_form.object.student_id.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_ID : se_form.object.student_id), :class => (se_form.object.student_id.blank? ? "form_default_entry id_entry" : "id_entry")
+                  = se_form.hidden_field(:invitation_id, :value => @invitation.id)
+
+      -# action 
+      .form-group{:class => @invitation.errors.messages[:program_id].nil? ? "" : "error"}
+        .col-sm-5
+          %a.btn#add_student_entries= t('terms.add_rows')
+      %br/
+
+      = render 'form_action_menu', :back_page => address_invitations_path(@invitation), :f => f, :forward_title => I18n.t('invitations.form.buttons.review_invitations') 

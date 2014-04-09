@@ -16,80 +16,69 @@
         %li= msg 
 
 %br/
+%h3= t('terms.account_information')
 %br/
-/ form
-= form_for(@user, url: { action: :respond_signup }, html: {:class => 'form-horizontal', :id => 'invite_signup'}) do |f| 
-
-  / header - account info
-  .row
-    .span1
-    .span5
-      %h3= t('terms.account_information')
-
-  / program name
-  .control-group
-    .span1
-    .span3.form-label
-      = label_tag(:program, t('terms.program'), :class => 'control-label')
-    .span6.form-value
-      %span.form-value
-        = @referenced_invite.program.name
-
-  / email
-  .control-group{:class => @user.errors.messages[:email].nil? ? "" : "error"}
-    .span1
-    .span3.form-label
-      = f.label(:email, t('terms.email'), :class => 'control-label')
-    .span6.form-value
-      %span.form-value
-        - email_value = @user.email.blank? ? ConstantsHelper::INVITE_DEFAULT_EMAIL : @user.email
-        = email_value
-        = f.hidden_field(:email, :value => email_value)
-
-  / password
-  .control-group{:class => @user.errors.messages[:password].nil? ? "" : "error"}
-    .span1
-    .span3.form-label= f.label(:password, t('terms.password'), :class => 'control-label')
-    .span6
-      %span
-        - password_value = @user.password.blank? ? "" : @user.password
-        = f.password_field(:password, :value => password_value)
+.row
+  .col-md-2
+  .col-md-8
+    -# form
+    = form_for(@user, url: { action: :respond_signup }, html: {:class => 'form-horizontal', :id => 'invite_signup'}) do |f| 
 
 
-  / password_confirmation
-  .control-group{:class => @user.errors.messages[:password_confirmation].nil? ? "" : "error"}
-    .span1
-    .span3.form-label
-      = f.label(:password_confirmation, t('terms.password_confirmation'), :class => 'control-label')
-    .span6
-      %span
-        - password_confirmation_value = @user.password_confirmation.blank? ? "" : @user.password_confirmation
-        = f.password_field(:password_confirmation, :value => password_confirmation_value)
+      -# program name
+      .form-group
+        .col-sm-4.form-label
+          = label_tag(:program, t('terms.program'), :class => 'control-label')
+        .col-sm-8
+          %label.form-control#programName= "#{@referenced_invite.program.name}"
 
-  / student id
-  - if(@referenced_invite.is_for_student?)
-    .control-group{:class => @user.errors.messages[:student_id].nil? ? "" : "error"}
-      .span1
-      .span3.form-label
-        = label_tag(:email, t('terms.student_id'), :class => 'control-label')
-      .span6
-        %span
-          - invite_student_id = @invite.student_id.blank? ? ConstantsHelper::INVITE_DEFAULT_STUDENT_ID : @invite.student_id
-          = text_field_tag(:invite_student_id, invite_student_id)
+      -# email
+      .form-group
+        .col-sm-4.form-label
+          = label_tag(:program, t('terms.email'), :class => 'control-label')
+        .col-sm-8
+          - email_value = @user.email.blank? ? ConstantsHelper::INVITE_DEFAULT_EMAIL : @user.email
+          = f.hidden_field(:email, :value => email_value)
+          %label.form-control#email= email_value
 
-  / invite code
-  - invite_code = @invite.code.blank? ? ConstantsHelper::INVITE_DEFAULT_CODE : @invite.code
-  = hidden_field_tag(:invite_code, invite_code)
-  = hidden_field_tag(:invite_id, @referenced_invite.slug)
+      -# password
+      .form-group{:class => @invite.errors.messages[:password].nil? ? "" : "error"}
+        .col-sm-4.form-label
+          = label_tag(:password, t('terms.password'), :class =>'control-label')
+        .col-sm-8
+          - password_value = @user.password.blank? ? "" : @user.password
+          = f.password_field(:password, :value => password_value, :class => "form-control")
 
-  %br/
-  %br/
-  / action
-  .row
-    .span4
-    .span1
-      = f.submit(t('terms.reject_invite'), :class => 'btn btn-danger', :name => 'reject') 
-    .span2
-    .span1
-      = f.submit(t('terms.accept_invite'), :class => 'btn btn-success') 
-    .span3
+      -# password_confirmation
+      .form-group{:class => @invite.errors.messages[:password_confirmation].nil? ? "" : "error"}
+        .col-sm-4.form-label
+          = label_tag(:password_confirmation, t('terms.password_confirmation'), :class =>'control-label')
+        .col-sm-8
+          - password_confirmation_value = @user.password_confirmation.blank? ? "" : @user.password_confirmation
+          = f.password_field(:password_confirmation, :value => password_confirmation_value, :class => "form-control")
+
+      -# student_id
+      - if(@referenced_invite.is_for_student?)
+        .form-group{:class => @invite.errors.messages[:student_id].nil? ? "" : "error"}
+          .col-sm-4.form-label
+            = label_tag(:student_id, t('terms.student_id'), :class =>'control-label')
+          .col-sm-8
+            - invite_student_id = @invite.student_id.blank? ? ConstantsHelper::INVITE_DEFAULT_STUDENT_ID : @invite.student_id
+            = text_field_tag(:invite_student_id, invite_student_id, :class => "form-control")
+
+      -# invite code
+      - invite_code = @invite.code.blank? ? ConstantsHelper::INVITE_DEFAULT_CODE : @invite.code
+      = hidden_field_tag(:invite_code, invite_code)
+      = hidden_field_tag(:invite_id, @referenced_invite.slug)
+
+      %br/
+      %br/
+      / action
+      .row
+        .span4
+        .span1
+          = f.submit(t('terms.reject_invite'), :class => 'btn btn-danger', :name => 'reject') 
+        .span2
+        .span1
+          = f.submit(t('terms.accept_invite'), :class => 'btn btn-success') 
+        .span3

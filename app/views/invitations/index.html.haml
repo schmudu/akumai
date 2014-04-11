@@ -2,24 +2,27 @@
   = javascript_include_tag "angular"
   = javascript_include_tag "angular/get_request_example"
 
-%h1 Listing invitations
-%div{'ng-app' => 'phonecatApp', 'ng-controller' => 'PhoneListCtrl'}
-  {{ 1 + 3}}
-  %button{'ng-href'=>'#', 'ng-click'=>'clickMethod()'}
-    click me
-%table
-  %thead
-    %tr
-      %th
-      %th
-      %th
+.row
+  .col-md-2
+  .col-md-8
+    %h1 Listing invitations
+    = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
+    %br/
+    %br/
+    %div{'ng-app' => 'invitationsUser', 'ng-controller' => 'invitationsCtrl'}
+      -# invitations table
+      %table.table.table-striped
+        %thead
+          %tr
+            %th= t('terms.invitation_name')
+            %th= t('terms.invitation_type')
+        %tbody
+          %tr{'ng-repeat' => 'invitation in invitations'}
+            %td
+              %a{'href'=>'invitations/{{invitation.id}}'}
+                {{ invitation.name }}
+            %td
+              %a{'href'=>'invitations/{{invitation.id}}'}
+                {{ invitation.user_level }}
 
-  %tbody
-    - @invitations.each do |invitation| 
-      %tr
-        %td= link_to 'Show', invitation 
-        %td= link_to 'Edit', edit_invitation_path(invitation) 
-        %td= link_to 'Destroy', invitation, method: :delete, data: { confirm: 'Are you sure?' } 
-%br/
-
-= link_to 'New Invitation', new_invitation_path 
+  .col-md-2

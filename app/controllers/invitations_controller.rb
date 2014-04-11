@@ -6,12 +6,10 @@ class InvitationsController < ApplicationController
   # GET /invitations
   # GET /invitations.json
   def index
-    @invitations = Invitation.all
   end
 
   def index_helper
-    render json: current_user.sent_invitations
-    #@invitations = current_user.invitations
+    render json: current_user.invitations_sent
   end
 
   # GET /invitations/1

@@ -1,12 +1,8 @@
-var phonecatApp = angular.module('phonecatApp', []);
-phonecatApp.controller('PhoneListCtrl', function ($scope, $http){
-  /*
-  $http.get('phones/phones.json').success(function(data){
-    $scope.phones = data;
-  });*/
+var phonecatApp = angular.module('invitationsUser', []);
+phonecatApp.controller('invitationsCtrl', function ($scope, $http){
+  $http.get('invitations/index_helper').success(function(data){
+    $scope.invitations = data;
+  });
 
-  //$scope.orderProp = 'age';
-  $scope.clickMethod = function(){
-    alert("click happened!");
-  };
+  $scope.orderProp = 'created_at';
 })

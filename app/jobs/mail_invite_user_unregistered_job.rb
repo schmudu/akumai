@@ -1,8 +1,10 @@
 require_relative '../../app/helpers/constants_helper'
-require_relative './module_failure_job'
+#require_relative './module_failure_job'
+require 'module_failure_job'
 
 class MailInviteUserUnregisteredJob
-  extend FailureJob
+  # TODO - Rails cannot find this file
+  #extend FailureJob
 
   @queue = :mail
 

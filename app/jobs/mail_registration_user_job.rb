@@ -1,4 +1,4 @@
-require_relative '../../app/helpers/constants_helper'
+require 'constants_helper'
 
 class MailRegistrationUserJob
 

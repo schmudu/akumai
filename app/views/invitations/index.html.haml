@@ -3,26 +3,34 @@
   = javascript_include_tag "angular/get_request_example"
 
 .row
-  .col-md-2
-  .col-md-8
-    %h1 Listing invitations
+  %h1 Listing invitations
+  %br/
+.row
+  .col-md-3
+  .col-md-9
     = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
+
+.row{'ng-app' => 'invitationsUser', 'ng-controller' => 'invitationsCtrl'}
+  -# invitations filter
+  .col-md-2
+    Filter 
     %br/
+    %input.form-control{'ng-model'=>'query'}
     %br/
-    %div{'ng-app' => 'invitationsUser', 'ng-controller' => 'invitationsCtrl'}
-      -# invitations table
+
+  -# invitations table
+  .col-md-10
+    %div
       %table.table.table-striped
         %thead
           %tr
             %th= t('terms.invitation_name')
             %th= t('terms.invitation_type')
         %tbody
-          %tr{'ng-repeat' => 'invitation in invitations'}
+          %tr{'ng-repeat' => 'invitation in invitations | filter:query'}
             %td
               %a{'href'=>'invitations/{{invitation.id}}'}
                 {{ invitation.name }}
-            %td
-              %a{'href'=>'invitations/{{invitation.id}}'}
-                {{ invitation.user_level }}
-
-  .col-md-2
+              %td
+                %a{'href'=>'invitations/{{invitation.id}}'}
+                  {{ invitation.user_level }}

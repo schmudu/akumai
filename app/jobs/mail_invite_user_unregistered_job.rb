@@ -1,4 +1,4 @@
-require_relative '../../app/helpers/constants_helper'
+require 'constants_helper'
 #require_relative './module_failure_job'
 require 'module_failure_job'
 

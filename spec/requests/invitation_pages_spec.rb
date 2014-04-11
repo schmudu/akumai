@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../../app/helpers/constants_helper'
+require 'constants_helper'
 
 describe "InvitationPages" do
   before do

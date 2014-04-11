@@ -1,6 +1,32 @@
 - provide(:title, "Home")
-.center.hero-unit{"ng-app" => ""}
-  %h1= "Welcome to #{t('terms.project_name')}"
+.row
+  .col-md-2
+  .col-md-8.center
+    %h1= "Welcome to #{t('terms.project_name')}"
 
-  %br/
-  = link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary btn-large"
+    %br/
+    = link_to "Sign up now!", new_user_registration_path, class: "btn btn-primary btn-large"
+  .col-md-2
+%br/
+%br/
+.row
+  .col-md-2
+  .col-md-8.center
+    Infographic on how Akumai works... (to be added)
+    %br/
+    %br/
+    .row
+      .col-md-4
+        %b Step 1 
+        %br/
+        Invite users
+      .col-md-4
+        %b Step 2 
+        %br/
+        Import Data
+      .col-md-4
+        %b Step 3 
+        %br/
+        Access Analysis
+  .col-md-2
+

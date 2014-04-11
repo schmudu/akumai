@@ -1,17 +1,23 @@
 - provide(:title, 'User Dashboard')
-%h1 User#dashboard
-%ul
-  %li= link_to "Invite Users", new_invitation_path
-  %li= link_to "Create Program", new_program_path
-%br/
-%br/
-%table.table.table-striped
-  %tr
-    %th Program Name
-    %th 
-  -@programs.each do |program|
-    %tr
-      %td
-        = program.name
-      %td
-        = link_to "Import Dataset", new_dataset_path(:id => program.slug)
+%h1= t('terms.dashboard')
+.row
+  .col-md-2
+    %ul
+      %h5 Quicklinks
+      %li= link_to "Invite Users", new_invitation_path
+      %li= link_to "Create Program", new_program_path
+  .col-md-8
+    %table.table.table-striped
+      %tr
+        %th Program Name
+        %th 
+        %th 
+      -@programs.each do |program|
+        %tr
+          %td
+            = link_to program.name, program_path(:id => program.slug)
+          %td
+            = link_to t('terms.invitations', count:2), invitation_path(:id => program.slug)
+          %td
+            = link_to t('terms.import_data'), new_dataset_path(:id => program.slug)
+  .col-md-2

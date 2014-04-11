@@ -9,28 +9,31 @@
   .col-md-3
   .col-md-9
     = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
+%br/
 
 .row{'ng-app' => 'invitationsUser', 'ng-controller' => 'invitationsCtrl'}
   -# invitations filter
-  .col-md-2
+  .col-md-3
     Filter 
     %br/
     %input.form-control{'ng-model'=>'query'}
     %br/
 
   -# invitations table
-  .col-md-10
+  .col-md-9
     %div
       %table.table.table-striped
         %thead
           %tr
             %th= t('terms.invitation_name')
             %th= t('terms.invitation_type')
+            %th= t('terms.status')
         %tbody
           %tr{'ng-repeat' => 'invitation in invitations | filter:query'}
             %td
               %a{'href'=>'invitations/{{invitation.id}}'}
                 {{ invitation.name }}
-              %td
-                %a{'href'=>'invitations/{{invitation.id}}'}
-                  {{ invitation.user_level }}
+            %td
+              {{ invitation.user_level }}
+            %td
+              {{ invitation.status }}

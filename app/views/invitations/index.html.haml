@@ -1,9 +1,12 @@
 - content_for :head do
   = javascript_include_tag "angular"
+  = javascript_include_tag "angular/get_request_example"
 
 %h1 Listing invitations
-%div{'ng-app' => ''}
+%div{'ng-app' => 'phonecatApp', 'ng-controller' => 'PhoneListCtrl'}
   {{ 1 + 3}}
+  %button{'ng-href'=>'#', 'ng-click'=>'clickMethod()'}
+    click me
 %table
   %thead
     %tr

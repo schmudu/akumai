@@ -9,6 +9,11 @@ class InvitationsController < ApplicationController
     @invitations = Invitation.all
   end
 
+  def index_helper
+    render json: current_user.sent_invitations
+    #@invitations = current_user.invitations
+  end
+
   # GET /invitations/1
   # GET /invitations/1.json
   def show

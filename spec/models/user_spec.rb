@@ -12,8 +12,8 @@ describe User do
   it { should respond_to(:superuser) }
   it { should respond_to(:roles) }
   it { should respond_to(:programs) }
-  it { should respond_to(:sent_invitations) }
-  it { should respond_to(:received_invitations) }
+  it { should respond_to(:invitations_sent) }
+  it { should respond_to(:invites_received) }
   it { should respond_to(:staff_level_programs) }
   it { should respond_to(:staff_level_programs) }
   it { should respond_to(:valid_invitation_sender?) }

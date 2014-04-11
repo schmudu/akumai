@@ -34,14 +34,13 @@ describe "AuthenticationPages" do
           it { should have_link('Dashboard', href: '#') }
           it { should have_link('Dashboard Home', href: dashboard_path) }
           it { should have_link('Programs', href: programs_path) }
-          it { should have_link('Admin', href: "#") }
-          it { should have_link('Staff', href: "#") }
-          it { should have_link('Students', href: "#") }
         end
 
+=begin
         describe "should show the sub navbar" do
           it { should have_xpath("//div[@class='navbar' and @id='navbar_sub']") }
         end
+=end
       end
     end
 

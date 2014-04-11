@@ -5,6 +5,7 @@ describe "datasets/edit" do
     @dataset = assign(:dataset, stub_model(Dataset))
   end
 
+=begin
   it "renders the edit dataset form" do
     render
 
@@ -12,4 +13,5 @@ describe "datasets/edit" do
     assert_select "form[action=?][method=?]", dataset_path(@dataset), "post" do
     end
   end
+=end
 end

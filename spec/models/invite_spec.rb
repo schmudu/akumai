@@ -4,6 +4,7 @@ require_relative '../../app/helpers/constants_helper'
 describe Invite do
   before do
     @superuser = FactoryGirl.create(:user, :superuser => true)
+    @recipient = FactoryGirl.create(:user)
     @program = FactoryGirl.create(:program)
     @invitation = Invitation.new
     @invitation.name = "Random Invitation"
@@ -20,14 +21,15 @@ describe Invite do
 
   # attributes
   it { should respond_to(:active?) }
-  it { should respond_to(:matches?) }
   it { should respond_to(:code) }
   it { should respond_to(:email) }
+  it { should respond_to(:increment_attempts) }
+  it { should respond_to(:invitation_id?) }
+  it { should respond_to(:matches?) }
+  it { should respond_to(:resque_attempts) }
+  it { should respond_to(:recipient) }
   it { should respond_to(:student_id) }
   it { should respond_to(:user_level?) }
-  it { should respond_to(:invitation_id?) }
-  it { should respond_to(:resque_attempts) }
-  it { should respond_to(:increment_attempts) }
 
   describe "attributes" do
     before do
@@ -113,6 +115,33 @@ describe Invite do
         it { should_not be_valid}
       end
     end
+
+    describe "recipient_id" do
+      describe "can be blank" do
+        before do
+          @invite.recipient_id = ""
+        end
+
+        it { should be_valid}
+      end
+
+      describe "can be nil" do
+        before do
+          @invite.recipient_id = nil
+        end
+
+        it { should be_valid}
+      end
+
+      describe "cannot eference non-existent user" do
+        before do
+          @invite.recipient_id = -99
+        end
+
+        it { should_not be_valid}
+      end
+    end
+
 
     describe "user_level" do
       describe "should not be blank" do

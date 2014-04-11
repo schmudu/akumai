@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :roles
   has_many :programs, through: :roles
-  has_many :sent_invitations, class_name: "Invitation", foreign_key: "sender_id"
-  has_many :received_invitations, class_name: "Invitation", foreign_key: "recipient_id"
+  has_many :invitations_sent, class_name: "Invitation", foreign_key: "creator_id"
+  has_many :invites_received, class_name: "Invite", foreign_key: "recipient_id"
 
   def is_superuser?
     (superuser == true) ? true : false

@@ -12,6 +12,7 @@ Trio::Application.routes.draw do
       post :address
       post :review
       post :confirm
+      get :index_helper
     end
   end
   resources :programs

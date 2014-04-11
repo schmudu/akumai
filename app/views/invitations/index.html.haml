@@ -1,5 +1,9 @@
-%h1 Listing invitations
+- content_for :head do
+  = javascript_include_tag "angular"
 
+%h1 Listing invitations
+%div{'ng-app' => ''}
+  {{ 1 + 3}}
 %table
   %thead
     %tr

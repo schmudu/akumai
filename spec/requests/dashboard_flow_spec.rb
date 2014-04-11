@@ -23,7 +23,7 @@ describe "Dashboards" do
       # programs
       it { should have_title(full_title('User Dashboard')) }
       it { should have_link("Create Program", href: new_program_path) }
-      it { should have_link("Edit Programs", href: programs_path) }
+      #it { should have_link("Edit Programs", href: programs_path) }
 
       # users and invitations
        

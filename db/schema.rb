@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140403050417) do
+ActiveRecord::Schema.define(version: 20140411125439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,9 +82,11 @@ ActiveRecord::Schema.define(version: 20140403050417) do
     t.string   "slug"
     t.integer  "status",          default: 0
     t.integer  "resque_attempts", default: 0
+    t.integer  "recipient_id"
   end
 
   add_index "invites", ["invitation_id"], name: "index_invites_on_invitation_id", using: :btree
+  add_index "invites", ["recipient_id"], name: "index_invites_on_recipient_id", using: :btree
   add_index "invites", ["resque_attempts"], name: "index_invites_on_resque_attempts", using: :btree
   add_index "invites", ["slug"], name: "index_invites_on_slug", unique: true, using: :btree
   add_index "invites", ["status"], name: "index_invites_on_status", using: :btree

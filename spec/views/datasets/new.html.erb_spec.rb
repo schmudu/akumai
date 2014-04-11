@@ -5,6 +5,7 @@ describe "datasets/new" do
     assign(:dataset, stub_model(Dataset).as_new_record)
   end
 
+=begin
   it "renders new dataset form" do
     render
 
@@ -12,4 +13,5 @@ describe "datasets/new" do
     assert_select "form[action=?][method=?]", datasets_path, "post" do
     end
   end
+=end
 end

@@ -4,6 +4,7 @@ class Invite < ActiveRecord::Base
   
   include UsersHelper
   belongs_to :invitation
+  belongs_to :recipient, class_name: "User", foreign_key: "recipient_id"
 
   before_validation :generate_code
   after_create :send_invite
@@ -12,7 +13,8 @@ class Invite < ActiveRecord::Base
   validates_presence_of :student_id, :if => :is_for_student?
   validates :user_level, :inclusion => ConstantsHelper::ROLE_LEVEL_STUDENT..ConstantsHelper::ROLE_LEVEL_ADMIN
   validate :validate_email,
-    :existence_of_invitation
+    :existence_of_invitation,
+    :existence_of_recipient
 
   def active?
     # invites can only be responded to when the invite has been sent
@@ -52,7 +54,13 @@ class Invite < ActiveRecord::Base
   private
     def existence_of_invitation
       result = Invitation.where("id = ?", invitation_id)
-      errors.add(:base, "Invitation id does not reference an existing  invitation.") if result.empty?
+      errors.add(:base, "Invitation id does not reference an existing invitation.") if result.empty?
+    end
+
+    def existence_of_recipient
+      return if recipient_id.blank?
+      result = User.where("id = ?", recipient_id)
+      errors.add(:base, "Recipient id does not reference an existing user.") if result.empty?
     end
 
     def generate_code

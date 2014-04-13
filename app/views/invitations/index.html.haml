@@ -20,6 +20,9 @@
     %br/
     %input.form-control{'ng-model'=>'query'}
     %br/
+    Only Sent
+    %input.form-control{'type'=>'checkbox', 'ng-model'=>'onlySent'}
+    %br/
 
   -# invitations table
   .col-md-9
@@ -31,7 +34,7 @@
             %th= t('terms.invitation_type')
             %th= t('terms.status')
         %tbody
-          %tr{'ng-repeat' => 'invitation in invitations | filter:{name:query}'}
+          %tr{'ng-repeat' => 'invitation in invitations | filter:{name:query} | filterInvitationsCheckbox : onlySent'}
             %td
               %a{'href'=>'invitations/{{invitation.id}}'}
                 {{ invitation.name }}

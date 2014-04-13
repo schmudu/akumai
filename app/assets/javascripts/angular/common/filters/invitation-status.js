@@ -1,4 +1,5 @@
-angular.module('invitationsStatus', []).filter('filterInvitationsStatus', function(){
+var thisModule = angular.module('invitationsStatus', []);
+thisModule.filter('filterInvitationsStatus', function(){
   return function(input){
     if(input == 0)
       return "Created";
@@ -9,7 +10,20 @@ angular.module('invitationsStatus', []).filter('filterInvitationsStatus', functi
   }
 });
 
+//var thisModule = angular.module('invitationsStatus', []);
+thisModule.filter('filterInvitationsCheckbox', function(){
+  return function(invitations, status){
 /*
-var thisModule = angular.module('invitationsStatus', []);
-thisModule.
+    return invitations.filter(function(invitation){
+      //return invitation.status == 2;
+      return true;
+    });
 */
+    //alert("eq?" + invitations);
+
+    if(status == true)
+      // write method here to filter array
+    else
+      return invitations;
+  };
+});

@@ -1,5 +1,6 @@
 - content_for :head do
   = javascript_include_tag "angular"
+  = javascript_include_tag "angular/filters/user-invitation-level"
   = javascript_include_tag "angular/get_request_example"
 
 .row
@@ -29,11 +30,11 @@
             %th= t('terms.invitation_type')
             %th= t('terms.status')
         %tbody
-          %tr{'ng-repeat' => 'invitation in invitations | filter:query'}
+          %tr{'ng-repeat' => 'invitation in invitations | filter:{name:query}'}
             %td
               %a{'href'=>'invitations/{{invitation.id}}'}
                 {{ invitation.name }}
             %td
-              {{ invitation.user_level }}
+              {{ invitation.user_level | filterInvitationsUserLevel }}
             %td
               {{ invitation.status }}

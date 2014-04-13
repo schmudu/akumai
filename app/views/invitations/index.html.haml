@@ -1,7 +1,8 @@
 - content_for :head do
   = javascript_include_tag "angular"
-  = javascript_include_tag "angular/filters/user-invitation-level"
-  = javascript_include_tag "angular/get_request_example"
+  = javascript_include_tag "angular/common/filters/invitation-user-level"
+  = javascript_include_tag "angular/common/filters/invitation-status"
+  = javascript_include_tag "angular/invitations/index"
 
 .row
   %h1 Listing invitations
@@ -37,4 +38,4 @@
             %td
               {{ invitation.user_level | filterInvitationsUserLevel }}
             %td
-              {{ invitation.status }}
+              {{ invitation.status | filterInvitationsStatus }}

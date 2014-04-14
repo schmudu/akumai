@@ -13,16 +13,16 @@ thisModule.filter('filterInvitationsStatus', function(){
 //var thisModule = angular.module('invitationsStatus', []);
 thisModule.filter('filterInvitationsCheckbox', function(){
   return function(invitations, status){
-/*
-    return invitations.filter(function(invitation){
-      //return invitation.status == 2;
-      return true;
-    });
-*/
-    //alert("eq?" + invitations);
+    if(status == true){
+      results = [];     // return value
 
-    if(status == true)
-      // write method here to filter array
+      // iterate and return sent invitations
+      for (var i = 0; i < invitations.length; i++){
+        if (invitations[i].status == 2)
+          results.push(invitations[i]);
+      };
+      return results;
+    }
     else
       return invitations;
   };

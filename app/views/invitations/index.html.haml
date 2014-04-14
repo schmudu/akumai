@@ -16,13 +16,17 @@
 .row{'ng-app' => 'invitationsUser', 'ng-controller' => 'invitationsCtrl'}
   -# invitations filter
   .col-md-3
-    Filter 
-    %br/
-    %input.form-control{'ng-model'=>'query'}
-    %br/
-    Only Sent
-    %input.form-control{'type'=>'checkbox', 'ng-model'=>'onlySent'}
-    %br/
+    %form.form-horizontal{'role' => 'form'}
+      .form-group
+        .col-sm-4
+          %label.control-label Filter 
+        .col-sm-8
+          %input.form-control{'ng-model'=>'query'}
+      .form-group
+        .col-sm-4
+          %label.control-label Sent
+        .col-sm-8
+          %input.form-control{'type'=>'checkbox', 'ng-model'=>'onlySent'}
 
   -# invitations table
   .col-md-9

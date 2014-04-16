@@ -8,3 +8,7 @@ angular.module('invitationsUserLevel', []).filter('filterInvitationsUserLevel', 
       return "Student";
   }
 });
+
+app.controller('invitationsUserLevel', function($scope) {
+    $scope.text = 'Hello World!';
+});

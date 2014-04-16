@@ -1,4 +1,4 @@
-require 'constants_helper'
+require_relative '../helpers/constants_helper'
 
 class User < ActiveRecord::Base
   extend FriendlyId

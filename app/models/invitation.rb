@@ -1,5 +1,5 @@
-#require_relative '../helpers/constants_helper'
-require 'constants_helper'
+#require_relative '../app/helpers/constants_helper'
+require_relative '../helpers/constants_helper'
 
 class Invitation < ActiveRecord::Base
   extend FriendlyId

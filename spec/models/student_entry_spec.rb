@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'constants_helper'
+require_relative '../../app/helpers/constants_helper'
 
 describe StudentEntry do
   before do

@@ -1,5 +1,5 @@
 #require_relative '../app/helpers/constants_helper'
-require 'constants_helper'
+require_relative '../app/helpers/constants_helper'
 
 FactoryGirl.define do
   factory :dataset do

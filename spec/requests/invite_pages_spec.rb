@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require 'constants_helper'
+require_relative '../../app/helpers/constants_helper'
 
 def create_test_invite(user_level, invitation_id)
   invite = FactoryGirl.build(:invite)

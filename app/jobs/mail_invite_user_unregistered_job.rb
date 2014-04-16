@@ -1,5 +1,4 @@
-require 'constants_helper'
-#require_relative './module_failure_job'
+require_relative '../helpers/constants_helper'
 require 'module_failure_job'
 
 class MailInviteUserUnregisteredJob

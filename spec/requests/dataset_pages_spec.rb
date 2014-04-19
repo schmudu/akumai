@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe "Datasets" do
-=begin
-  before do
-    @program = Program.create(:name => "Program Name") 
-  end
   let(:staff) { FactoryGirl.create(:user, :email => "staff@abc.com", :superuser => true) }
   let(:superuser) { FactoryGirl.create(:user, :email => "superuser@abc.com", :superuser => true) }
   let(:user_student) { FactoryGirl.create(:user, email: "student@abc.com", superuser: false) }
@@ -18,12 +14,13 @@ describe "Datasets" do
   describe "superuser" do
     before(:each) do 
       login superuser 
-      visit new_dataset_path
+      visit new_dataset_path(:id => program.slug)
     end
 
     describe "attach csv file" do
       before do
-        attach_file "dataset_attachment", '/tmp/hello_world.csv'
+        fill_in "dataset_effective_at", :with => "19-April-2014"
+        attach_file "dataset_attachment", "#{Rails.root}/spec/fixtures/files/data_sample.csv"
         click_button "Create Dataset"
       end
 
@@ -32,6 +29,7 @@ describe "Datasets" do
       it { current_path.should == datasets_path }
     end
 
+=begin
     describe "create dataset count" do
       it "should increase dataset count" do
         expect do
@@ -40,6 +38,6 @@ describe "Datasets" do
         end.to change{Dataset.count}.by(1)
       end
     end
-  end
 =end
+  end
 end

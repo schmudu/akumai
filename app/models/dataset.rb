@@ -11,12 +11,14 @@ class Dataset < ActiveRecord::Base
   validate :existence_of_creator,
             :existence_of_program
 
-  # DEPLOYMENT
+  # PRODUCTION
   # has_attached_file :attachment
 
   # DEVELOPMENT
   has_attached_file :attachment,
     :path => '/tmp/akumai-dev/paperclip/:class/:attachment/:id_partition/:style/:filename',
     :url => '/tmp/akumai-dev/paperclip/:class/:attachment/:id_partition/:style/:filename'
-  validates_attachment :attachment, content_type: { content_type: "text/csv" }
+
+  # TODO: using Rspec csv is viewed as plain but during development it's seen as a csv file
+  validates_attachment_content_type :attachment, :content_type => /text\/(csv|plain)$/
 end

@@ -16,7 +16,7 @@ describe Dataset do
     # dataset
     @dataset = FactoryGirl.build(:dataset)
     @dataset.creator_id = @superuser.id
-    @dataset.attachment = File.open(get_attachment_file_path("hello_world.csv"),"r")
+    @dataset.attachment = File.open(get_attachment_file_path("data_sample.csv"),"r")
     @dataset.effective_at = Time.now
     @dataset.program_id = @program.id
   end

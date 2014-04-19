@@ -28,14 +28,15 @@ class DatasetsController < ApplicationController
   def create
     @dataset = Dataset.new(dataset_params)
 
-    respond_to do |format|
-      if @dataset.save
-        format.html { redirect_to @dataset, notice: 'Dataset was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @dataset }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @dataset.errors, status: :unprocessable_entity }
-      end
+    # time parsing is separate
+    effective_date = Time.parse(params[:dataset][:effective_at])
+    @dataset.effective_at = effective_date
+
+    if @dataset.save
+      redirect_to @dataset, notice: 'Dataset was successfully created.' 
+    else
+      @program = Program.find_by_id(params[:dataset][:program_id])
+      render action: 'new' 
     end
   end
 
@@ -71,6 +72,6 @@ class DatasetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dataset_params
-      params.require(:dataset).permit(:attachment)
+      params.require(:dataset).permit(:attachment, :creator_id, :program_id)
     end
 end

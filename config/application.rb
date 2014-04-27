@@ -43,5 +43,8 @@ module Trio
     end
 
     config.action_mailer.default_url_options = {host: CONFIG[:mailer_host]}
+
+    # Autoload lib folder
+    #config.autoload_paths += %W(#{config.root}/lib)
   end
 end

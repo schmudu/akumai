@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require_relative '../../app/helpers/constants_helper'
-
 describe "RegistrationPages" do
   before do
     @password = "foobar123"

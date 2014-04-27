@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../../app/helpers/constants_helper'
 
 describe Invitation do
   before do

@@ -1,5 +1,3 @@
-require_relative '../helpers/constants_helper'
-
 class MailRegistrationUserJob
 
   @queue = :mail

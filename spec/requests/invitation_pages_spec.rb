@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require_relative '../../app/helpers/constants_helper'
-
 describe "InvitationPages" do
   before do
     @program = Program.create(:name => "Program Name") 

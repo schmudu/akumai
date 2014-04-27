@@ -28,16 +28,5 @@ describe "Datasets" do
       it { should have_content('error')}
       it { current_path.should == datasets_path }
     end
-
-=begin
-    describe "create dataset count" do
-      it "should increase dataset count" do
-        expect do
-          attach_file "attachment", '/tmp/hello_world.csv'
-          click_button "Create Dataset"
-        end.to change{Dataset.count}.by(1)
-      end
-    end
-=end
   end
 end

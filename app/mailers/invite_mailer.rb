@@ -1,5 +1,4 @@
 class InviteMailer < ActionMailer::Base
-  include ConstantsHelper
   default from: "no-reply@akumai.org"
 
   after_action :set_sent_status

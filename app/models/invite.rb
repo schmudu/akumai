@@ -1,5 +1,3 @@
-require_relative '../helpers/constants_helper'
-
 class Invite < ActiveRecord::Base
   extend FriendlyId
   friendly_id :email, use: :slugged

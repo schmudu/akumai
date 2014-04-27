@@ -1,5 +1,3 @@
-require_relative '../helpers/constants_helper'
-
 module FailureJob
   def on_failure_retry(e, id)
     resource = get_resource id

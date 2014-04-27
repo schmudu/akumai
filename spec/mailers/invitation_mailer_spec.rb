@@ -1,6 +1,5 @@
 =begin
 require "spec_helper"
-require_relative '../app/helpers/constants_helper'
 
 describe InvitationMailer do
   describe "invitation_email" do

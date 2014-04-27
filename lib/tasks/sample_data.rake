@@ -1,5 +1,3 @@
-require_relative '../../app/helpers/constants_helper'
-
 namespace :db do
   # run via: rake db:populate
   desc "Fill database with sample data"

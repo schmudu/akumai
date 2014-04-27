@@ -116,5 +116,23 @@ describe Dataset do
   end
   #Dataset.new(:attachment => File.open(File.join(Rails.root,"/spec/fixtures/files/",file_name),"r"))
 
+  describe "delayed jobs creation" do
+    before do
+      ResqueSpec.reset!
+=begin
+      @invite.code = "abc"
+      @invite.email = "abc@abc.com"
+      @invite.student_id = "abc01"
+      @invite.user_level = ConstantsHelper::ROLE_LEVEL_STAFF
+      @invite.invitation_id = @invitation.id
+=end
+    end
+
+    it "queues mail when a contact is created" do
+      @dataset.save
+      MailInviteUserUnregisteredJob.should have_queued(@dataset.id).in(:mail)
+    end
+  end
+
 end
 

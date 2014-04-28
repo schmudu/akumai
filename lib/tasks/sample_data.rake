@@ -30,13 +30,14 @@ namespace :db do
 end
 
 namespace :test do
-  #run via: rake RAILS_ENV=development test:create_invite
+  # NOTE: make sure you run "rake db:populate" to populate DB
+  #run via: rake RAILS_ENV=development test:create_invite_staff
   desc "Create test invitation and invite"
   task create_invite_staff: :environment do
     @superuser = User.find_by_email("superuser@abc.com")
     @program = Program.first
     if @superuser.nil? || @program.nil?
-      puts "Need program and superuser to complete this task #{environment}"
+      puts "Need program and superuser to complete this task..."
       next
     end
     @invitation = Invitation.new
@@ -57,11 +58,12 @@ namespace :test do
   end
 
   desc "Create test invitation and invite for student"
+  # NOTE: make sure you run "rake db:populate" to populate DB
   task create_invite_student: :environment do
     @superuser = User.find_by_email("superuser@abc.com")
     @program = Program.first
     if @superuser.nil? || @program.nil?
-      puts "Need program and superuser to complete this task #{environment}"
+      puts "Need program and superuser to complete this task..."
       next
     end
     @invitation = Invitation.new

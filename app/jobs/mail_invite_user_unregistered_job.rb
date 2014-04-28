@@ -1,14 +1,11 @@
-#require 'module_failure_job'
-
 class MailInviteUserUnregisteredJob
-  # TODO - Rails cannot find this file
-  #extend FailureJob
+  extend FailureJob
 
   @queue = :mail
 
   def self.perform(id)
-    invite = get_resource id
-    InviteMailer.send_user_unregistered(invite).deliver
+    # raise error to do any test validation
+    #raise "test exception to throw failure"
   end
 
   def self.get_resource id

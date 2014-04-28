@@ -1,10 +1,7 @@
-#require 'module_failure_job'
-
 class MailInviteUserUnregisteredJob
-  # TODO - Rails cannot find this file
-  #extend FailureJob
+  extend FailureJob
 
-  @queue = :mail
+  @queue = :dataset
 
   def self.perform(id)
     invite = get_resource id

@@ -130,7 +130,7 @@ describe Dataset do
 
     it "queues mail when a contact is created" do
       @dataset.save
-      MailInviteUserUnregisteredJob.should have_queued(@dataset.id).in(:mail)
+      DatasetCreationJob.should have_queued(@dataset.id).in(:dataset)
     end
   end
 

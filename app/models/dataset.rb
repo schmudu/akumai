@@ -4,6 +4,7 @@ class Dataset < ActiveRecord::Base
   belongs_to :program
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
 
+  after_create :process
   validates_presence_of :attachment
   validates_presence_of :creator_id
   validates_presence_of :effective_at
@@ -21,4 +22,9 @@ class Dataset < ActiveRecord::Base
 
   # TODO: using Rspec csv is viewed as plain but during development it's seen as a csv file
   validates_attachment_content_type :attachment, :content_type => /text\/(csv|plain)$/
+
+  private
+    def process
+      Resque.enqueue(DatasetCreationJob, self.id)
+    end
 end

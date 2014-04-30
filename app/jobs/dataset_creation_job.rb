@@ -1,14 +1,14 @@
-class MailInviteUserUnregisteredJob
+class DatasetCreationJob
   extend FailureJob
 
   @queue = :dataset
 
   def self.perform(id)
-    invite = get_resource id
-    InviteMailer.send_user_unregistered(invite).deliver
+    dataset = get_resource id
+    # do something with dataset
   end
 
   def self.get_resource id
-    Invite.find_by_id id
+    Dataset.find_by_id id
   end
 end

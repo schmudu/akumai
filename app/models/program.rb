@@ -4,7 +4,7 @@ class Program < ActiveRecord::Base
 
   # TODO - test destroy attributes
   has_many :datasets, dependent: :destroy
-  has_many :invites, through: :invitations, dependent: :destroy
+  has_many :invites, through: :invitations
   has_many :invitations, dependent: :destroy
   has_many :roles, dependent: :destroy
   has_many :users, through: :roles

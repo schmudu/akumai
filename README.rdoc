@@ -77,7 +77,15 @@ To set development environment variables, edit the .bash_profile file.  An examp
 Add RedisCloud:
   heroku addons:add rediscloud
 
-= Production Environment
+= Staging + Production Environment
+1) Setup staging environment
+To push Github code to staging environment use the following command:
+  git push staging master
+  heroku run rake db:migrate --app akumai-staging
+
+To push Github code to production environment use the following command:
+  git push production master
+
 To stop app from serving requests:
   heroku ps:scale web=0 --app akumai-production
 

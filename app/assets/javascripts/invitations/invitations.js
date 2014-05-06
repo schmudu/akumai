@@ -52,20 +52,20 @@ function setInvitationLevel(program_value){
   }
 
 function insertStudentEntryRow(row_number, invitation_id){
-  var element_insert = $("<tr>\
-    <td>\
-      <input class='form_default_entry email_entry' id='invitation_student_entries_attributes_" + row_number +  "_student_email' \
-        name='invitation[student_entries_attributes][" + row_number + "][student_email]'\
-        type='text' value='Student Email'> \
-    </td>\
-    <td>\
-      <input class='form_default_entry id_entry' id='invitation_student_entries_attributes_" + row_number + "_student_id'\
-        name='invitation[student_entries_attributes][" + row_number + "][student_id]' \
-        type='text' value='Student ID'> \
-      <input id='invitation_student_entries_attributes_" + row_number + "_invitation_id'\
-        name='invitation[student_entries_attributes][" + row_number + "][invitation_id]' \
-        type='hidden' value='" + invitation_id + "'> \
-    </td>");
+  var element_insert = $("<tr>" +
+    "<td>" +
+      "<input class='form_default_entry email_entry' id='invitation_student_entries_attributes_" + row_number +  "_student_email' " +
+        "name='invitation[student_entries_attributes][" + row_number + "][student_email]'" +
+        "type='text' value='Student Email'> " +
+    "</td>" +
+    "<td>" +
+      "<input class='form_default_entry id_entry' id='invitation_student_entries_attributes_" + row_number + "_student_id'" +
+        "name='invitation[student_entries_attributes][" + row_number + "][student_id]'" +
+        "type='text' value='Student ID'>" +
+      "<input id='invitation_student_entries_attributes_" + row_number + "_invitation_id'" +
+        "name='invitation[student_entries_attributes][" + row_number + "][invitation_id]'" +
+        "type='hidden' value='" + invitation_id + "'>"+
+    "</td>");
   $("#student_entries").append(element_insert);
 
   // listeners
@@ -168,7 +168,7 @@ $(document).ready(function(){
   $(".email_entry").blur(function(){
     var current_entry = $(this).val();
 
-    if((current_entry == STUDENT_INVITATION_DEFAULT_EMAIL) || (current_entry == '')){
+    if((current_entry == STUDENT_INVITATION_DEFAULT_EMAIL) || (current_entry === '')){
       // default entry, set class
       $(this).val(STUDENT_INVITATION_DEFAULT_EMAIL);
       $(this).addClass("form_default_entry");
@@ -181,7 +181,7 @@ $(document).ready(function(){
   $(".id_entry").focus(function(){
     var current_entry = $(this).val();
 
-    if(current_entry == STUDENT_INVITATION_DEFAULT_ID){
+    if(current_entry === STUDENT_INVITATION_DEFAULT_ID){
       // default entry, set class
       $(this).val('');
       $(this).removeClass("form_default_entry");
@@ -191,7 +191,7 @@ $(document).ready(function(){
   $(".id_entry").blur(function(){
     var current_entry = $(this).val();
 
-    if((current_entry == STUDENT_INVITATION_DEFAULT_ID) || (current_entry == '')){
+    if((current_entry === STUDENT_INVITATION_DEFAULT_ID) || (current_entry === '')){
       // default entry, set class
       $(this).val(STUDENT_INVITATION_DEFAULT_ID);
       $(this).addClass("form_default_entry");

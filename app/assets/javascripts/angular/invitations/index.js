@@ -5,4 +5,4 @@ invitationsUserModule.controller('invitationsCtrl', function ($scope, $http){
   });
 
   $scope.orderProp = 'created_at';
-})
+});

@@ -3,6 +3,6 @@ development:
 test:
   mailer_host: www.test.com
 staging:
-  mailer_host: trio-staging.herokuapp.com
+  mailer_host: akumai-staging.herokuapp.com
 production:
-  mailer_host: trio-production.herokuapp.com
+  mailer_host: akumai-production.herokuapp.com

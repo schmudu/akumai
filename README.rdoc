@@ -36,6 +36,10 @@ Installation
 5) Started a worker with the following line ('mail' is the queue name)
   QUEUE=mail rake environment resque:work
 
+  Additional Note: To test production on local development use the following line: 
+  RAILS_ENV=production VVERBOSE=1 QUEUE=* rake environment resque:work
+
+
 or
 
   VVERBOSE=1 QUEUE=mail rake environment resque:work
@@ -77,7 +81,13 @@ To set development environment variables, edit the .bash_profile file.  An examp
 Add RedisCloud:
   heroku addons:add rediscloud
 
-= Staging + Production Environment
+=======================================
+          DEPLOYMENT
+=======================================
+======== Staging Environment
+NOTE: "akumai-staging" is the default heroku environment so the flag "--app akumai-staging" is not necessary
+      View project's ".git/config" file and verify the "remote" variable.
+      
 1) Setup staging environment
 To push Github code to staging environment use the following command:
 1a) Precompile any assets and verify that it'll work in production environment
@@ -88,13 +98,23 @@ To push Github code to staging environment use the following command:
 3) Update any database changes
   heroku run rake db:migrate --app akumai-staging
 
+======== Production Environment
+1) Setup production environment
 To push Github code to production environment use the following command:
+1a) Precompile any assets and verify that it'll work in production environment
+  rake assets:precompile --trace RAILS_ENV=production
+
+2) Push code to server
   git push production master
 
-To stop app from serving requests:
+3) Update any database changes
+  heroku run rake db:migrate --app akumai-production
+
+4) Scale workers
+To stop workers from serving requests:
   heroku ps:scale web=0 --app akumai-production
 
-To restart services:
+To start services:
   heroku ps:scale web=1 --app akumai-production
 
 To scale up resque workers (1 in this example):

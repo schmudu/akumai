@@ -7,6 +7,7 @@ gem 'rails', '4.0.0'
 
 # Use sqlite3 as the database for Active Record
 group :development, :test do
+  gem 'debugger', '1.6.6'
   gem 'rspec-rails', '2.14.0'
   gem 'jasmine', '2.0.0'
 end

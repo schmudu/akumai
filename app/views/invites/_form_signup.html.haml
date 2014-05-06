@@ -3,8 +3,12 @@
   = javascript_include_tag "forms"
   = javascript_include_tag "invites"
 
+.row.center
+  %h3= t('terms.account_information')
+%br/
 .row#invite_instructions
   = t('invites.form.title.enter_invite_info')
+%br/
 
 - if @user.errors.any? || @invite.errors.any?
   #error_explanation
@@ -15,8 +19,6 @@
       -@invite.errors.full_messages.each do |msg| 
         %li= msg 
 
-%br/
-%h3= t('terms.account_information')
 %br/
 .row
   .col-md-2
@@ -75,10 +77,10 @@
       %br/
       / action
       .row
-        .span4
-        .span1
+        .col-sm-4
+        .col-sm-1
           = f.submit(t('terms.reject_invite'), :class => 'btn btn-danger', :name => 'reject') 
-        .span2
-        .span1
+        .col-sm-2
+        .col-sm-1
           = f.submit(t('terms.accept_invite'), :class => 'btn btn-success') 
-        .span3
+        .col-sm-3

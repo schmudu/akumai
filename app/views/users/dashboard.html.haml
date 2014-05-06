@@ -17,7 +17,7 @@
           %td
             = link_to program.name, program_path(:id => program.slug)
           %td
-            = link_to t('terms.invitations', count:2), invitation_path(:id => program.slug)
+            -#= link_to t('terms.invitations', count:2), invitation_path(:id => program.slug)
           %td
             = link_to t('terms.import_data'), new_dataset_path(:id => program.slug)
   .col-md-2

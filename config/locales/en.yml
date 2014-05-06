@@ -138,6 +138,7 @@ en:
     password: "Password"
     password_confirmation: "Password Confirmation"
     program: "Program"
+    program_name: "Program Name"
     project_name: "Akumai"
     reject_invite: "Reject Invite"
     sign_up: "Sign up"

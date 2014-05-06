@@ -1,15 +1,26 @@
-= form_for(@program) do |f|
-  - if @program.errors.any?
-    #error_explanation
-      %h2
-        = "#{pluralize(@program.errors.count, "error")} prohibited this program from being saved:"
+- if @program.errors.any?
+  #error_explanation
+    %h2
+      = "#{pluralize(@program.errors.count, "error")} prohibited this program from being saved:"
 
-      %ul
-        -@program.errors.full_messages.each do |msg|
-          %li= msg 
+    %ul
+      -@program.errors.full_messages.each do |msg|
+        %li= msg 
 
-  .field
-    = f.label :name 
-    = f.text_field :name
-  .actions
-    = f.submit
+%br/
+.row
+  .col-md-2
+  .col-md-8
+    = form_for(@program, html: {:class => 'form-horizontal', :id => ''}) do |f| 
+
+      -# invitation_name
+      .form-group{:class => @program.errors.messages[:name].nil? ? "" : "error"}
+        = f.label(:name, t('terms.program_name'), :class =>'col-sm-3 control-label')
+        .col-sm-9
+          = f.text_field(:name, {:class => 'form-control', :autofocus => true, :placeholder => "Program Name"})
+      .row
+      .row
+        .col-sm-3
+        .col-sm-9
+          = f.submit
+      %br/

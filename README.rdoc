@@ -80,7 +80,12 @@ Add RedisCloud:
 = Staging + Production Environment
 1) Setup staging environment
 To push Github code to staging environment use the following command:
+1a) Precompile any assets and verify that it'll work in production environment
+  rake assets:precompile --trace RAILS_ENV=production
+2) Push code to server
   git push staging master
+
+3) Update any database changes
   heroku run rake db:migrate --app akumai-staging
 
 To push Github code to production environment use the following command:

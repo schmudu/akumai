@@ -8,6 +8,11 @@
 4) Install Postgres and set the owner of the database to be ruby_user by running the line:
     ALTER DATABASE trio_dev OWNER TO ruby_user;
 
+== TESTING
+To run karma/jasmine run the following command in the project home directory after installing Jasmine/Karma (see Angular Google Docs(https://docs.angularjs.org/tutorial/step_02)):
+  ./node_modules/karma/bin/karma start
+
+
 == ANNOTATIONS
 Annotations were used to keep track of what issues that need to be fixed, updated....basically a TODO list after everything is said and done.  
 

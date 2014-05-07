@@ -1,7 +1,7 @@
 describe('invitationsUserLevel', function(){
-  beforeEach(module('invitationsUserLevel'));
+  //beforeEach(module('invitationsUserLevel'));
 
-  it('should create "phone" model with 3 phones', inject(function($filter){
+  it('should create "phone" model with 3 phones', function(){
     /*
     var scope = {},
         filter = $filter('filterInvitationsUserLevel', {$scope:scope});
@@ -11,7 +11,7 @@ describe('invitationsUserLevel', function(){
 
     expect(true).toBe(true);
 
-  }));
+  });
   
   /*
   var scope;//we'll use this scope in our tests

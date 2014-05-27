@@ -1,17 +1,14 @@
 FactoryGirl.define do
+  factory :core_course do
+    name "Default Name"
+  end
+
   factory :dataset do
   end
 
   factory :error do
     resource "Invite"
     comment "Invite #1 is not valid"
-  end
-
-  factory :user do
-    sequence(:email) { |n| "michael_#{n}@example.com"}
-    password "foobar123"
-    password_confirmation "foobar123"
-    superuser false
   end
 
   factory :invitation do
@@ -45,5 +42,12 @@ FactoryGirl.define do
     student_id 1
     saved false
     invitation_id 1
+  end
+
+  factory :user do
+    sequence(:email) { |n| "michael_#{n}@example.com"}
+    password "foobar123"
+    password_confirmation "foobar123"
+    superuser false
   end
 end

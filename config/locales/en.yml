@@ -25,6 +25,9 @@ en:
   access:
     errors:
       permissions: "You do not have the proper access to %{action}."
+  core_course:
+    errors:
+      duplicate_name: "Duplicate core course name"
   datasets:
     form:
       labels:

@@ -46,5 +46,8 @@ module Trio
 
     # Autoload lib folder
     #config.autoload_paths += %W(#{config.root}/lib)
+
+    # autoload 'lib/core_ext/' folder
+    Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each {|l| require l }
   end
 end

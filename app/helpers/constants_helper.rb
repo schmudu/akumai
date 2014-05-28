@@ -31,4 +31,16 @@ module ConstantsHelper
 
   # Resque
   MAX_NUMBER_OF_ATTEMPTS = 5
+
+  # COURSES
+  COURSE_NAME_STORE = {
+    "alg" => "algebra",
+    "i" => "1",
+    "ii" => "2",
+    "iii" => "3",
+    "iiii" => "4",
+    "iv" => "4",
+    "iiiii" => "5",
+    "v" => "5"
+  }
 end

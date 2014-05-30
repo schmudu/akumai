@@ -1,0 +1,15 @@
+- provide(:title, "Core Courses")
+%h1 Listing Core Courses
+
+= link_to 'Create Core Course', new_core_course_path
+= will_paginate
+
+%ul
+  - @core_courses.each do |course|
+    %li= link_to course.name, course
+
+= will_paginate 
+
+%br/
+
+= link_to 'New Core Course', new_core_course_path

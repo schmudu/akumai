@@ -1,0 +1,26 @@
+- if @course.errors.any?
+  #error_explanation
+    %h2
+      = "#{pluralize(@course.errors.count, "error")} prohibited this course from being saved:"
+
+    %ul
+      -@course.errors.full_messages.each do |msg|
+        %li= msg 
+
+%br/
+.row
+  .col-md-2
+  .col-md-8
+    = form_for(@course, html: {:class => 'form-horizontal', :id => ''}) do |f| 
+
+      -# invitation_name
+      .form-group{:class => @course.errors.messages[:name].nil? ? "" : "error"}
+        = f.label(:name, t('terms.program_name'), :class =>'col-sm-3 control-label')
+        .col-sm-9
+          = f.text_field(:name, {:class => 'form-control', :autofocus => true, :placeholder => "Core Course Name"})
+      .row
+      .row
+        .col-sm-3
+        .col-sm-9
+          = f.submit
+      %br/

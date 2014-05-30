@@ -1,5 +1,6 @@
 class Invite < ActiveRecord::Base
   extend FriendlyId
+  include ResqueResourceHelper
   friendly_id :email, use: :slugged
   
   include UsersHelper
@@ -24,10 +25,6 @@ class Invite < ActiveRecord::Base
 
   def program
     self.invitation.program
-  end
-
-  def increment_attempts
-    self.update_attribute(:resque_attempts, resque_attempts+1)
   end
 
   def is_for_student?

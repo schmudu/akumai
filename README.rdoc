@@ -53,6 +53,11 @@ or
 
 Reminder: Any changes to the environment and Redis needs to be restarted
 
+* Resque Resources
+If any resources need to added as a Resque job, the attribute "resque_attempts" must be added to 
+that model via a migration.  Look at "datasets" or "invitations" as an example.  Also in the <model>.rb 
+file you must include the line "include ResqueResourceHelper" so that it includes the necessary methods.
+
 = Production and Staging Environment
 The Staging environment has a username and password set as local variables on Heroku.  The name of the environment variables are:
   AKUMAI_APP_USERNAME     # used for staging environment to password protect

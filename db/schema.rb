@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527045805) do
+ActiveRecord::Schema.define(version: 20140530175119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,10 +34,12 @@ ActiveRecord::Schema.define(version: 20140527045805) do
     t.integer  "creator_id"
     t.integer  "program_id"
     t.datetime "effective_at"
+    t.integer  "resque_attempts",         default: 0
   end
 
   add_index "datasets", ["creator_id"], name: "index_datasets_on_creator_id", using: :btree
   add_index "datasets", ["program_id"], name: "index_datasets_on_program_id", using: :btree
+  add_index "datasets", ["resque_attempts"], name: "index_datasets_on_resque_attempts", using: :btree
 
   create_table "errors", force: true do |t|
     t.string   "resource",   default: ""

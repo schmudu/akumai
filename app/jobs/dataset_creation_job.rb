@@ -5,7 +5,8 @@ class DatasetCreationJob
 
   def self.perform(id)
     dataset = get_resource id
-    # do something with dataset
+    # TODO: do something with dataset
+    s = Roo::CSV.new(dataset.attachment.url)
   end
 
   def self.get_resource id

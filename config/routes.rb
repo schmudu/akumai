@@ -16,6 +16,7 @@ Trio::Application.routes.draw do
     end
   end
   resources :programs
+  resources :core_courses
   match '/program_user_level', to:'programs#user_level', via: 'get'
   match '/dashboard',   to: 'users#dashboard',   via: 'get'
   devise_for :users, controllers: { registrations: "users/registrations" }

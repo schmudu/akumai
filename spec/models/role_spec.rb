@@ -37,9 +37,11 @@ describe Role do
 
     describe "invalid information" do
       describe "user id" do
+        # NOTE: user_id can be valid because if an import of data references a student id, then a role
+        # is created even if a user has not claimed that student id
         describe "is nil" do
           before { @role.user_id = nil}
-          it { should_not be_valid }
+          it { should be_valid }
         end
 
         describe "does not reference valid user" do

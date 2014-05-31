@@ -28,10 +28,6 @@ class DatasetsController < ApplicationController
   def create
     @dataset = Dataset.new(dataset_params)
 
-    # time parsing is separate
-    effective_date = Time.parse(params[:dataset][:effective_at])
-    @dataset.effective_at = effective_date
-
     if @dataset.save
       redirect_to @dataset, notice: 'Dataset was successfully created.' 
     else

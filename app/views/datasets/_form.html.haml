@@ -21,22 +21,6 @@
           = f.hidden_field(:program_id, :value => @program.id)
       %br/
 
-
-
-
-      -# effective date
-      .form-group{'ng-controller' => "DatepickerDemoCtrl"}
-        %label.col-md-3.control-label{'for'=>"effectiveData"}= "#{t('datasets.form.labels.effective_date')}"
-        .col-md-9
-          .row
-            .col-md-6
-              %p.input-group
-                %input.form-control{'id' => "dataset_effective_at", 'name' => "dataset[effective_at]", 'type' => "text", 'datepicker-popup' => "{{format}}", 'ng-model' => "dt", 'is-open' => "opened", 'min' => "minDate", 'max' => "'2015-06-22'", 'datepicker-options' => "dateOptions", 'date-disabled' =>"disabled(date, mode)", 'ng-required' => "true", 'close-text' => "Close"}
-                  %span.input-group-btn
-                    %button.btn.btn-default{'ng-click' => "open($event)"}
-                      %i.glyphicon.glyphicon-calendar
-
-
       -# file_attachment
       .form-group
         %label.col-md-3.control-label= "#{t('terms.file_attachment')}"

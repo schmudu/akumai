@@ -19,7 +19,6 @@ describe "Datasets" do
 
     describe "attach csv file" do
       before do
-        fill_in "dataset_effective_at", :with => "19-April-2014"
         attach_file "dataset_attachment", "#{Rails.root}/spec/fixtures/files/data_sample.csv"
         click_button "Create Dataset"
       end

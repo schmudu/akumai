@@ -9,9 +9,10 @@ class DatasetCreationJob
     s = Roo::CSV.new(dataset.attachment.url(:original, false))
 
 
-    # The first cell must be blank
-    # Dates are required to be the first row
-    # Headers are required to be the second row
+    # The first cell(0,0)[first row, first column] must be blank
+    # The second cell(0,1)[second row, first column] must be blank
+    # Dates are required to be the first row (e.g. 10/25/2006)
+    # Headers are required to be the second row (e.g. "Algebra 2")
     # Student IDs are required to be in the first column
     dates = Hash.new
     headers = Hash.new
@@ -31,6 +32,9 @@ class DatasetCreationJob
         datasets[[j,i]] = dataset
       end
     end
+
+    # value data is in datasets store in DatasetEntry
+    # DatasetEntry (:date, :role_id, :data, :dataset_id)
   end
 
   def self.get_resource id

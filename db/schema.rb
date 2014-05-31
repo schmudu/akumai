@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140530175119) do
+ActiveRecord::Schema.define(version: 20140531231352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(version: 20140530175119) do
     t.datetime "attachment_updated_at"
     t.integer  "creator_id"
     t.integer  "program_id"
-    t.datetime "effective_at"
     t.integer  "resque_attempts",         default: 0
   end
 

@@ -17,7 +17,6 @@ describe Dataset do
     @dataset = FactoryGirl.build(:dataset)
     @dataset.creator_id = @superuser.id
     @dataset.attachment = File.open(get_attachment_file_path("data_sample.csv"),"r")
-    @dataset.effective_at = Time.now
     @dataset.program_id = @program.id
   end
 
@@ -26,7 +25,6 @@ describe Dataset do
   # attributes
   it { should respond_to(:attachment) }
   it { should respond_to(:creator) }
-  it { should respond_to(:effective_at) }
   it { should respond_to(:program) }
   it { should respond_to(:program_id) }
   it { should be_valid }
@@ -70,25 +68,6 @@ describe Dataset do
 
         describe "if set to blank" do
           before { @dataset.creator_id = "" }
-          it { should_not be_valid }
-        end
-      end
-    end
-
-    describe "effective_at" do
-      describe "not valid" do
-        describe "if set to non-existent user" do
-          before { @dataset.effective_at = -99 }
-          it { should_not be_valid }
-        end
-
-        describe "if set to nil" do
-          before { @dataset.effective_at = nil }
-          it { should_not be_valid }
-        end
-
-        describe "if set to blank" do
-          before { @dataset.effective_at = "" }
           it { should_not be_valid }
         end
       end

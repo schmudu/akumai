@@ -8,7 +8,6 @@ class Dataset < ActiveRecord::Base
   after_create :process
   validates_presence_of :attachment
   validates_presence_of :creator_id
-  validates_presence_of :effective_at
   validates_presence_of :program_id
   validate :existence_of_creator,
             :existence_of_program

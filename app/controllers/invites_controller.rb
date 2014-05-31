@@ -13,6 +13,8 @@ class InvitesController < ApplicationController
       if @user.valid? && @referenced_invite.matches?(@invite, true)
         @referenced_invite.update_attribute(:status, ConstantsHelper::INVITE_STATUS_ACCEPTED)
         @user.save
+        # TODO: upon accepting need to test whether a role already exists, if so then just update the role
+        # that's already there.  This is because dataset imports create roles as well.
         Role.create(:user_id => @user.id, 
           :program_id => @referenced_invite.program.id, 
           :level => @invite.user_level, 

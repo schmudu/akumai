@@ -4,6 +4,7 @@ class Dataset < ActiveRecord::Base
 
   belongs_to :program
   belongs_to :creator, class_name: "User", foreign_key: "creator_id"
+  has_many :dataset_entries
 
   after_create :process
   validates_presence_of :attachment

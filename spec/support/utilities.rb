@@ -1,5 +1,9 @@
 include ApplicationHelper
 
+def get_attachment_file_path file_name
+  File.join(Rails.root,"/spec/fixtures/files/",file_name)
+end
+
 def login(user, options={})
   if options[:no_capybara]
     remember_token = User.new_remember_token

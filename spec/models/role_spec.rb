@@ -9,6 +9,7 @@ describe Role do
 
   subject { @role }
 
+  it { should respond_to(:dataset_entries) }
   it { should respond_to(:user_id) }
   it { should respond_to(:program_id) }
   it { should respond_to(:level) }

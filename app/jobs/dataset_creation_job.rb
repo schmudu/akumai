@@ -35,6 +35,12 @@ class DatasetCreationJob
 
     # value data is in datasets store in DatasetEntry
     # DatasetEntry (:date, :role_id, :data, :dataset_id)
+=begin
+    datasets.each do |dataset|
+      next if dataset[:data].nil?
+
+    end
+=end
   end
 
   def self.get_resource id

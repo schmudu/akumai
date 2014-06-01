@@ -1,9 +1,5 @@
 require 'spec_helper'
 
-def get_attachment_file_path file_name
-  File.join(Rails.root,"/spec/fixtures/files/",file_name)
-end
-
 describe Dataset do
   before do
     @superuser = FactoryGirl.create(:user, :superuser => true)
@@ -25,6 +21,7 @@ describe Dataset do
   # attributes
   it { should respond_to(:attachment) }
   it { should respond_to(:creator) }
+  it { should respond_to(:dataset_entries) }
   it { should respond_to(:program) }
   it { should respond_to(:program_id) }
   it { should be_valid }

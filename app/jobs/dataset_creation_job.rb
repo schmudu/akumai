@@ -26,21 +26,25 @@ class DatasetCreationJob
 
     # iterate through all rows and columns for data
     ((s.first_row+2)..s.last_row).each_with_index do |row, i|
+      dataset_row = Hash.new
       ((s.first_column+1)..s.last_column).each_with_index do |column, j|
-        dataset = Hash.new
-        dataset = {:date => dates[column-1], :student_id => student_ids[row-1], :data => s.row(row)[column-1]}
-        datasets[[j,i]] = dataset
+        dataset_entry = Hash.new
+        dataset_entry = {:date => dates[column-1], :student_id => student_ids[row-1], 
+            :data => s.row(row)[column-1], :header => headers[column-1]}
+        dataset_row[j] = dataset_entry
+      end
+      datasets[i] = dataset_row
+    end
+
+    datasets.each_with_index do |dataset_row, row|
+      dataset_row.each_with_index do |dataset_entry, column|
+        next if dataset[:data].nil?
+        # find role from role_id
+
+        # create dataset_entry
+        # DatasetEntry (:date, :role_id, :data, :dataset_id)
       end
     end
-
-    # value data is in datasets store in DatasetEntry
-    # DatasetEntry (:date, :role_id, :data, :dataset_id)
-=begin
-    datasets.each do |dataset|
-      next if dataset[:data].nil?
-
-    end
-=end
   end
 
   def self.get_resource id

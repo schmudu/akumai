@@ -29,6 +29,10 @@ FactoryGirl.define do
     user_level ConstantsHelper::ROLE_LEVEL_STAFF
   end
 
+  factory :mapped_course do
+    name "Default Name"
+  end
+
   factory :program do
     sequence(:name) { |n| "TRIO Program UCSD_#{n}" }
   end

@@ -1,0 +1,11 @@
+- provide(:title, @course.name)
+
+= link_to('Edit', edit_mapped_course_path(@course)) |
+= link_to 'Back', mapped_courses_path
+%br/
+%br/
+%p
+  %strong Name:
+  = @course.name
+%br/
+

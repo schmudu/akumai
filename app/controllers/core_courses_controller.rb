@@ -3,28 +3,28 @@ class CoreCoursesController < ApplicationController
   before_filter :authenticate_user!
   before_action :set_course, only: [:show, :edit, :update, :destroy]
 
-  # GET /programs
-  # GET /programs.json
+  # GET /core_courses
+  # GET /core_courses.json
   def index
-    @core_courses = CoreCourse.paginate(page: params[:page])
+    @courses = CoreCourse.paginate(page: params[:page])
   end
 
-  # GET /programs/1
-  # GET /programs/1.json
+  # GET /core_courses/1
+  # GET /core_courses/1.json
   def show
   end
 
-  # GET /programs/new
+  # GET /core_courses/new
   def new
     @course = CoreCourse.new
   end
 
-  # GET /programs/1/edit
+  # GET /core_courses/1/edit
   def edit
   end
 
-  # POST /programs
-  # POST /programs.json
+  # POST /core_courses
+  # POST /core_courses.json
   def create
     @course = CoreCourse.new(course_params)
 
@@ -35,8 +35,8 @@ class CoreCoursesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /programs/1
-  # PATCH/PUT /programs/1.json
+  # PATCH/PUT /core_courses/1
+  # PATCH/PUT /core_courses/1.json
   def update
     if @course.update(course_params)
       redirect_to @course, notice: 'Core Course was successfully updated.'
@@ -45,8 +45,8 @@ class CoreCoursesController < ApplicationController
     end
   end
 
-  # DELETE /programs/1
-  # DELETE /programs/1.json
+  # DELETE /core_courses/1
+  # DELETE /core_courses/1.json
   def destroy
     @program.destroy
     redirect_to programs_url

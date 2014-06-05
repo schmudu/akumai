@@ -1,0 +1,15 @@
+- provide(:title, "Mapped Courses")
+%h1 Listing Mapped Courses
+
+= link_to 'Create Mapped Course', new_mapped_course_path
+= will_paginate
+
+%ul
+  - @courses.each do |course|
+    %li= link_to course.name, course
+
+= will_paginate 
+
+%br/
+
+= link_to 'New Mapped Course', new_mapped_course_path

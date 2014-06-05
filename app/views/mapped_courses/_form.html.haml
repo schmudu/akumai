@@ -13,11 +13,27 @@
   .col-md-8
     = form_for(@course, html: {:class => 'form-horizontal', :id => ''}) do |f| 
 
-      -# invitation_name
+      -# program
+      .form-group{:class => @course.errors.messages[:program_id].nil? ? "" : "error"}
+        = f.label(:name, t('terms.program'), :class =>'col-sm-3 control-label')
+        .col-sm-5
+          = f.select(:program_id, options_for_select(@programs.each.map { |program| [program.name, program.id] }.insert(0, "Select Program"), selected: @course.program_id), {}, {:class => "form-control"}) 
+      %br/
+
+      -# mapped course_name
       .form-group{:class => @course.errors.messages[:name].nil? ? "" : "error"}
         = f.label(:name, t('terms.program_name'), :class =>'col-sm-3 control-label')
         .col-sm-9
           = f.text_field(:name, {:class => 'form-control', :autofocus => true, :placeholder => "Mapped Course Name"})
+      %br/
+
+      -# core course
+      .form-group{:class => @course.errors.messages[:core_course_id].nil? ? "" : "error"}
+        = f.label(:name, t('terms.program'), :class =>'col-sm-3 control-label')
+        .col-sm-5
+          = f.select(:core_course_id, options_for_select(@core_courses.each.map { |course| [course.name, course.id] }.insert(0, "Select Core Course To Map To"), selected: @course.core_course_id), {}, {:class => "form-control"}) 
+      %br/
+
       .row
       .row
         .col-sm-3

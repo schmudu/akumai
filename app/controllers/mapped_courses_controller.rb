@@ -5,7 +5,7 @@ class MappedCoursesController < ApplicationController
   # GET /mapped_courses
   # GET /mapped_courses.json
   def index
-    @courses = MappedCourse.paginate(page: params[:page])
+    @mapped_courses = MappedCourse.paginate(page: params[:page])
   end
 
   # GET /mapped_courses/1
@@ -16,6 +16,8 @@ class MappedCoursesController < ApplicationController
   # GET /mapped_courses/new
   def new
     @course = MappedCourse.new
+    @programs = current_user.staff_level_programs
+    @core_courses = CoreCourse.all
   end
 
   # GET /mapped_courses/1/edit
@@ -30,6 +32,8 @@ class MappedCoursesController < ApplicationController
     if @course.save
       redirect_to @course, notice: 'Mapped Course was successfully created.'
     else
+      @programs = current_user.staff_level_programs
+      @core_courses = CoreCourse.all
       render action: 'new' 
     end
   end

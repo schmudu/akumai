@@ -6,7 +6,7 @@ class CoreCoursesController < ApplicationController
   # GET /core_courses
   # GET /core_courses.json
   def index
-    @courses = CoreCourse.paginate(page: params[:page])
+    @core_courses = CoreCourse.paginate(page: params[:page])
   end
 
   # GET /core_courses/1

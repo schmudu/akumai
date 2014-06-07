@@ -105,4 +105,12 @@ describe CoreCourse do
       end
     end
   end
+
+  describe "after create" do
+    it "should increase mapped course count" do
+      expect do
+        @core_course.save
+      end.to change{MappedCourse.count}.from(0).to(1)
+    end
+  end
 end

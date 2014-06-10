@@ -108,6 +108,21 @@ describe CoreCourse do
     end
   end
 
+  describe "relationships" do
+    describe "mapped courses" do
+      describe "on edit" do
+        it "should modify all mapped courses with the same name after edit" do
+          @core_course.save
+          name_before = @core_course.name
+          new_name = "another course"
+          @core_course.update_attribute(:name, new_name)
+          mapped_course = MappedCourse.last
+          mapped_course.name.should == new_name
+        end
+      end
+    end
+  end
+
   describe "after create" do
     it "should increase mapped course count" do
       expect do

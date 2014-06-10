@@ -8,6 +8,7 @@ class CoreCourse < ActiveRecord::Base
   validate :duplicate_name
 
   after_create :create_mapped_course
+  before_save :update_mapped_courses
 
   private
     def create_mapped_course
@@ -21,6 +22,15 @@ class CoreCourse < ActiveRecord::Base
       courses = CoreCourse.where("name = ?", self.name)
       unless courses.empty?
         errors.add(:base, I18n.t('core_course.errors.duplicate_name')) 
+      end
+    end
+
+    def update_mapped_courses
+      # update all mapped courses that had the previous name
+      return if ((self.name == self.name_was) || (self.name_was.nil?))
+      mapped_courses = MappedCourse.where("name = ?", self.name_was)
+      mapped_courses.each do |course|
+        course.update_attribute(:name, self.name)
       end
     end
 end

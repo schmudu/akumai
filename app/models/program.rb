@@ -11,4 +11,5 @@ class Program < ActiveRecord::Base
 
   validates :name, presence: true
   validates :name, :format => { with: /\A[a-zA-Z0-9\s\_\'\&\(\)\:]+\z/, message: "only letters, numbers, spaces, and special characters '&():"}
+  # TODO - create mapped courses after program has been created
 end

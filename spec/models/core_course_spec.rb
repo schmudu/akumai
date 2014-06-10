@@ -3,6 +3,7 @@ require 'spec_helper'
 describe CoreCourse do
   before do
     @core_course = FactoryGirl.build(:core_course, :name => "Geometry")
+    @program = FactoryGirl.create(:program)
   end
 
   subject  { @core_course }
@@ -110,7 +111,7 @@ describe CoreCourse do
     it "should increase mapped course count" do
       expect do
         @core_course.save
-      end.to change{MappedCourse.count}.from(0).to(1)
+      end.to change{MappedCourse.all.count}.from(0).to(1)
     end
   end
 end

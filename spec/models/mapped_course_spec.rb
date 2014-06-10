@@ -5,7 +5,7 @@ describe MappedCourse do
     @program = FactoryGirl.create(:program) 
     @another_program = FactoryGirl.create(:program) 
     @core_course = FactoryGirl.create(:core_course, :name => "Geometry")
-    @mapped_course = FactoryGirl.build(:mapped_course, :name => "Geometry", 
+    @mapped_course = FactoryGirl.build(:mapped_course, :name => "Geometry 7", 
       :core_course_id => @core_course.id,
       :program_id => @program.id)
   end
@@ -13,6 +13,9 @@ describe MappedCourse do
   subject  { @mapped_course }
 
   it { should be_valid }
+
+  it { should respond_to(:core_course) }
+  it { should respond_to(:program) }
 
   describe "validation" do
     describe "core_course_id" do
@@ -54,7 +57,7 @@ describe MappedCourse do
         describe "with same name" do
           before do
             @mapped_course.save
-            @duplicate_core_course = FactoryGirl.build(:mapped_course, :name => "Geometry", 
+            @duplicate_core_course = FactoryGirl.build(:mapped_course, :name => "Geometry 7", 
               :core_course_id => @core_course.id,
               :program_id => @program.id)
           end
@@ -67,7 +70,7 @@ describe MappedCourse do
         describe "with same name but different program" do
           before do
             @mapped_course.save
-            @duplicate_core_course = FactoryGirl.build(:mapped_course, :name => "Geometry", 
+            @duplicate_core_course = FactoryGirl.build(:mapped_course, :name => "Geometry 7", 
               :core_course_id => @core_course.id,
               :program_id => @another_program.id)
           end

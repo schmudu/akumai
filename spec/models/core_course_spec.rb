@@ -9,6 +9,7 @@ describe CoreCourse do
   subject  { @core_course }
 
   it { should be_valid }
+  it { should respond_to(:mapped_courses) }
 
   describe "validation" do
     describe "name" do

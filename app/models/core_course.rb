@@ -1,6 +1,9 @@
 class CoreCourse < ActiveRecord::Base
   include CoursesHelper
   before_validation :scrub_name
+
+  has_many :mapped_courses, dependent: :destroy
+
   validates_presence_of :name
   validate :duplicate_name
 

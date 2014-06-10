@@ -2,6 +2,10 @@ class MappedCourse < ActiveRecord::Base
   include CoursesHelper
   include ValidResourceHelper
   before_validation :scrub_name
+
+  belongs_to :program
+  belongs_to :core_course
+
   validates_presence_of :name
   validates_presence_of :program_id
   validates_presence_of :core_course_id

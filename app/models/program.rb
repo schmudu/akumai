@@ -2,6 +2,8 @@ class Program < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
 
+  after_create :create_mapped_courses
+
   # TODO - test destroy attributes
   has_many :datasets, dependent: :destroy
   has_many :invites, through: :invitations
@@ -12,5 +14,12 @@ class Program < ActiveRecord::Base
 
   validates :name, presence: true
   validates :name, :format => { with: /\A[a-zA-Z0-9\s\_\'\&\(\)\:]+\z/, message: "only letters, numbers, spaces, and special characters '&():"}
-  # TODO - create mapped courses after program has been created
+
+  private
+    def create_mapped_courses
+      # upon creation of program, create mapped courses that already exist in list of core courses
+      CoreCourse.all.each do |course|
+        MappedCourse.create(:core_course_id => course.id, :name => course.name, :program_id => self.id)
+      end
+    end
 end

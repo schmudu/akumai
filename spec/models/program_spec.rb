@@ -17,22 +17,43 @@ describe Program do
   it { should be_valid }
 
   describe "relationships" do
-    before do
-      @user = FactoryGirl.create(:user)
-      @superuser = FactoryGirl.create(:user, :superuser => true)
-      @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
-      @invitation = FactoryGirl.create(:invitation, :name => "Test Invitation", :creator_id => @superuser.id, :program_id => @program.id, :status => ConstantsHelper::INVITATION_STATUS_SETUP_TYPE, :user_level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+    describe "roles and invitations" do
+      before do
+        @user = FactoryGirl.create(:user)
+        @superuser = FactoryGirl.create(:user, :superuser => true)
+        @role = Role.create(:program_id => @program.id, :user_id => @user.id, :level => ConstantsHelper::ROLE_LEVEL_STUDENT, :student_id => "a0002")
+        @invitation = FactoryGirl.create(:invitation, :name => "Test Invitation", :creator_id => @superuser.id, :program_id => @program.id, :status => ConstantsHelper::INVITATION_STATUS_SETUP_TYPE, :user_level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+      end
+
+      it { Role.count.should == 1 }
+      it {Invitation.count.should == 1 }
+
+      it "should decrement the roles count by -1" do
+        expect{@program.destroy}.to change{Role.count}.by(-1)
+      end
+
+      it "should decrement the invitations count by -1" do
+        expect{@program.destroy}.to change{Invitation.count}.by(-1)
+      end
     end
 
-    it { Role.count.should == 1 }
-    it {Invitation.count.should == 1 }
+    describe "mapped courses" do
+      describe "increment mapped course" do
+        before do
+          @core_course = FactoryGirl.create(:core_course, :name => "algebra")
+        end
 
-    it "should decrement the roles count by -1" do
-      expect{@program.destroy}.to change{Role.count}.by(-1)
-    end
+        it "should increment the number of mapped courses by 1" do
+          expect do
+            @program = FactoryGirl.create(:program, :name => "new program")
+          end.to change{MappedCourse.count}.by(1)
+        end
 
-    it "should decrement the invitations count by -1" do
-      expect{@program.destroy}.to change{Invitation.count}.by(-1)
+        it "should increment the number of mapped courses of program by 1" do
+          @program = FactoryGirl.create(:program, :name => "new program")
+          @program.mapped_courses.count.should == 1
+        end
+      end
     end
   end
 

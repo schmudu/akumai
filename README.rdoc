@@ -137,8 +137,8 @@ Note: The worker 'generalworker' is defined in the Procfile.  You can have as ma
 Steps to save files to S3
 
 # Saving file to S3
-d = Dataset.new(:attachment => File.new("/tmp/hello_world.csv","r"))
-d.save
+d = Dataset.new(:attachment => File.new("tmp/simple_dataset.csv","r"))
+d.save  #check for errors if save is not successful
 
 # Importing file into Roo
 s = Roo::CSV.new(d.attachment.url(:original, false))

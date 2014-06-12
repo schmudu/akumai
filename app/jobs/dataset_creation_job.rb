@@ -3,6 +3,15 @@ class DatasetCreationJob
 
   @queue = :dataset
 
+  def self.convert_roles_to_hash roles
+    h = Hash.new
+    roles.each do |role|
+      next if (role.student_id.nil? || role.student_id.blank?)
+      h[role.student_id] = role.id
+    end
+    return h
+  end
+
   def self.perform(id)
     dataset = get_resource id
     # TODO: test failure - I think it's self.on_failure hook
@@ -36,13 +45,23 @@ class DatasetCreationJob
       datasets[i] = dataset_row
     end
 
-    datasets.each_with_index do |dataset_row, row|
-      dataset_row.each_with_index do |dataset_entry, column|
-        next if dataset[:data].nil?
-        # find role from role_id
+    # convert program roles to hash
+    program_roles = self.convert_roles_to_hash(dataset.program.roles)
 
-        # create dataset_entry
-        # DatasetEntry (:date, :role_id, :data, :dataset_id)
+    puts "===program_roles:#{datasets.inspect}\n\n"
+
+    datasets.each do |dataset_row, row|
+      row.each do |dataset_column, entry|
+          next if entry[:data].nil?
+          # find role from student_ids
+          role_id = program_roles[entry[:student_id]]
+
+          new_entry = DatasetEntry.create(:date => entry[:date].to_datetime, 
+              :role_id => role_id, 
+              :data => entry[:data], 
+              :dataset_id => id)
+
+          puts "==entry:#{new_entry.errors.inspect}\n"
       end
     end
   end

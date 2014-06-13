@@ -48,22 +48,45 @@ class DatasetCreationJob
     # convert program roles to hash
     program_roles = self.convert_roles_to_hash(dataset.program.roles)
 
-    puts "===program_roles:#{datasets.inspect}\n\n"
+    #puts "===program_roles:#{datasets.inspect}\n\n"
 
     datasets.each do |dataset_row, row|
       row.each do |dataset_column, entry|
           next if entry[:data].nil?
           # find role from student_ids
-          role_id = program_roles[entry[:student_id]]
+          role_id = get_program_role_id(program_roles, entry[:student_id], dataset.program)
 
           new_entry = DatasetEntry.create(:date => entry[:date].to_datetime, 
               :role_id => role_id, 
               :data => entry[:data], 
               :dataset_id => id)
 
-          puts "==entry:#{new_entry.errors.inspect}\n"
+          #puts "==entry:#{new_entry.errors.inspect}\n"
       end
     end
+  end
+
+  def self.get_program_role_id(roles_hash, student_id, program)
+    # get role or create if not found
+    role_id = roles_hash[student_id]
+
+    # check DB for role
+    if role_id.nil?
+      role = Role.where("program_id = ? and student_id = ?", program.id, student_id).first
+      role_id = role.id
+    end
+
+    # create role
+    if role_id.nil?
+      # create role
+      new_role = Role.create(:program_id => program.id, 
+        :student_id => student_id,
+        :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+      role_id = new_role.id
+      puts "===new role id:#{role_id} errors:#{new_role.errors.inspect}\n\n"
+    end
+
+    return role_id
   end
 
   def self.get_resource id

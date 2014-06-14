@@ -12,7 +12,13 @@ class DatasetCreationJob
     return h
   end
 
+  def self.after_failure
+    # any additional executions after failure to perform job
+    #puts "====this is after failure"
+  end
+
   def self.perform(id)
+    #raise "this is an error" # this tests throwing an error exception
     dataset = get_resource id
     # TODO: test failure - I think it's self.on_failure hook
     s = Roo::CSV.new(dataset.attachment.url(:original, false))
@@ -48,8 +54,6 @@ class DatasetCreationJob
     # convert program roles to hash
     program_roles = self.convert_roles_to_hash(dataset.program.roles)
 
-    #puts "===program_roles:#{datasets.inspect}\n\n"
-
     datasets.each do |dataset_row, row|
       row.each do |dataset_column, entry|
           next if entry[:data].nil?
@@ -60,14 +64,12 @@ class DatasetCreationJob
               :role_id => role_id, 
               :data => entry[:data], 
               :dataset_id => id)
-
-          #puts "==entry:#{new_entry.errors.inspect}\n"
       end
     end
   end
 
   def self.get_program_role_id(roles_hash, student_id, program)
-    # get role or create if not found
+    # check hash for role
     role_id = roles_hash[student_id]
 
     # check DB for role

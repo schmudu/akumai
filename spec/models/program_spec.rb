@@ -7,6 +7,7 @@ describe Program do
 
   subject { @program }
 
+  it { should respond_to(:custom_errors) }
   it { should respond_to(:datasets) }
   it { should respond_to(:name) }
   it { should respond_to(:users) }

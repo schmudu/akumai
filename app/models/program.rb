@@ -5,6 +5,7 @@ class Program < ActiveRecord::Base
   after_create :create_mapped_courses
 
   # TODO - test destroy attributes
+  has_many :custom_errors, dependent: :destroy
   has_many :datasets, dependent: :destroy
   has_many :invites, through: :invitations
   has_many :invitations, dependent: :destroy

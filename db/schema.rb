@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604045507) do
+ActiveRecord::Schema.define(version: 20140615070126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,14 @@ ActiveRecord::Schema.define(version: 20140604045507) do
   end
 
   add_index "core_courses", ["name"], name: "index_core_courses_on_name", using: :btree
+
+  create_table "custom_errors", force: true do |t|
+    t.string   "resource"
+    t.string   "comment"
+    t.integer  "program_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "dataset_entries", force: true do |t|
     t.integer  "role_id"
@@ -48,15 +56,6 @@ ActiveRecord::Schema.define(version: 20140604045507) do
   add_index "datasets", ["creator_id"], name: "index_datasets_on_creator_id", using: :btree
   add_index "datasets", ["program_id"], name: "index_datasets_on_program_id", using: :btree
   add_index "datasets", ["resque_attempts"], name: "index_datasets_on_resque_attempts", using: :btree
-
-  create_table "errors", force: true do |t|
-    t.string   "resource",   default: ""
-    t.string   "comment",    default: ""
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "errors", ["resource"], name: "index_errors_on_resource", using: :btree
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false

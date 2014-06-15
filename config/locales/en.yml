@@ -32,6 +32,11 @@ en:
     form:
       labels:
         effective_date: "Effective Date:"
+  errors:
+    dataset:
+      import:
+        date:
+          parse: "Could not parse the date specified in the file.  The date must be of the following format: <May 10, 2008>"
   forms: 
     buttons:
       cancel: "Cancel"

@@ -1,5 +1,6 @@
 class DatasetCreationJob
   extend FailureJob
+  extend TimeHelper
 
   @queue = :dataset
 
@@ -12,17 +13,16 @@ class DatasetCreationJob
     return h
   end
 
-  def self.after_failure
+  def self.after_failure(e, id)
     # any additional executions after failure to perform job
-    #puts "====this is after failure"
+    dataset = get_resource id
+    Error.create(:resource => "Dataset", 
+      :comment => "#{dataset.class.name} id:#{id} perform failed via Resque #{ConstantsHelper::MAX_NUMBER_OF_ATTEMPTS} times. #{e.message}")
   end
 
   def self.perform(id)
-    #raise "this is an error" # this tests throwing an error exception
     dataset = get_resource id
-    # TODO: test failure - I think it's self.on_failure hook
     s = Roo::CSV.new(dataset.attachment.url(:original, false))
-
 
     # The first cell(0,0)[first row, first column] must be blank
     # The second cell(0,1)[second row, first column] must be blank
@@ -60,7 +60,8 @@ class DatasetCreationJob
           # find role from student_ids
           role_id = get_program_role_id(program_roles, entry[:student_id], dataset.program)
 
-          new_entry = DatasetEntry.create(:date => entry[:date].to_datetime, 
+          date_time = to_datetime(entry[:date], I18n.t('errors.dataset.import.date.parse'))
+          new_entry = DatasetEntry.create(:date => date_time, 
               :role_id => role_id, 
               :data => entry[:data], 
               :dataset_id => id)
@@ -85,7 +86,6 @@ class DatasetCreationJob
         :student_id => student_id,
         :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
       role_id = new_role.id
-      puts "===new role id:#{role_id} errors:#{new_role.errors.inspect}\n\n"
     end
 
     return role_id

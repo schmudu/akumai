@@ -23,7 +23,6 @@ describe "Datasets" do
         click_button "Create Dataset"
       end
 
-      it { save_and_open_page }
       it { should have_content('error')}
       it { current_path.should == datasets_path }
     end

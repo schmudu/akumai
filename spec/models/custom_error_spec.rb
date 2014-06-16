@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe CustomError do
   before do
-    @error = FactoryGirl.create(:custom_error)
+    @error = FactoryGirl.build(:custom_error)
+    @program = FactoryGirl.create(:program)
   end
 
   subject { @error }
@@ -14,11 +15,30 @@ describe CustomError do
 
   describe "attributes" do
     before do
-      @error.resource = "Invite"
       @error.comment = "Resource 1 not valid"
+      @error.program_id = @program.id
+      @error.resource = "Invite"
     end
 
     it { should be_valid }
+
+    describe "program_id" do
+      describe "should not be nil" do
+        before do
+          @error.program_id = nil
+        end
+
+        it { should_not be_valid }
+      end
+
+      describe "should not reference id that is non-existent" do
+        before do
+          @error.program_id = -99
+        end
+
+        it { should_not be_valid }
+      end
+    end
 
     describe "resource" do
       describe "should not be blank" do

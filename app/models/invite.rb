@@ -1,6 +1,7 @@
 class Invite < ActiveRecord::Base
   extend FriendlyId
   include ResqueResourceHelper
+  include ValidResourceHelper
   friendly_id :email, use: :slugged
   
   include UsersHelper
@@ -49,17 +50,6 @@ class Invite < ActiveRecord::Base
   end
 
   private
-    def existence_of_invitation
-      result = Invitation.where("id = ?", invitation_id)
-      errors.add(:base, "Invitation id does not reference an existing invitation.") if result.empty?
-    end
-
-    def existence_of_recipient
-      return if recipient_id.blank?
-      result = User.where("id = ?", recipient_id)
-      errors.add(:base, "Recipient id does not reference an existing user.") if result.empty?
-    end
-
     def generate_code
       return unless new_record?
       o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten

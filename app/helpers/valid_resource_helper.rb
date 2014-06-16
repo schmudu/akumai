@@ -13,10 +13,21 @@ module ValidResourceHelper
     found = Dataset.find_by_id(dataset_id)
     errors.add(:dataset_id, "dataset id does not reference a dataset.") if found.nil?
   end
-  
+
+  def existence_of_invitation
+    result = Invitation.where("id = ?", invitation_id)
+    errors.add(:base, "Invitation id does not reference an existing invitation.") if result.empty?
+  end
+
   def existence_of_program
     found = Program.find_by_id(program_id)
     errors.add(:program_id, "program id does not reference a program.") if found.nil?
+  end
+
+  def existence_of_recipient
+    return if recipient_id.blank?
+    result = User.where("id = ?", recipient_id)
+    errors.add(:base, "Recipient id does not reference an existing user.") if result.empty?
   end
 
   def existence_of_role

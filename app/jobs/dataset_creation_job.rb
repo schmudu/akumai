@@ -16,7 +16,8 @@ class DatasetCreationJob
   def self.after_failure(e, id)
     # any additional executions after failure to perform job
     dataset = get_resource id
-    Error.create(:resource => "Dataset", 
+    CustomError.create(:program_id => dataset.program.id,
+      :resource => "Dataset", 
       :comment => "#{dataset.class.name} id:#{id} perform failed via Resque #{ConstantsHelper::MAX_NUMBER_OF_ATTEMPTS} times. #{e.message}")
   end
 

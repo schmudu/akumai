@@ -11,8 +11,9 @@ module FailureJob
         self.after_failure(e, id)
       else
         # generic error
-        Error.create(:resource => resource.class.name, 
-          :comment => "#{resource.class.name} id:#{id} perform failed via Resque #{ConstantsHelper::MAX_NUMBER_OF_ATTEMPTS} times.")
+        CustomError.create(:program_id => resource.program.id,
+          :resource => resource.class.name, 
+          :comment => "#{resource.class.name} id:#{id} perform failed via Resque #{ConstantsHelper::MAX_NUMBER_OF_ATTEMPTS} times. #{e.message}")
       end
     end
   end

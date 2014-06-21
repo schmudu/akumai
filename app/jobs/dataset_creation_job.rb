@@ -1,6 +1,7 @@
 class DatasetCreationJob
   extend FailureJob
   extend TimeHelper
+  extend ResourceHelper
 
   @queue = :dataset
 
@@ -16,12 +17,18 @@ class DatasetCreationJob
   def self.after_failure(e, id)
     # any additional executions after failure to perform job
     dataset = get_resource id
+    process_resource id
     CustomError.create(:program_id => dataset.program.id,
       :resource => "Dataset", 
       :comment => "#{dataset.class.name} id:#{id} perform failed via Resque #{ConstantsHelper::MAX_NUMBER_OF_ATTEMPTS} times. #{e.message}")
   end
 
+  def self.after_perform(id)
+    process_resource id
+  end
+
   def self.perform(id)
+    raise "crazy error" #example of error message
     dataset = get_resource id
     s = Roo::CSV.new(dataset.attachment.url(:original, false))
 
@@ -86,7 +93,6 @@ class DatasetCreationJob
       new_role = Role.create(:program_id => program.id, 
         :student_id => student_id,
         :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
-      puts "===new role:#{new_role.errors.inspect}"
       role_id = new_role.id
     end
 

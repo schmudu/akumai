@@ -22,6 +22,7 @@ describe Dataset do
   it { should respond_to(:attachment) }
   it { should respond_to(:creator) }
   it { should respond_to(:dataset_entries) }
+  it { should respond_to(:processed?) }
   it { should respond_to(:program) }
   it { should respond_to(:program_id) }
   it { should be_valid }

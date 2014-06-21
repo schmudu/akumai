@@ -10,8 +10,8 @@ class Role < ActiveRecord::Base
             :program_id_must_exist, 
             :student_role_must_have_student_id,
             :user_id_must_exist 
-  validates_uniqueness_of :user_id, :scope => :program_id
-  validates_uniqueness_of :student_id, :scope => :program_id, if: Proc.new { |role| !role.student_id.nil?}
+  validates_uniqueness_of :user_id, :scope => :program_id, if: Proc.new { |role| !role.user_id.nil? }
+  validates_uniqueness_of :student_id, :scope => :program_id, if: Proc.new { |role| !role.student_id.nil? }
 
   def self.role_in_program(program_id, user_id)
     results = where("program_id=? and user_id=?", program_id, user_id)

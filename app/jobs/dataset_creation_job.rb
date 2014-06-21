@@ -77,7 +77,7 @@ class DatasetCreationJob
     # check DB for role
     if role_id.nil?
       role = Role.where("program_id = ? and student_id = ?", program.id, student_id).first
-      role_id = role.id
+      role_id = role.id unless role.nil?
     end
 
     # create role
@@ -86,6 +86,7 @@ class DatasetCreationJob
       new_role = Role.create(:program_id => program.id, 
         :student_id => student_id,
         :level => ConstantsHelper::ROLE_LEVEL_STUDENT)
+      puts "===new role:#{new_role.errors.inspect}"
       role_id = new_role.id
     end
 

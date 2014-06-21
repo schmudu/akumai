@@ -3,6 +3,26 @@ class InvitesController < ApplicationController
   def show
   end
 
+  def create_role(user_id, program_id, user_level, student_id)
+    #find role
+    role = Role.where("program_id = ? and
+        student_id = ? and
+        level = ?", 
+        program_id,
+        student_id,
+        user_level).first
+    unless role.nil?
+      #if found then update the role
+      role.update_attribute(:user_id, user_id)
+    else
+      #if not found then create it
+      Role.create(:user_id => user_id,
+        :program_id => program_id,
+        :level => user_level,
+        :student_id => student_id)
+    end
+  end
+
   def respond_signup
     @referenced_invite = Invite.friendly.find(params[:invite_id])
 
@@ -13,12 +33,10 @@ class InvitesController < ApplicationController
       if @user.valid? && @referenced_invite.matches?(@invite, true)
         @referenced_invite.update_attribute(:status, ConstantsHelper::INVITE_STATUS_ACCEPTED)
         @user.save
-        # TODO: upon accepting need to test whether a role already exists, if so then just update the role
-        # that's already there.  This is because dataset imports create roles as well.
-        Role.create(:user_id => @user.id, 
-          :program_id => @referenced_invite.program.id, 
-          :level => @invite.user_level, 
-          :student_id => @invite.student_id)
+        create_role(@user.id, 
+          @referenced_invite.program.id, 
+          @invite.user_level, 
+          @invite.student_id)
         sign_in @user
         Resque.enqueue(MailRegistrationUserJob, @user.id)
         flash[:notice] = I18n.t('invites.form.messages.accepted_signup')

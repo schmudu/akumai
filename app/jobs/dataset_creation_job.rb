@@ -28,7 +28,7 @@ class DatasetCreationJob
   end
 
   def self.perform(id)
-    raise "crazy error" #example of error message
+    #raise "crazy error" #example of error message
     dataset = get_resource id
     s = Roo::CSV.new(dataset.attachment.url(:original, false))
 

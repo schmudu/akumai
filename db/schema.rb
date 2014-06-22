@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140621054600) do
+ActiveRecord::Schema.define(version: 20140622055743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20140621054600) do
     t.datetime "updated_at"
   end
 
+  add_index "custom_errors", ["program_id"], name: "index_custom_errors_on_program_id", using: :btree
+
   create_table "dataset_entries", force: true do |t|
     t.integer  "role_id"
     t.string   "data"
@@ -40,6 +42,9 @@ ActiveRecord::Schema.define(version: 20140621054600) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "dataset_entries", ["dataset_id"], name: "index_dataset_entries_on_dataset_id", using: :btree
+  add_index "dataset_entries", ["role_id"], name: "index_dataset_entries_on_role_id", using: :btree
 
   create_table "datasets", force: true do |t|
     t.datetime "created_at"
@@ -109,6 +114,7 @@ ActiveRecord::Schema.define(version: 20140621054600) do
   add_index "invites", ["resque_attempts"], name: "index_invites_on_resque_attempts", using: :btree
   add_index "invites", ["slug"], name: "index_invites_on_slug", unique: true, using: :btree
   add_index "invites", ["status"], name: "index_invites_on_status", using: :btree
+  add_index "invites", ["student_id"], name: "index_invites_on_student_id", using: :btree
 
   create_table "mapped_courses", force: true do |t|
     t.string   "name"
@@ -157,6 +163,7 @@ ActiveRecord::Schema.define(version: 20140621054600) do
 
   add_index "student_entries", ["invitation_id"], name: "index_student_entries_on_invitation_id", using: :btree
   add_index "student_entries", ["slug"], name: "index_student_entries_on_slug", unique: true, using: :btree
+  add_index "student_entries", ["student_id"], name: "index_student_entries_on_student_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false

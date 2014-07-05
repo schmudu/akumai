@@ -1,32 +1,21 @@
-describe('invitationsUserLevel', function(){
-  //beforeEach(module('invitationsUserLevel'));
+describe('PhoneCat controllers', function() {
 
-  it('should create "phone" model with 3 phones', function(){
+  describe('PhoneListCtrl', function(){
+
+    beforeEach(function() {
+      module('invitationsUserLevel'); // <= initialize module that should be tested
+    });
+
     /*
-    var scope = {},
-        filter = $filter('filterInvitationsUserLevel', {$scope:scope});
+    it('should create "phones" model with 3 phones', inject(function($filter) {
+      var scope = {},
+          filter = $filter('filterInvitationsUserLevel');
 
-    expect(filter(2)).toBe("Admin");
-    */
-
-    expect(true).toBe(true);
-
+      expect(filter(2)).toBe('Admin');
+    }));
+*/
+    it('should create "phones" model with 3 phones', inject(function($filter) {
+      expect(true).toBe(true);
+    }));
   });
-  
-  /*
-  var scope;//we'll use this scope in our tests
- 
-  //mock Application to allow us to inject our own dependencies
-  beforeEach(angular.mock.module('invitationsUserLevel'));
-  //mock the controller for the same reason and include $rootScope and $controller
-  beforeEach(angular.mock.inject(function($rootScope, $filter){
-      //create an empty scope
-      scope = $rootScope.$new();
-      //declare the controller and inject our empty scope
-      $filter('filterInvitationsUserLevel', {$scope: scope});
-  }));
-
-  it('should have variable text = "Hello World!"', function(){
-      expect(scope.text).toBe('Hello World!');
-  });*/
 });

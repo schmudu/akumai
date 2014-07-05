@@ -11,8 +11,8 @@
 #   - dist/**/*.js
 #
 src_files:
-  - app/assets/javascripts/jasmine_examples/*.js
-  - app/assets/javascripts/angular/common/filters/*.js
+  - public/assets/angular/common/filters/*.js
+  - spec/javascripts/helpers/angular-mocks.js
 
 # stylesheets
 #

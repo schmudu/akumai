@@ -1,14 +1,14 @@
 var thisModule = angular.module('invitationsStatus', []);
 thisModule.filter('filterInvitationsStatus', function(){
   return function(input){
-    if(input === 0){
-      return "Created";
+    if(input === INVITATION_STATUS_CREATED){
+      return INVITATION_STATUS_CREATED_LABEL;
     }
-    else if(input === 1){
-      return "Pending Edits";
+    else if(input === INVITATION_STATUS_PENDING){
+      return INVITATION_STATUS_PENDING_LABEL;
     }
-    else if(input === 2){
-      return "Sent";
+    else if(input === INVITATION_STATUS_SENT){
+      return INVITATION_STATUS_SENT_LABEL;
     }
   };
 });

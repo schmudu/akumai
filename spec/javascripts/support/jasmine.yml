@@ -11,8 +11,9 @@
 #   - dist/**/*.js
 #
 src_files:
-  - public/assets/angular/common/filters/*.js
+  - app/assets/javascripts/angular/angular.min.js
   - spec/javascripts/helpers/angular-mocks.js
+  - public/assets/angular/common/filters/*.js
 
 # stylesheets
 #

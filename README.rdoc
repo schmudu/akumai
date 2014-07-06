@@ -9,8 +9,12 @@
     ALTER DATABASE trio_dev OWNER TO ruby_user;
 
 == TESTING
-To run karma/jasmine run the following command in the project home directory after installing Jasmine/Karma (see Angular Google Docs(https://docs.angularjs.org/tutorial/step_02)):
-  ./node_modules/karma/bin/karma start
+To run Jasmine gem run the following command:
+  rake jasmine
+then using the web browser visit the following URL: 
+  http://localhost:8888
+
+To add additional files/directories modify the jasmine.yml file.
 
 
 == ANNOTATIONS

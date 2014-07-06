@@ -1,4 +1,4 @@
-var thisModule = angular.module('invitationsStatus', []);
+var thisModule = angular.module('aku.invitations', []);
 thisModule.filter('filterInvitationsStatus', function(){
   return function(input){
     if(input === INVITATION_STATUS_CREATED){

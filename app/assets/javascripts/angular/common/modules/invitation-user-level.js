@@ -1,4 +1,4 @@
-angular.module('invitationsUserLevel', []).filter('filterInvitationsUserLevel', function(){
+angular.module('aku.users', []).filter('filterUserLevel', function(){
   return function(input){
     if(input === LEVEL_ROLE_ADMIN)
       return LEVEL_ROLE_ADMIN_STRING;

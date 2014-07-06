@@ -1,7 +1,7 @@
 describe('Test module Invitations', function() {
   describe('filterInvitationsStatus', function() {
     beforeEach(function() {
-      module('invitationsStatus'); 
+      module('aku.invitations'); 
     });
 
     it('should map ' + INVITATION_STATUS_CREATED + ' to ' + INVITATION_STATUS_CREATED_LABEL, inject(function($filter) {

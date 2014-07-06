@@ -4,6 +4,11 @@ var LEVEL_ROLE_ADMIN=2;
 var LEVEL_ROLE_STAFF=1;
 var LEVEL_ROLE_STUDENT=0;
 
+var LEVEL_ROLE_SUPERUSER_STRING = "Superuser";
+var LEVEL_ROLE_ADMIN_STRING     = "Admin";
+var LEVEL_ROLE_STAFF_STRING     = "Staff";
+var LEVEL_ROLE_STUDENT_STRING   = "Student";
+
 // INVITATIONS
 var INVITATION_NAME_DEFAULT = "Enter invitation name";
 var INVITATION_DEFAULT_NON_STUDENT_EMAIL = "jake@sample.edu, samantha@something.org";

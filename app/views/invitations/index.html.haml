@@ -1,7 +1,7 @@
 - content_for :head do
   = javascript_include_tag "angular"
-  = javascript_include_tag "angular/common/filters/invitation-user-level"
-  = javascript_include_tag "angular/common/filters/invitation-status"
+  = javascript_include_tag "angular/common/modules/invitation-user-level"
+  = javascript_include_tag "angular/common/modules/invitation-status"
   = javascript_include_tag "angular/invitations/index"
 
 .row
@@ -43,6 +43,6 @@
               %a{'href'=>'invitations/{{invitation.id}}'}
                 {{ invitation.name }}
             %td
-              {{ invitation.user_level | filterInvitationsUserLevel }}
+              {{ invitation.user_level | filterUserLevel }}
             %td
               {{ invitation.status | filterInvitationsStatus }}

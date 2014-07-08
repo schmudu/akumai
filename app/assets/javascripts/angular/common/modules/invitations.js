@@ -1,5 +1,5 @@
-var thisModule = angular.module('aku.invitations', []);
-thisModule.filter('filterInvitationsStatus', function(){
+angular.module('aku.invitations', [])
+.filter('filterInvitationsStatus', function(){
   return function(input){
     if(input === INVITATION_STATUS_CREATED){
       return INVITATION_STATUS_CREATED_LABEL;
@@ -11,10 +11,8 @@ thisModule.filter('filterInvitationsStatus', function(){
       return INVITATION_STATUS_SENT_LABEL;
     }
   };
-});
-
-//var thisModule = angular.module('invitationsStatus', []);
-thisModule.filter('filterInvitationsCheckbox', function(){
+})
+.filter('filterInvitationsCheckbox', function(){
   return function(invitations, status){
     if(status === true){
       results = [];     // return value

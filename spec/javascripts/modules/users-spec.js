@@ -1,9 +1,9 @@
-describe('Test module Users', function() {
-  describe('user level', function() {
-    beforeEach(function() {
-      module('aku.users'); 
-    });
+describe('Test module aku.users', function() {
+  beforeEach(function() {
+    module('aku.users');
+  });
 
+  describe('filterUserLevel', function() {
     it('should map ' + LEVEL_ROLE_ADMIN + ' to ' + LEVEL_ROLE_ADMIN_STRING, inject(function($filter) {
       var filter = $filter('filterUserLevel');
       expect(filter(LEVEL_ROLE_ADMIN)).toBe(LEVEL_ROLE_ADMIN_STRING);
@@ -18,5 +18,5 @@ describe('Test module Users', function() {
       var filter = $filter('filterUserLevel');
       expect(filter(LEVEL_ROLE_STUDENT)).toBe(LEVEL_ROLE_STUDENT_STRING);
     }));
-  }); 
+  });
 });

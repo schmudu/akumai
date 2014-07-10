@@ -38,7 +38,7 @@
             %th= t('terms.invitation_type')
             %th= t('terms.status')
         %tbody
-          %tr{'ng-repeat' => 'invitation in invitations | filter:{name:query} | filterInvitationsCheckbox : onlySent'}
+          %tr{'ng-repeat' => 'invitation in invitations | filter:{name:query} | filterInvitationsCheckbox : onlySent | orderBy: orderProp'}
             %td
               %a{'href'=>'invitations/{{invitation.id}}'}
                 {{ invitation.name }}

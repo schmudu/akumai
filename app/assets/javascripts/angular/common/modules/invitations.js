@@ -1,5 +1,18 @@
-angular.module('aku.invitations', [])
-.filter('filterInvitationsStatus', function(){
+var moduleAkuInvitations = angular.module('aku.invitations', []);
+
+// ====FACTORIES
+moduleAkuInvitations.factory('factoryInvitations',['$http',function($http){
+  return {
+    get: function(callback){
+      $http.get('invitations/index_helper').success(function(data){
+        callback(data);
+      });
+    }
+  };
+}]);
+
+// ====FILTERS
+moduleAkuInvitations.filter('filterInvitationsStatus', function(){
   return function(input){
     if(input === INVITATION_STATUS_CREATED){
       return INVITATION_STATUS_CREATED_LABEL;
@@ -11,8 +24,9 @@ angular.module('aku.invitations', [])
       return INVITATION_STATUS_SENT_LABEL;
     }
   };
-})
-.filter('filterInvitationsCheckbox', function(){
+});
+
+moduleAkuInvitations.filter('filterInvitationsCheckbox', function(){
   return function(invitations, status){
     if(status === true){
       results = [];     // return value

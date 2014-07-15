@@ -12,6 +12,7 @@ describe Program do
   it { should respond_to(:name) }
   it { should respond_to(:users) }
   it { should respond_to(:roles) }
+  it { should respond_to(:students) }
   it { should respond_to(:invitations) }
   it { should respond_to(:mapped_courses) }
 
@@ -27,7 +28,8 @@ describe Program do
       end
 
       it { Role.count.should == 1 }
-      it {Invitation.count.should == 1 }
+      it { Invitation.count.should == 1 }
+      it { @program.students.count.should == 1 }
 
       it "should decrement the roles count by -1" do
         expect{@program.destroy}.to change{Role.count}.by(-1)

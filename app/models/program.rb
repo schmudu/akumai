@@ -4,7 +4,6 @@ class Program < ActiveRecord::Base
 
   after_create :create_mapped_courses
 
-  # TODO - test destroy attributes
   has_many :custom_errors, dependent: :destroy
   has_many :datasets, dependent: :destroy
   has_many :invites, through: :invitations
@@ -15,6 +14,10 @@ class Program < ActiveRecord::Base
 
   validates :name, presence: true
   validates :name, :format => { with: /\A[a-zA-Z0-9\s\_\'\&\(\)\:]+\z/, message: "only letters, numbers, spaces, and special characters '&():"}
+
+  def students
+    self.roles.where("level = ?", ConstantsHelper::ROLE_LEVEL_STUDENT)
+  end
 
   private
     def create_mapped_courses

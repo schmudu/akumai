@@ -1,20 +1,20 @@
 - content_for :head do
   = javascript_include_tag "angular"
-  = javascript_include_tag "angular/common/filters/invitation-user-level"
-  = javascript_include_tag "angular/common/filters/invitation-status"
+  = javascript_include_tag "angular/common/modules/users"
+  = javascript_include_tag "angular/common/modules/invitations"
   = javascript_include_tag "angular/invitations/index"
 
 .row
-  %h1 Listing invitations
+  %h1 Analytics
   %br/
 .row
   .col-md-3
   .col-md-9
-    = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
+    -# = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
 %br/
 
 .row{'ng-app' => 'invitationsUser', 'ng-controller' => 'invitationsCtrl'}
-  -# invitations filter
+  -# analytics filter
   .col-md-3
     %form.form-horizontal{'role' => 'form'}
       .form-group
@@ -27,8 +27,14 @@
           %label.control-label Sent
         .col-sm-8
           %input.form-control{'type'=>'checkbox', 'ng-model'=>'onlySent'}
-
-  -# invitations table
+      - @students.each do |student|
+        .form-group
+          .col-sm-4
+            %label.control-label
+              Student IDs 
+          .col-sm-8
+            %input.form-control{'type'=>'checkbox', 'ng-model'=>'onlySent'}= student.student_id
+  -# analytics table
   .col-md-9
     %div
       %table.table.table-striped

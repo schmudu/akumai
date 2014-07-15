@@ -9,7 +9,7 @@ class InvitationsController < ApplicationController
   end
 
   def index_helper
-    render json: current_user.invitations_sent
+    render json: current_user.invitations_sent.select("created_at, id, name, user_level, status")
   end
 
   # GET /invitations/1

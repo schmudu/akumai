@@ -2,7 +2,7 @@
   = javascript_include_tag "angular"
   = javascript_include_tag "angular/common/modules/users"
   = javascript_include_tag "angular/common/modules/invitations"
-  = javascript_include_tag "angular/invitations/index"
+  = javascript_include_tag "angular/analytics/index"
 
 .row
   %h1 Analytics
@@ -13,42 +13,23 @@
     -# = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
 %br/
 
-.row{'ng-app' => 'invitationsUser', 'ng-controller' => 'invitationsCtrl'}
+.row{'ng-app' => 'analyticsIndex', 'ng-controller' => 'analyticsCtrl'}
   -# analytics filter
   .col-md-3
     %form.form-horizontal{'role' => 'form'}
       .form-group
-        .col-sm-4
+        .col-sm-5
           %label.control-label Filter 
-        .col-sm-8
+        .col-sm-7
           %input.form-control{'ng-model'=>'query'}
-      .form-group
-        .col-sm-4
-          %label.control-label Sent
-        .col-sm-8
-          %input.form-control{'type'=>'checkbox', 'ng-model'=>'onlySent'}
-      - @students.each do |student|
+      - @students.each_with_index do |student, i|
         .form-group
-          .col-sm-4
+          .col-md-7
             %label.control-label
-              Student IDs 
-          .col-sm-8
-            %input.form-control{'type'=>'checkbox', 'ng-model'=>'onlySent'}= student.student_id
-  -# analytics table
+              - if(i==0)
+                Student IDs 
+          .col-md-5.checkbox
+            %label
+              %input{'type'=>'checkbox', 'ng-model'=>'onlySent'}= student.student_id
+  -# analytics visual
   .col-md-9
-    %div
-      %table.table.table-striped
-        %thead
-          %tr
-            %th= t('terms.invitation_name')
-            %th= t('terms.invitation_type')
-            %th= t('terms.status')
-        %tbody
-          %tr{'ng-repeat' => 'invitation in invitations | filter:{name:query} | filterInvitationsCheckbox : onlySent'}
-            %td
-              %a{'href'=>'invitations/{{invitation.id}}'}
-                {{ invitation.name }}
-            %td
-              {{ invitation.user_level | filterInvitationsUserLevel }}
-            %td
-              {{ invitation.status | filterInvitationsStatus }}

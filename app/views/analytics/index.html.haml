@@ -22,14 +22,25 @@
           %label.control-label Filter 
         .col-sm-7
           %input.form-control{'ng-model'=>'query'}
+      -# student ids
       - @students.each_with_index do |student, i|
         .form-group
           .col-md-7
             %label.control-label
               - if(i==0)
-                Student IDs 
+                = t('terms.student_id', :count => 3)
           .col-md-5.checkbox
             %label
               %input{'type'=>'checkbox', 'ng-model'=>'onlySent'}= student.student_id
+      -# core courses
+      - @core_courses.each_with_index do |course, i|
+        .form-group
+          .col-md-7
+            %label.control-label
+              - if(i==0)
+                = t('terms.core_course')
+          .col-md-5.checkbox
+            %label
+              %input{'type'=>'checkbox', 'ng-model'=>'onlySent'}= course.name.capitalize
   -# analytics visual
   .col-md-9

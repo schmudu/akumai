@@ -128,6 +128,7 @@ en:
     account_information: "Account Information"
     accept_invite: "Accept Invite"
     add_rows: "Add Rows"
+    core_course: "Core Course"
     create_program: "Create Program"
     dashboard: "Dashboard"
     back: "Back"
@@ -152,7 +153,9 @@ en:
     sign_up: "Sign up"
     status: "Status"
     student: "Student"
+    student_id: 
+      one: "Student ID"
+      other: "Student IDs"
     student_email: "Student Email"
-    student_id: "Student ID"
     view_invitations: "View Invitations"
 

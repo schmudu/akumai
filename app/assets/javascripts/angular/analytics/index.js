@@ -1,5 +1,5 @@
 angular.module('analyticsIndex', [])
-.controller('analyticsCtrl', ['$scope', '$http', function(){
+.controller('analyticsCtrl', ['$scope', '$http', function($scope, $http){
   $scope.test = function(){
     alert("here i am!");
   };

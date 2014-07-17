@@ -19,6 +19,15 @@ class Program < ActiveRecord::Base
     self.roles.where("level = ?", ConstantsHelper::ROLE_LEVEL_STUDENT)
   end
 
+  def self.collect_students programs
+    # collects all the students of programs into an array
+    students = []
+    programs.each do |program|
+      students.concat(program.students.order("student_id ASC").to_a)
+    end
+    return students
+  end
+
   private
     def create_mapped_courses
       # upon creation of program, create mapped courses that already exist in list of core courses

@@ -9,6 +9,7 @@ describe Program do
 
   it { should respond_to(:custom_errors) }
   it { should respond_to(:datasets) }
+  it { should respond_to(:dataset_entries) }
   it { should respond_to(:name) }
   it { should respond_to(:users) }
   it { should respond_to(:roles) }

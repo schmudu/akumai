@@ -6,6 +6,7 @@ class Program < ActiveRecord::Base
 
   has_many :custom_errors, dependent: :destroy
   has_many :datasets, dependent: :destroy
+  has_many :dataset_entries, through: :datasets, dependent: :destroy
   has_many :invites, through: :invitations
   has_many :invitations, dependent: :destroy
   has_many :mapped_courses, dependent: :destroy

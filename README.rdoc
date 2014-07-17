@@ -48,6 +48,7 @@ Installation
   Additional Note: To test production on local development use the following line: 
   RAILS_ENV=production VVERBOSE=1 QUEUE=* rake environment resque:work
 
+  Setting the QUEUE to '*' indicates that the worker should work on any jobs.  If the queue is set to 'mail' then the worker will only work on jobs sent to the mail queue.
 
 or
 

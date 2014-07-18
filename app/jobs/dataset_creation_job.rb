@@ -67,14 +67,32 @@ class DatasetCreationJob
           next if entry[:data].nil?
           # find role from student_ids
           role_id = get_program_role_id(program_roles, entry[:student_id], dataset.program)
+          mapped_course_id = get_mapped_course_id(entry[:header], dataset.program)
 
           date_time = to_datetime(entry[:date], I18n.t('errors.dataset.import.date.parse'))
-          new_entry = DatasetEntry.create(:date => date_time, 
+          DatasetEntry.create(:date => date_time, 
+              :mapped_course_id => mapped_course_id,
               :role_id => role_id, 
               :data => entry[:data], 
               :dataset_id => id)
       end
     end
+  end
+
+  def self.get_mapped_course_id(course_name, program)
+    # check DB for predefined mapped courses
+    course = MappedCourse.where("program_id = ? and name = ?", program.id, course_name.downcase).first
+    course_id = course.id unless course.nil?
+
+    # create role
+    if course_id.nil?
+      # create mapped course
+      new_course = MappedCourse.create(:program_id => program.id, 
+        :name => course_name.capitalize)
+      course_id = new_course.id
+    end
+
+    return course_id
   end
 
   def self.get_program_role_id(roles_hash, student_id, program)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140622055743) do
+ActiveRecord::Schema.define(version: 20140718043911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,9 +41,11 @@ ActiveRecord::Schema.define(version: 20140622055743) do
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "mapped_course_id"
   end
 
   add_index "dataset_entries", ["dataset_id"], name: "index_dataset_entries_on_dataset_id", using: :btree
+  add_index "dataset_entries", ["mapped_course_id"], name: "index_dataset_entries_on_mapped_course_id", using: :btree
   add_index "dataset_entries", ["role_id"], name: "index_dataset_entries_on_role_id", using: :btree
 
   create_table "datasets", force: true do |t|

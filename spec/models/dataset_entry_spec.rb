@@ -30,6 +30,7 @@ describe DatasetEntry do
   it { should respond_to(:dataset) }
   it { should respond_to(:dataset_id) }
   it { should respond_to(:date) }
+  it { should respond_to(:mapped_course) }
   it { should respond_to(:role) }
   it { should respond_to(:role_id) }
   it { should be_valid }

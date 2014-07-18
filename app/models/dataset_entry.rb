@@ -2,6 +2,7 @@ class DatasetEntry < ActiveRecord::Base
   include ValidResourceHelper
 
   belongs_to :dataset
+  belongs_to :mapped_course
   belongs_to :role
 
   validates_presence_of :data

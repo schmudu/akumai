@@ -16,12 +16,13 @@ describe MappedCourse do
 
   it { should respond_to(:core_course) }
   it { should respond_to(:program) }
+  it { should respond_to(:dataset_entries) }
 
   describe "validation" do
     describe "core_course_id" do
       describe "set to nil" do
         before { @mapped_course.core_course_id = nil }
-        it { should_not be_valid }
+        it { should be_valid }
       end
 
       describe "set to non-existent core_course id" do

@@ -9,23 +9,15 @@ class AnalyticsController < ApplicationController
     programs = current_user.programs
     dataset_entries = []
     programs.each do |program|
-      results = MappedCourse.joins(:dataset_entries)
+      results = Role.joins(:dataset_entries)
+          .joins("LEFT JOIN mapped_courses ON mapped_courses.id = dataset_entries.mapped_course_id")
           .where("mapped_courses.program_id=?", program.id)
           .select("dataset_entries.data as data, 
                     dataset_entries.created_at as date, 
                     dataset_entries.id as id, 
-                    mapped_courses.name as course_name")  
-      #dataset_entries.concat(program.dataset_entries.select("data, dataset_id, date, role_id").to_a)
+                    mapped_courses.name as course_name,
+                    roles.student_id as student_id")  
       dataset_entries.concat(results.to_a)
-
-=begin
-results = MappedCourse.joins(:dataset_entries)
-    .where("mapped_courses.program_id=?", 2)
-    .select("dataset_entries.data as data, 
-              dataset_entries.created_at as date, 
-              dataset_entries.id as id, 
-              mapped_courses.name as course_name")  
-=end
     end
     render json: dataset_entries
   end

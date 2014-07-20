@@ -1,16 +1,12 @@
-angular.module('analyticsIndex', [])
-.controller('analyticsCtrl', ['$scope', '$http', function($scope, $http){
-  $scope.test = function(){
-    alert("here i am!");
-  };
-  /*
-  function ($scope, $http, factoryInvitations){
+angular.module('analyticsIndex', ['aku.analytics'])
+.controller('analyticsCtrl', ['$scope', '$http', 'factoryAnalytics',
+  function ($scope, $http, factoryAnalytics){
 
   // retrieve data and populate
-  factoryInvitations.get(function(data){
-    $scope.invitations = data;
+  factoryAnalytics.get(function(data){
+    // set dataset for D3
+    this.dataset = data;
   });
 
-  $scope.orderProp = 'created_at';
-  */
+  //$scope.orderProp = 'created_at';
 }]);

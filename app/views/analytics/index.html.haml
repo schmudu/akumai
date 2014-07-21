@@ -1,7 +1,9 @@
 - content_for :head do
+  = javascript_include_tag "d3"
   = javascript_include_tag "angular"
   = javascript_include_tag "angular/common/modules/analytics"
   = javascript_include_tag "angular/analytics/index"
+  = javascript_include_tag "analytics/analytics-controller"
 
 .row
   %h1 Analytics
@@ -43,3 +45,15 @@
               %input{'type'=>'checkbox', 'ng-model'=>'onlySent'}= course.name.capitalize
   -# analytics visual
   .col-md-9
+    #visual
+    :javascript
+      var controller = createDS3Controller(d3);
+      controller.draw();
+    /
+      :javascript
+        var dataset = [ 5, 10, 15, 20, 25 ];
+        d3.select("#visual").selectAll("p")
+          .data(dataset)
+          .enter()
+          .append("p")
+          .text(function(d){return "The data is: " + d});

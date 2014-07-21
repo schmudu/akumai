@@ -7,6 +7,4 @@ angular.module('analyticsIndex', ['aku.analytics'])
     // set dataset for D3
     this.dataset = data;
   });
-
-  //$scope.orderProp = 'created_at';
 }]);

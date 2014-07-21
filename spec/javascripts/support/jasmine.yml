@@ -11,6 +11,7 @@
 #   - dist/**/*.js
 #
 src_files:
+  - app/assets/javascripts/analytics/*.js
   - app/assets/javascripts/*.js
   - app/assets/javascripts/angular/angular.min.js
   - spec/javascripts/helpers/angular-mocks.js

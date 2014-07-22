@@ -13,7 +13,7 @@ class AnalyticsController < ApplicationController
           .joins("LEFT JOIN mapped_courses ON mapped_courses.id = dataset_entries.mapped_course_id")
           .where("mapped_courses.program_id=?", program.id)
           .select("dataset_entries.data as data, 
-                    dataset_entries.created_at as dateString, 
+                    dataset_entries.date as datestring, 
                     dataset_entries.id as id, 
                     mapped_courses.name as course_name,
                     roles.student_id as student_id")  

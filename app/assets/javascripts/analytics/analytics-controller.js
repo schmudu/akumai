@@ -30,7 +30,7 @@ var createDS3Controller = function(d3_instance){
 
   var prepareDate = function(){
     dataset.forEach(function(element, index, array){
-      element.date = new Date(element.dateString);
+      element.date = new Date(element.datestring);
     });
   };
 

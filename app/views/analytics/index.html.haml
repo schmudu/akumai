@@ -47,13 +47,7 @@
   .col-md-9
     #visual
     :javascript
-      var controller = createDS3Controller(d3);
-      controller.draw();
-    /
-      :javascript
-        var dataset = [ 5, 10, 15, 20, 25 ];
-        d3.select("#visual").selectAll("p")
-          .data(dataset)
-          .enter()
-          .append("p")
-          .text(function(d){return "The data is: " + d});
+      // create controller
+      var d3Controller = createDS3Controller(d3);
+
+      // angular 

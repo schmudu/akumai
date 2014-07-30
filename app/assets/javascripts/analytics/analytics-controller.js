@@ -15,6 +15,12 @@ var createDS3Controller = function(d3_instance){
   };
 
   controller.draw = function(){
+    // prepare data
+    d3.nest()
+      .key(function(d){ return d.student_id; })
+      .key(function(d){ return d.course_name; })
+      .entries(d3Controller.getDataset());
+
     d3.select("#visual").selectAll("p")
       .data(dataset)
       .enter()

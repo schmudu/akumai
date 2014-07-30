@@ -9,7 +9,7 @@ namespace :db do
     # Example: Instead of "Algebra II" insert "Algebra 2"
     courses = ['algebra',
                 'geometry',
-                'trigonomety']
+                'trigonometry']
 
     # Iterate through list and create them
     courses.each do |course|

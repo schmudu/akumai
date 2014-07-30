@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require constants
-//= require angular
 //= require angular/ui-bootstrap-tpls-0.9.0.min
 //= require jquery
 //= require jquery_ujs

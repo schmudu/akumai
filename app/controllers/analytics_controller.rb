@@ -17,6 +17,7 @@ class AnalyticsController < ApplicationController
                     dataset_entries.id as id, 
                     mapped_courses.name as course_name,
                     roles.student_id as student_id")  
+          .order("dataset_entries.date")
       dataset_entries.concat(results.to_a)
     end
     render json: dataset_entries

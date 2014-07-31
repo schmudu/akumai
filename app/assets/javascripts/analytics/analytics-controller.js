@@ -3,7 +3,9 @@ var createDS3Controller = function(d3_instance){
       dataset = {},
       d3 = d3_instance,
       dateMax = null,
-      dateMin = null;
+      dateMin = null,
+      height = 150,
+      width = 300;
 
   // PUBLIC
   controller.getDataset = function(){
@@ -25,11 +27,23 @@ var createDS3Controller = function(d3_instance){
   };
 
   controller.draw = function(){
+    // verify that prepareDataset() is called first
+    var xScale,
+        yScale;
+
+    xScale = d3.time.scale()
+              .domain([dateMin, dateMax])
+              .range([0, width]);
+
+    yScale = d3.scale.ordinal()
+              .domain(['A', 'B', 'C', 'D', 'F'])
+              .range(d3.range(height, 0));
+
     d3.select("#visual").selectAll("p")
       .data(dataset)
       .enter()
       .append("p")
-      .text(function(d){return "The data is: " + d["data"];});
+      .text(function(d){return "The data is: " + d[0].values;});
   };
 
 

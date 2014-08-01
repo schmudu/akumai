@@ -75,6 +75,13 @@ var createDS3Controller = function(d3_instance){
        .attr("cx", function(d){ return xScale(d.date); })
        .attr("cy", function(d){ return yScale(d.data); })
        .attr("r", 5);
+
+    xAxis = d3.svg.axis()
+              .scale(xScale)
+              .orient("bottom");
+
+    svg.append("g")
+       .call(xAxis);
   };
 
 

@@ -28,7 +28,11 @@ var createDS3Controller = function(d3_instance){
 
   controller.draw = function(){
     // verify that prepareDataset() is called first
-    var xScale,
+    var currentDataset,
+        lineFunction,
+        lineGraph,
+        svg,
+        xScale,
         yScale;
 
     xScale = d3.time.scale()
@@ -37,13 +41,40 @@ var createDS3Controller = function(d3_instance){
 
     yScale = d3.scale.ordinal()
               .domain(['A', 'B', 'C', 'D', 'F'])
-              .range(d3.range(height, 0));
+              .rangeRoundBands([height, 0], 0.2);
 
-    d3.select("#visual").selectAll("p")
+    /*d3.select("#visual").selectAll("p")
       .data(dataset)
       .enter()
       .append("p")
-      .text(function(d){return "The data is: " + d[0].values;});
+      .text(function(d){return "The data is: " + d[0].values;});*/
+    svg = d3.select("#visual").append("svg")
+            .attr("width", 200)
+            .attr("height", 200);
+
+    lineFunction = d3.svg.line()
+                    .x(function(d){ return xScale(d.date); })
+                    .y(function(d){ return yScale(d.data); })
+                    .interpolate("linear");
+
+
+    currentDataset = this.getDataset();
+
+    lineGraph = svg.append("path")
+                   .attr("d", lineFunction(currentDataset[0].values[0].values))
+                   .attr("stroke", "blue")
+                   .attr("fill", "none")
+                   .attr("stroke-width", 2);
+
+    svg.selectAll("circle")
+       .data(this.getDataset()[0].values[0].values)
+       .enter()
+       .append("circle")
+       .attr("stroke", "red")
+       .attr("fill", "none")
+       .attr("cx", function(d){ return xScale(d.date); })
+       .attr("cy", function(d){ return yScale(d.data); })
+       .attr("r", 5);
   };
 
 

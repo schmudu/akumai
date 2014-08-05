@@ -7,17 +7,17 @@ describe('Test module aku.analytics', function() {
 
     beforeEach(inject(function($injector){
       $httpBackend = $injector.get('$httpBackend');
-      $httpBackend.when('GET', 'analytics/index_helper').respond(
+      $httpBackend.when('GET', '/analytics/index_helper').respond(
         [{"data":"A",
-          "date":"2014-07-18T04:50:46.000Z",
+          "datestring":"2010-05-19",
           "id":109,
           "course_name":"algebra",
           "student_id":"A002"},
-        {"data":"C",
-          "date":"2014-07-18T04:50:46.000Z",
-          "id":108,
-          "course_name":"trigonometry",
-          "student_id":"A001"}]
+        {"data":"D",
+          "datestring":"2010-05-19",
+          "id":185,
+          "course_name":"algebra",
+          "student_id":"A003"}]
         );
     }));
 

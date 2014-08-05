@@ -132,7 +132,8 @@ var createDS3Controller = function(d3_instance){
     dataset = d3.nest()
                 .key(function(d){ return d.student_id; })
                 .key(function(d){ return d.course_name; })
-                .entries(d3Controller.getDataset());
+                .entries(dataset);
+                //.entries(d3Controller.getDataset());
 
   };
 

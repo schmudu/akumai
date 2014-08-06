@@ -1,7 +1,7 @@
 describe('Analytics Constants', function(){
   var constants;
   beforeEach(function(){
-    constants = AKUMAI.analytics.Constants;
+    constants = AKUMAI.analytics.Constants();
   });
 
   describe('test AKUMAI.analytics.constants', function(){
@@ -10,7 +10,7 @@ describe('Analytics Constants', function(){
     });
 
     it("width should be defined", function() {
-      expect(constants.width).toEqual(200);
+      expect(constants.SVG_HEIGHT).toBeDefined();
     });
   });
 });

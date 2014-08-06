@@ -1,13 +1,8 @@
-var createDS3Controller = function(d3_instance){
-  var controller = {},
-      dataset = {},
-      d3 = d3_instance,
-      dateMax = null,
-      dateMin = null,
-      height = 150,
-      width = 300;
+var createDS3Controller = function(){
+  var controller = {};
 
   // PUBLIC
+  /*
   controller.getDataset = function(){
     return dataset;
   };
@@ -24,7 +19,7 @@ var createDS3Controller = function(d3_instance){
     dataset = newDataset;
 
     prepareDataset();
-  };
+  };*/
 
   controller.draw = function(){
     // verify that prepareDataset() is called first
@@ -86,6 +81,7 @@ var createDS3Controller = function(d3_instance){
 
 
   // PRIVATE METHODS
+  /*
   var prepareDataset = function(){
     prepareDate();
     getMinMaxDates();
@@ -136,6 +132,7 @@ var createDS3Controller = function(d3_instance){
                 //.entries(d3Controller.getDataset());
 
   };
+  */
 
   
   return controller;

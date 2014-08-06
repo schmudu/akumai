@@ -1,0 +1,1 @@
+AKUMAI.namespace('AKUMAI.analytics.model.D3Model');

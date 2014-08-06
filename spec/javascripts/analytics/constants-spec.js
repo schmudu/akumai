@@ -1,7 +1,7 @@
 describe('Analytics Constants', function(){
   var constants;
   beforeEach(function(){
-    constants = AKUMAI.analytics.constants;
+    constants = AKUMAI.analytics.Constants;
   });
 
   describe('test AKUMAI.analytics.constants', function(){

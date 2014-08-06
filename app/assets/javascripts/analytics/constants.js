@@ -1,6 +1,6 @@
-AKUMAI.namespace('AKUMAI.analytics.constants');
+AKUMAI.namespace('AKUMAI.analytics.Constants');
 
-AKUMAI.analytics.constants = {
+AKUMAI.analytics.Constants = {
   width: 200,
   height: 200
 };

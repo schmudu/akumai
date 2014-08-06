@@ -15,6 +15,7 @@ src_files:
   - app/assets/javascripts/d3/d3.min.js
   - app/assets/javascripts/analytics/*.js
   - app/assets/javascripts/*.js
+  - app/assets/javascripts/**/*.js
   - app/assets/javascripts/angular/angular.min.js
   - spec/javascripts/helpers/angular-mocks.js
   - app/assets/javascripts/angular/common/modules/*.js
@@ -58,6 +59,7 @@ helpers:
 #
 spec_files:
   - '**/*[sS]pec.js'
+  - '**/**/*[sS]pec.js'
 
 # src_dir
 #

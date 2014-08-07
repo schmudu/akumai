@@ -3,7 +3,7 @@ AKUMAI.namespace('AKUMAI.analytics.Application');
 AKUMAI.analytics.Application = function(d3_instance){
   // Dependencies
   var model = AKUMAI.analytics.model.D3Model(),
-      constants = AKUMAI.analytics.Constants();
+      constants = AKUMAI.analytics.Constants;
 
   // PRIVATE VARIABLES
   var d3 = d3_instance,
@@ -16,7 +16,6 @@ AKUMAI.analytics.Application = function(d3_instance){
 
   // PUBLIC METHODS
   that.draw = function(){
-        // verify that prepareDataset() is called first
     var currentDataset,
         lineFunction,
         lineGraph,
@@ -32,11 +31,6 @@ AKUMAI.analytics.Application = function(d3_instance){
               .domain(['A', 'B', 'C', 'D', 'F'])
               .rangeRoundBands([height, 0], 0.2);
 
-    /*d3.select("#visual").selectAll("p")
-      .data(dataset)
-      .enter()
-      .append("p")
-      .text(function(d){return "The data is: " + d[0].values;});*/
     svg = d3.select("#visual").append("svg")
             .attr("width", width)
             .attr("height", height);

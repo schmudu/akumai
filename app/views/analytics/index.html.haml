@@ -1,11 +1,11 @@
 - content_for :head do
   = javascript_include_tag "d3"
   = javascript_include_tag "lib/namespace"
+  = javascript_include_tag "lib/dispatcher-util"
   = javascript_include_tag "angular/common/modules/analytics"
   = javascript_include_tag "angular/analytics/index"
   = javascript_include_tag "analytics/constants"
   = javascript_include_tag "analytics/analytics-application"
-  -#= javascript_include_tag "analytics/analytics-controller"
   = javascript_include_tag "analytics/model/d3-model"
 
 .row

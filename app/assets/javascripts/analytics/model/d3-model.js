@@ -1,6 +1,9 @@
 AKUMAI.namespace('AKUMAI.analytics.model.D3Model');
 
 AKUMAI.analytics.model.D3Model = function(){
+  // DEPENDENCIES
+  var Constants = AKUMAI.analytics.Constants;
+
   var dataset,
       dateMax = null,
       dateMin = null,
@@ -11,6 +14,7 @@ AKUMAI.analytics.model.D3Model = function(){
     prepareDate();
     getMinMaxDates();
     prepareNest();
+    this.notifyObservers(Constants.EVENT_MODEL_FINISHED_PREPARING_DATASET);
   };
 
   var getMinMaxDates = function(){
@@ -74,7 +78,7 @@ AKUMAI.analytics.model.D3Model = function(){
   that.setDataset = function(new_dataset){
     dataset = new_dataset;
 
-    prepareDataset();
+    prepareDataset.call(this);
   };
 
   return that;

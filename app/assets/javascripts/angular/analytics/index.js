@@ -6,6 +6,5 @@ angular.module('analyticsIndex', ['aku.analytics'])
   // retrieve data and populate
   factoryAnalytics.get(function(data){
     app.init(data);
-    app.draw();
   });
 }]);

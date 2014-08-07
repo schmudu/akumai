@@ -1,6 +1,9 @@
 describe('Analytics Model', function(){
-  var model;
+  var model,
+      DispatcherUtil;
   beforeEach(function(){
+    // DEPENDENCIES
+    DispatcherUtil = AKUMAI.lib.DispatcherUtil();
     model = AKUMAI.analytics.model.D3Model();
   });
 
@@ -15,7 +18,11 @@ describe('Analytics Model', function(){
       it("should respond", function() {
         var fakeDataset = [];
         spyOn(model, 'setDataset').and.callThrough();
-        model.setDataset(fakeDataset);
+        
+        // make model dispatcher, dependency for observer pattern
+        DispatcherUtil.makeDispatcher(model);
+
+        model.setDataset.call(model, fakeDataset);
         expect(model.setDataset).toHaveBeenCalled();
       });
     });

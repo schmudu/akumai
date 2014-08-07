@@ -2,17 +2,17 @@ AKUMAI.namespace('AKUMAI.analytics.Application');
 
 AKUMAI.analytics.Application = function(d3_instance){
   // Dependencies
-  var model = AKUMAI.analytics.model.D3Model(),
-      constants = AKUMAI.analytics.Constants;
+  var d3model = AKUMAI.analytics.model.D3Model(),
+      Constants = AKUMAI.analytics.Constants,
+      DispatcherUtil = AKUMAI.lib.DispatcherUtil();
 
   // PRIVATE VARIABLES
   var d3 = d3_instance,
-      height = constants.SVG_HEIGHT,
+      height = Constants.SVG_HEIGHT,
       that = {},
-      width = constants.SVG_WIDTH;
+      width = Constants.SVG_WIDTH;
 
   // PRIVATE METHODS
-
 
   // PUBLIC METHODS
   that.draw = function(){
@@ -24,7 +24,7 @@ AKUMAI.analytics.Application = function(d3_instance){
         yScale;
 
     xScale = d3.time.scale()
-              .domain([model.getDateMin(), model.getDateMax()])
+              .domain([d3model.getDateMin(), d3model.getDateMax()])
               .range([0, width]);
 
     yScale = d3.scale.ordinal()
@@ -41,7 +41,7 @@ AKUMAI.analytics.Application = function(d3_instance){
                     .interpolate("linear");
 
 
-    currentDataset = model.getDataset();
+    currentDataset = d3model.getDataset();
 
     lineGraph = svg.append("path")
                    .attr("d", lineFunction(currentDataset[0].values[0].values))
@@ -69,7 +69,12 @@ AKUMAI.analytics.Application = function(d3_instance){
   };
 
   that.init = function(new_dataset){
-    model.setDataset(new_dataset);
+    // set listener
+    DispatcherUtil.makeDispatcher(d3model);
+    d3model.register(that.draw,
+        Constants.EVENT_MODEL_FINISHED_PREPARING_DATASET);
+
+    d3model.setDataset.call(d3model, new_dataset);
   };
 
   return that;

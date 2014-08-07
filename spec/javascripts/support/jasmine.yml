@@ -11,6 +11,7 @@
 #   - dist/**/*.js
 #
 src_files:
+  - app/assets/javascripts/lib/namespace.js
   - app/assets/javascripts/lib/*.js
   - app/assets/javascripts/d3/d3.min.js
   - app/assets/javascripts/analytics/*.js

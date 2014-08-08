@@ -81,5 +81,9 @@ AKUMAI.analytics.model.D3Model = function(){
     prepareDataset.call(this);
   };
 
+  // define as singleton
+  AKUMAI.analytics.model.D3Model = function(){
+    return that;
+  };
   return that;
 };

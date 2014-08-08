@@ -11,6 +11,11 @@ describe('Analytics Model', function(){
     it("to be defined", function() {
       expect(model).toBeDefined();
     });
+
+    it("should be a singleton", function() {
+      var model2 = AKUMAI.analytics.model.D3Model();
+      expect(model === model2).toBeTruthy();
+    });
   });
 
   describe('instance methods', function(){

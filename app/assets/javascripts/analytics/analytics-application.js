@@ -2,9 +2,10 @@ AKUMAI.namespace('AKUMAI.analytics.Application');
 
 AKUMAI.analytics.Application = function(d3_instance){
   // Dependencies
-  var d3model = AKUMAI.analytics.model.D3Model(),
-      Constants = AKUMAI.analytics.Constants,
-      DispatcherUtil = AKUMAI.lib.DispatcherUtil();
+  var d3controller = AKUMAI.analytics.controller.D3Controller(),
+      d3model = AKUMAI.analytics.model.D3Model(),
+      Constants = AKUMAI.analytics.Constants;
+      //DispatcherUtil = AKUMAI.lib.DispatcherUtil();
 
   // PRIVATE VARIABLES
   var d3 = d3_instance,
@@ -69,12 +70,19 @@ AKUMAI.analytics.Application = function(d3_instance){
   };
 
   that.init = function(new_dataset){
+    d3controller.init();
+
+    /*
     // set listener
     DispatcherUtil.makeDispatcher(d3model);
     d3model.register(that.draw,
         Constants.EVENT_MODEL_FINISHED_PREPARING_DATASET);
 
     d3model.setDataset.call(d3model, new_dataset);
+    */
+    // make d3 model a dispatcher
+    //DispatcherUtil.makeDispatcher(d3model);
+    d3model.init.call(d3model, new_dataset);
   };
 
   return that;

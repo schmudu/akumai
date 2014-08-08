@@ -2,18 +2,23 @@ AKUMAI.namespace('AKUMAI.analytics.model.D3Model');
 
 AKUMAI.analytics.model.D3Model = function(){
   // DEPENDENCIES
-  var Constants = AKUMAI.analytics.Constants;
+  var Constants = AKUMAI.analytics.Constants,
+      DispatcherUtil = AKUMAI.lib.DispatcherUtil();
 
   var dataset,
       dateMax = null,
       dateMin = null,
       that = {};
 
+  // register as dispatcher
+  DispatcherUtil.makeDispatcher(that);
+
   // PRIVATE METHODS
   var prepareDataset = function(){
     prepareDate();
     getMinMaxDates();
     prepareNest();
+    console.log("finished updating model.");
     this.notifyObservers(Constants.EVENT_MODEL_FINISHED_PREPARING_DATASET);
   };
 
@@ -73,6 +78,10 @@ AKUMAI.analytics.model.D3Model = function(){
 
   that.getDateMin = function(){
     return dateMin;
+  };
+
+  that.init = function(new_dataset){
+    this.setDataset.call(this, new_dataset);
   };
 
   that.setDataset = function(new_dataset){

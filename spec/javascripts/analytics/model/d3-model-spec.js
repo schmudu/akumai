@@ -1,4 +1,4 @@
-describe('Analytics Model', function(){
+describe('D3 Model', function(){
   var model,
       DispatcherUtil;
   beforeEach(function(){
@@ -19,6 +19,12 @@ describe('Analytics Model', function(){
   });
 
   describe('instance methods', function(){
+    describe('init method', function(){
+      it("to be defined", function() {
+        expect(model.init).toBeDefined();
+      });
+    });
+
     describe('setDataset method', function(){
       it("should respond", function() {
         var fakeDataset = [];

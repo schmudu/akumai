@@ -7,6 +7,7 @@
   = javascript_include_tag "analytics/constants"
   = javascript_include_tag "analytics/analytics-application"
   = javascript_include_tag "analytics/model/d3-model"
+  = javascript_include_tag "analytics/controller/d3-controller"
 
 .row
   %h1 Analytics
@@ -52,7 +53,4 @@
     :javascript
       // application instance
       var app = AKUMAI.analytics.Application(d3);
-
-      // called by Angular analytics controller
-      // after data has been loaded
-      //app.init(dataset);
+      console.log("here");

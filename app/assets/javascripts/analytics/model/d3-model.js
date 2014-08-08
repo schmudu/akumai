@@ -18,8 +18,7 @@ AKUMAI.analytics.model.D3Model = function(){
     prepareDate();
     getMinMaxDates();
     prepareNest();
-    console.log("finished updating model.");
-    this.notifyObservers(Constants.EVENT_MODEL_FINISHED_PREPARING_DATASET);
+    this.notifyObservers(Constants.EVENT_D3_MODEL_FINISHED_UPDATING_DATASET);
   };
 
   var getMinMaxDates = function(){

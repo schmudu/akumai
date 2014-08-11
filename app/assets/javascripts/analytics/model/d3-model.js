@@ -18,7 +18,8 @@ AKUMAI.analytics.model.D3Model = function(){
     prepareDate();
     getMinMaxDates();
     prepareNest();
-    this.notifyObservers(Constants.EVENT_D3_MODEL_FINISHED_UPDATING_DATASET);
+    //this.notifyObservers(Constants.EVENT_D3_MODEL_FINISHED_UPDATING_DATASET);
+    that.notifyObservers(Constants.EVENT_D3_MODEL_FINISHED_UPDATING_DATASET);
   };
 
   var getMinMaxDates = function(){
@@ -61,9 +62,7 @@ AKUMAI.analytics.model.D3Model = function(){
     dataset = d3.nest()
                 .key(function(d){ return d.student_id; })
                 .key(function(d){ return d.course_name; })
-                .entries(dataset);
-                //.entries(d3Controller.getDataset());
-
+                .entries(that.getDataset());
   };
 
   // PUBLIC METHODS
@@ -80,7 +79,8 @@ AKUMAI.analytics.model.D3Model = function(){
   };
 
   that.init = function(new_dataset){
-    this.setDataset.call(this, new_dataset);
+    //this.setDataset.call(this, new_dataset);
+    that.setDataset(new_dataset);
   };
 
   that.setDataset = function(new_dataset){

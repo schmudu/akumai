@@ -2,7 +2,7 @@ AKUMAI.namespace('AKUMAI.analytics.Constants');
 
 AKUMAI.analytics.Constants = {
   // SVG
-  SVG_WIDTH: 200,
+  SVG_WIDTH: 800,
   SVG_HEIGHT: 200,
 
   // EVENTS

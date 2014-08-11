@@ -14,7 +14,7 @@ AKUMAI.analytics.Application = function(d3_instance){
   // PUBLIC METHODS
   that.init = function(new_dataset){
     d3controller.init(d3);
-    d3model.init.call(d3model, new_dataset);
+    d3model.init(new_dataset);
   };
 
   return that;

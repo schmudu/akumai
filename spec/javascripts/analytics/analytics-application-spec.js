@@ -15,10 +15,4 @@ describe('Analytics Application', function(){
       expect(app.init).toBeDefined();
     });
   });
-
-  describe('draw method', function(){
-    it("to be defined", function() {
-      expect(app.draw).toBeDefined();
-    });
-  });
 });

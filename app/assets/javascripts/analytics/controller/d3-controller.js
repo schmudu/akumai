@@ -7,49 +7,44 @@ AKUMAI.analytics.controller.D3Controller = function(){
 
   // PRIVATE VARIABLES
   var d3,
-      that = {};
+      that = {},
 
   // PRIVATE METHODS
-
-  // PUBLIC METHODS
-  that.draw = function(){
-    var currentDataset,
-        height = Constants.SVG_HEIGHT,
-        lineFunction,
-        lineGraph,
-        svg,
-        width = Constants.SVG_WIDTH,
-        xScale,
-        yScale;
-
-    xScale = d3.time.scale()
-              .domain([d3model.getDateMin(), d3model.getDateMax()])
-              .range([0, width]);
-
-    yScale = d3.scale.ordinal()
-              .domain(['A', 'B', 'C', 'D', 'F'])
-              .rangeRoundBands([height, 0], 0.2);
-
-    svg = d3.select("#visual").append("svg")
-            .attr("width", width)
-            .attr("height", height);
-
+  createLineFunction = function(){
     lineFunction = d3.svg.line()
                     .x(function(d){ return xScale(d.date); })
                     .y(function(d){ return yScale(d.data); })
                     .interpolate("linear");
 
-
-    currentDataset = d3model.getDataset();
-
-    lineGraph = svg.append("path")
-                   .attr("d", lineFunction(currentDataset[0].values[0].values))
-                   .attr("stroke", "blue")
-                   .attr("fill", "none")
-                   .attr("stroke-width", 2);
-
+    return lineFunction;
+  },
+  createSVG = function(){
+    svg = d3.select("#visual").append("svg")
+            .attr("width", getWidth())
+            .attr("height", getHeight());
+    return svg;
+  },
+  createXAxis = function(){
+    xAxis = d3.svg.axis()
+              .scale(xScale)
+              .orient("bottom");
+    return xAxis;
+  },
+  createXScale = function(){
+    xScale = d3.time.scale()
+              .domain([d3model.getDateMin(), d3model.getDateMax()])
+              .range([0, getWidth()]);
+    return xScale;
+  },
+  createYScale = function(){
+    yScale = d3.scale.ordinal()
+              .domain(['A', 'B', 'C', 'D', 'F'])
+              .rangeRoundBands([getHeight(), 0], 0.2);
+    return yScale;
+  },
+  drawCircleNodes = function(xScale, yScale){
     svg.selectAll("circle")
-       .data(currentDataset[0].values[0].values)
+       .data(d3model.getDataset()[0].values[0].values)
        .enter()
        .append("circle")
        .attr("stroke", "red")
@@ -58,12 +53,49 @@ AKUMAI.analytics.controller.D3Controller = function(){
        .attr("cy", function(d){ return yScale(d.data); })
        .attr("r", 5);
 
-    xAxis = d3.svg.axis()
-              .scale(xScale)
-              .orient("bottom");
-
+  },
+  drawLineGraph = function(svg, lineFunction){
+    svg.append("path")
+       .attr("d", lineFunction(d3model.getDataset()[0].values[0].values))
+       .attr("stroke", "blue")
+       .attr("fill", "none")
+       .attr("stroke-width", 2);
+  },
+  drawXAxis = function(svg){
     svg.append("g")
+       .attr("transform", "translate(0," + (getHeight() - Constants.SVG_PADDING) + ")")
        .call(xAxis);
+  },
+  getHeight = function(){
+    return Constants.SVG_HEIGHT;
+  },
+  getWidth = function(){
+    return Constants.SVG_WIDTH;
+  };
+
+
+  // PUBLIC METHODS
+  that.draw = function(){
+    var lineFunction,
+        svg,
+        xScale,
+        yScale;
+
+    // create scales
+    xScale = createXScale();
+    yScale = createYScale();
+
+    // create svg element
+    svg = createSVG();
+
+    // draw graphs
+    lineFunction = createLineFunction();
+    drawLineGraph(svg, lineFunction);
+    drawCircleNodes(xScale, yScale);
+
+    // axes
+    xAxis = createXAxis();
+    drawXAxis(svg);
   };
 
   that.init = function(d3_instance){

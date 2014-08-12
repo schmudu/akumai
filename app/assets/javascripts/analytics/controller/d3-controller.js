@@ -3,7 +3,8 @@ AKUMAI.namespace('AKUMAI.analytics.controller.D3Controller');
 AKUMAI.analytics.controller.D3Controller = function(){
   // DEPENDENCIES
   var Constants = AKUMAI.analytics.Constants,
-      d3model = AKUMAI.analytics.model.D3Model();
+      colorManager = AKUMAI.analytics.model.D3ColorManager(),
+      d3Model = AKUMAI.analytics.model.D3Model();
 
   // PRIVATE VARIABLES
   var d3,
@@ -32,7 +33,7 @@ AKUMAI.analytics.controller.D3Controller = function(){
   },
   createXScale = function(){
     xScale = d3.time.scale()
-              .domain([d3model.getDateMin(), d3model.getDateMax()])
+              .domain([d3Model.getDateMin(), d3Model.getDateMax()])
               .range([0, getWidth()]);
     return xScale;
   },
@@ -44,10 +45,10 @@ AKUMAI.analytics.controller.D3Controller = function(){
   },
   drawCircleNodes = function(xScale, yScale){
     svg.selectAll("circle")
-       .data(d3model.getDataset()[0].values[0].values)
+       .data(d3Model.getDataset()[0].values[0].values)
        .enter()
        .append("circle")
-       .attr("stroke", "red")
+       .attr("stroke", colorManager.getColor("point", 1))
        .attr("fill", "none")
        .attr("cx", function(d){ return xScale(d.date); })
        .attr("cy", function(d){ return yScale(d.data); })
@@ -56,8 +57,8 @@ AKUMAI.analytics.controller.D3Controller = function(){
   },
   drawLineGraph = function(svg, lineFunction){
     svg.append("path")
-       .attr("d", lineFunction(d3model.getDataset()[0].values[0].values))
-       .attr("stroke", "blue")
+       .attr("d", lineFunction(d3Model.getDataset()[0].values[0].values))
+       .attr("stroke", colorManager.getColor("line", 1))
        .attr("fill", "none")
        .attr("stroke-width", 2);
   },
@@ -101,7 +102,7 @@ AKUMAI.analytics.controller.D3Controller = function(){
   that.init = function(d3_instance){
     d3 = d3_instance;
     // register as listener
-    d3model.register(that.draw,
+    d3Model.register(that.draw,
         Constants.EVENT_D3_MODEL_FINISHED_UPDATING_DATASET);
   };
 

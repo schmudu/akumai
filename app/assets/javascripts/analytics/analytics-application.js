@@ -2,7 +2,8 @@ AKUMAI.namespace('AKUMAI.analytics.Application');
 
 AKUMAI.analytics.Application = function(d3_instance){
   // Dependencies
-  var d3controller = AKUMAI.analytics.controller.D3Controller(),
+  var d3ColorManager = AKUMAI.analytics.model.D3ColorManager(),
+      d3controller = AKUMAI.analytics.controller.D3Controller(),
       d3model = AKUMAI.analytics.model.D3Model();
 
   // PRIVATE VARIABLES
@@ -13,6 +14,7 @@ AKUMAI.analytics.Application = function(d3_instance){
 
   // PUBLIC METHODS
   that.init = function(new_dataset){
+    d3ColorManager.init(d3);
     d3controller.init(d3);
     d3model.init(new_dataset);
   };

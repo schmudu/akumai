@@ -56,6 +56,7 @@ AKUMAI.analytics.controller.D3Controller = function(){
 
   },
   drawLineGraph = function(svg, lineFunction){
+    var dataElements = d3Model.getDataset();
     svg.append("path")
        .attr("d", lineFunction(d3Model.getDataset()[0].values[0].values))
        .attr("stroke", colorManager.getColor("line", 1))

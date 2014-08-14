@@ -1,4 +1,4 @@
-angular.module('analyticsIndex', ['aku.analytics'])
+angular.module('analyticsIndex', ['aku.analytics.model'])
 .controller('analyticsCtrl', ['$scope', '$http', 'factoryAnalytics',
   function ($scope, $http, factoryAnalytics){
 

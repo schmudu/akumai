@@ -1,8 +1,8 @@
-describe('Test module aku.analytics.model', function() {
+describe('Test module aku.analytics.factories', function() {
   describe('factoryAnalytics', function() {
     var $httpBackend, factory;
     beforeEach(function() {
-      module('aku.analytics.model');
+      module('aku.analytics.factories');
     });
 
     beforeEach(inject(function($injector){

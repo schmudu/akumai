@@ -25,6 +25,7 @@ describe('D3 Model', function(){
       });
     });
 
+    /*
     describe('setDataset method', function(){
       it("should respond", function() {
         var fakeDataset = [];
@@ -37,6 +38,7 @@ describe('D3 Model', function(){
         expect(model.setDataset).toHaveBeenCalled();
       });
     });
+*/
 
     describe('getDataset method', function(){
       it("should be defined", function() {

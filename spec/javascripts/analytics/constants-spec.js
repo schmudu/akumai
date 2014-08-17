@@ -1,20 +1,19 @@
-describe('Analytics Constants', function(){
-  var constants;
-  beforeEach(function(){
-    constants = AKUMAI.analytics.Constants;
+describe('Test module aku.analytics.constants', function() {
+  var factory;
+
+  beforeEach(function() {
+    module('aku.analytics.constants');
   });
 
-  describe('test AKUMAI.analytics.constants', function(){
-    it("constants should be defined", function() {
-      expect(constants).toBeDefined();
-    });
+  beforeEach(inject(function(factoryConstants){
+    factory = factoryConstants;
+  }));
 
-    it("SVG_HEIGHT should be defined", function() {
-      expect(constants.SVG_HEIGHT).toBeDefined();
-    });
-
-    it("SVG_WIDTH should be defined", function() {
-      expect(constants.SVG_WIDTH).toBeDefined();
+  describe('factoryConstants', function() {
+    it('should return information', function(){
+      var constant;
+      constant = factory.d3Width;
+      expect(constant).toBeDefined();
     });
   });
 });

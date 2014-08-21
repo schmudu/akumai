@@ -10,7 +10,7 @@ describe('Test module aku.analytics.constants', function() {
   }));
 
   describe('factoryConstants', function() {
-    it('should return information', function(){
+    it('should define constants', function(){
       var constant;
       constant = factory.d3Width;
       expect(constant).toBeDefined();

@@ -1,4 +1,4 @@
-var moduleAkuAnalytics = angular.module('aku.analytics.factories', []);
+var moduleAkuAnalytics = angular.module('aku.analytics.model', []);
 
 // ====FACTORIES
 moduleAkuAnalytics.factory('factoryAnalytics',['$http',function($http){

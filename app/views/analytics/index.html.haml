@@ -9,6 +9,8 @@
   = javascript_include_tag "analytics/model/d3-color-manager"
   = javascript_include_tag "analytics/model/d3-model"
   = javascript_include_tag "analytics/controller/d3-controller"
+  = javascript_include_tag "analytics/view/d3"
+  = javascript_include_tag "analytics/view/d3-example1"
 
 .row
   %h1 Analytics
@@ -19,7 +21,8 @@
     -# = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
 %br/
 
-.row{'ng-app' => 'analyticsIndex', 'ng-controller' => 'analyticsCtrl'}
+-#.row{'ng-app' => 'analyticsIndex', 'ng-controller' => 'analyticsCtrl'}
+.row{'ng-app' => 'd3AngularApp', 'ng-controller' => 'MainCtrl'}
   -# analytics filter
   .col-md-3
     %form.form-horizontal{'role' => 'form'}
@@ -50,8 +53,9 @@
               %input{'type'=>'checkbox', 'ng-model'=>'onlySent'}= course.name.capitalize
   -# analytics visual
   .col-md-9
-    #visual
-    :javascript
+    %div{"d3-bars" => "", "bar-height" => "20", "bar-padding" => "5", "data"=>"data"}
+    -##visual
+    -#:javascript
       // application instance
-      var app = AKUMAI.analytics.Application(d3);
-      var name = "Patrick";
+      //var app = AKUMAI.analytics.Application(d3);
+      //var name = "Patrick";

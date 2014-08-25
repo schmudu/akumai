@@ -40,7 +40,7 @@
                 = t('terms.student_id', :count => 3)
           .col-md-5.checkbox
             %label
-              %input{'type'=>'checkbox', 'ng-model'=>'onlySent'}= student.student_id
+              %input.onlyStudent{'type'=>'checkbox', 'ng-model'=>"only_#{student.student_id}"}= student.student_id
       -# core courses
       - @core_courses.each_with_index do |course, i|
         .form-group
@@ -50,7 +50,7 @@
                 = t('terms.core_course')
           .col-md-5.checkbox
             %label
-              %input{'type'=>'checkbox', 'ng-model'=>'onlySent'}= course.name.capitalize
+              %input.onlyCourse{'type'=>'checkbox', 'ng-model'=>"only_#{course.name}"}= course.name.capitalize
   -# analytics visual
   .col-md-9
-    %div{"d3-bars" => "", "bar-height" => "20", "padding" => "30", "data"=>"data"}
+    %div{"d3-bars" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data"}

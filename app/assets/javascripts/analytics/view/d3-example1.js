@@ -12,7 +12,9 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
         d3Service.d3().then(function(d3) {
           // PRIVATE VARIABLES
           var renderTimeout;
-          var margin = parseInt(attrs.margin) || 20,
+          var axisX,
+              axisY,
+              //margin = parseInt(attrs.margin) || 20,
               barHeight = parseInt(attrs.barHeight) || 20,
               //barPadding = parseInt(attrs.barPadding) || 5;
               color = d3.scale.category20(),
@@ -38,22 +40,41 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
             return lineFunction;
           },
           createXAxis = function(){
-            xAxis = d3.svg.axis()
+            var xAxis = d3.svg.axis()
                       .scale(xScale)
                       .orient("bottom");
             return xAxis;
           },
+          createYAxis = function(){
+            var yAxis = d3.svg.axis()
+                      .scale(yScale)
+                      .orient("left");
+            return yAxis;
+          },
           createXScale = function(){
             xScale = d3.time.scale()
                       .domain([dateMin, dateMax])
-                      .range([0, getWidth()]);
+                      .range([0 - getMargin(), getWidth() - getMargin()]);
             return xScale;
           },
           createYScale = function(){
             yScale = d3.scale.ordinal()
                       .domain(['A', 'B', 'C', 'D', 'F'])
-                      .rangeRoundBands([getHeight(), 0], 0.2);
+                      .rangeRoundBands([0, getHeight()], 0.2);
             return yScale;
+          },
+          drawXAxis = function(){
+            svg.append("g")
+               .attr("transform", "translate(0," + (getHeight() - getMargin()) + ")")
+               .call(axisX);
+          },
+          drawYAxis = function(){
+            svg.append("g")
+               .attr("transform", "translate(" + getMargin() + ", 0)")
+               .call(axisY);
+          },
+          getMargin = function(){
+            return (parseInt(attrs.margin) || 20);
           },
           prepareDate = function(){
             preparedDataset.forEach(function(element, index, array){
@@ -107,24 +128,18 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
                .attr("r", 5);
           },
           drawLineGraph = function(lineFunction){
-            //var dataElements = d3Model.getDataset();
             svg.append("path")
                .attr("d", lineFunction(preparedDataset[0].values[0].values))
                .attr("stroke", color(1))
                .attr("fill", "none")
                .attr("stroke-width", 2);
           },
-          drawXAxis = function(){
-            svg.append("g")
-               .attr("transform", "translate(0," + (getHeight() - padding) + ")")
-               .call(xAxis);
-          },
           getHeight = function(){
             //return scope.data.length * (barHeight + padding);
-            return d3.select(ele[0])[0][0].offsetHeight - margin;
+            return d3.select(ele[0])[0][0].offsetHeight - getMargin();
           },
           getWidth = function(){
-            return d3.select(ele[0])[0][0].offsetWidth - margin;
+            return d3.select(ele[0])[0][0].offsetWidth - getMargin();
           };
 
           scope.$watch(function() {
@@ -214,8 +229,10 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
               drawCircleNodes();
 
               // axes
-              xAxis = createXAxis();
+              axisX = createXAxis();
               drawXAxis(svg);
+              axisY = createYAxis();
+              drawYAxis(svg);
             }, 200);
           };
         });
@@ -226,9 +243,4 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
     // set the data after received
     $scope.data = data;
   });
-  /*
-  $scope.data = [
-    {name: 'Ari', score: 10},
-    {name: 'Q', score: 90}
-    ];*/
 }]);

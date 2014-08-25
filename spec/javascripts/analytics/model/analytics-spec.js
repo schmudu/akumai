@@ -30,7 +30,7 @@ describe('Test module aku.analytics.model', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should return information', function(){
+    it('method "get" should return information', function(){
       var returnData;
       factory.get(function(data){
         returnData = data;

@@ -15,8 +15,9 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
           var margin = parseInt(attrs.margin) || 20,
               barHeight = parseInt(attrs.barHeight) || 20,
               //barPadding = parseInt(attrs.barPadding) || 5;
-              dateMax,
-              dateMin,
+              color = d3.scale.category20(),
+              dateMax = null,
+              dateMin = null,
               padding = parseInt(attrs.padding) || 5,
               preparedDataset;
 
@@ -94,35 +95,33 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
               }
             });
           },
-          /*
-          drawCircleNodes = function(xScale, yScale){
+          drawCircleNodes = function(){
             svg.selectAll("circle")
-               .data(d3Model.getDataset()[0].values[0].values)
+               .data(preparedDataset[0].values[0].values)
                .enter()
                .append("circle")
-               .attr("stroke", colorManager.getColor("point", 1))
+               .attr("stroke", color(2))
                .attr("fill", "none")
                .attr("cx", function(d){ return xScale(d.date); })
                .attr("cy", function(d){ return yScale(d.data); })
                .attr("r", 5);
-
           },
-          drawLineGraph = function(svg, lineFunction){
-            var dataElements = d3Model.getDataset();
+          drawLineGraph = function(lineFunction){
+            //var dataElements = d3Model.getDataset();
             svg.append("path")
-               .attr("d", lineFunction(d3Model.getDataset()[0].values[0].values))
-               .attr("stroke", colorManager.getColor("line", 1))
+               .attr("d", lineFunction(preparedDataset[0].values[0].values))
+               .attr("stroke", color(1))
                .attr("fill", "none")
                .attr("stroke-width", 2);
           },
-          */
-          drawXAxis = function(svg){
+          drawXAxis = function(){
             svg.append("g")
-               .attr("transform", "translate(0," + (getHeight() - Constants.SVG_PADDING) + ")")
+               .attr("transform", "translate(0," + (getHeight() - padding) + ")")
                .call(xAxis);
           },
           getHeight = function(){
-            return scope.data.length * (barHeight + padding);
+            //return scope.data.length * (barHeight + padding);
+            return d3.select(ele[0])[0][0].offsetHeight - margin;
           },
           getWidth = function(){
             return d3.select(ele[0])[0][0].offsetWidth - margin;
@@ -142,12 +141,6 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
             svg.selectAll('*').remove();
 
             if (!data) return;
-
-            // prepare data
-            preparedDataset = data;
-            prepareDate();
-            getMinMaxDates();
-            prepareNest();
 
             if (renderTimeout) clearTimeout(renderTimeout);
 
@@ -198,16 +191,31 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
                     return d.name + " (scored: " + d.score + ")";
                   });
                 */
-              console.log("need to draw the data: " + data);
+              console.log("need to draw the data: " + preparedDataset);
               //var lineFunction = createLineFunction();
               var lineFunction,
                   svg,
                   xScale,
                   yScale;
 
+              // prepare data
+              preparedDataset = data;
+              prepareDate();
+              getMinMaxDates();
+              prepareNest();
+
               // create scales
-              xScale = createXScale();
-              yScale = createYScale();
+              createXScale();
+              createYScale();
+
+              // draw graphs
+              lineFunction = createLineFunction();
+              drawLineGraph(lineFunction);
+              drawCircleNodes();
+
+              // axes
+              xAxis = createXAxis();
+              drawXAxis(svg);
             }, 200);
           };
         });

@@ -17,7 +17,7 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
               //barPadding = parseInt(attrs.barPadding) || 5;
               dateMax,
               dateMin,
-              padding = parseInt(attrs.barPadding) || 5,
+              padding = parseInt(attrs.padding) || 5,
               preparedDataset;
 
           var svg = d3.select(ele[0])
@@ -122,7 +122,7 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
                .call(xAxis);
           },
           getHeight = function(){
-            return scope.data.length * (barHeight + barPadding);
+            return scope.data.length * (barHeight + padding);
           },
           getWidth = function(){
             return d3.select(ele[0])[0][0].offsetWidth - margin;

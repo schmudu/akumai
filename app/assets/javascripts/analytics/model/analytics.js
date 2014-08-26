@@ -4,7 +4,7 @@ var moduleAkuAnalytics = angular.module('aku.analytics.model', []);
 moduleAkuAnalytics.factory('factoryAnalytics',['$http',function($http){
   return {
     get: function(callback){
-      $http.get('/analytics/index_helper').success(function(data){
+      $http.get('/analytics/student_data').success(function(data){
         callback(data);
       });
     }

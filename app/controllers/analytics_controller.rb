@@ -5,7 +5,7 @@ class AnalyticsController < ApplicationController
     @core_courses = CoreCourse.all
   end
 
-  def index_helper
+  def student_data
     programs = current_user.programs
     dataset_entries = []
     programs.each do |program|
@@ -21,5 +21,11 @@ class AnalyticsController < ApplicationController
       dataset_entries.concat(results.to_a)
     end
     render json: dataset_entries
+  end
+
+  def students
+    programs = current_user.staff_level_programs
+    students = Program.collect_students(programs)
+    render json: students
   end
 end

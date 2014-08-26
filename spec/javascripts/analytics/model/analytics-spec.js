@@ -7,7 +7,7 @@ describe('Test module aku.analytics.model', function() {
 
     beforeEach(inject(function($injector){
       $httpBackend = $injector.get('$httpBackend');
-      $httpBackend.when('GET', '/analytics/index_helper').respond(
+      $httpBackend.when('GET', '/analytics/student_data').respond(
         [{"data":"A",
           "datestring":"2010-05-19",
           "id":109,

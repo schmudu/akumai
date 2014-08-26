@@ -24,7 +24,7 @@ class Program < ActiveRecord::Base
     # collects all the students of programs into an array
     students = []
     programs.each do |program|
-      students.concat(program.students.order("student_id ASC").to_a)
+      students.concat(program.students.order("student_id ASC").select(:student_id, :id).to_a)
     end
     return students
   end

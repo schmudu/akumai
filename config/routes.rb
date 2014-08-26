@@ -9,7 +9,8 @@ Trio::Application.routes.draw do
   
   match '/analytics',  to: 'analytics#index',    via: 'get'
   namespace :analytics do
-    get "index_helper"
+    get "student_data"
+    get "students"
   end
 
   resources :invitations, except: :create do

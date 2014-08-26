@@ -7,6 +7,8 @@ describe('Test module aku.analytics.model', function() {
 
     beforeEach(inject(function($injector){
       $httpBackend = $injector.get('$httpBackend');
+
+      // STUDENT DATA
       $httpBackend.when('GET', '/analytics/student_data').respond(
         [{"data":"A",
           "datestring":"2010-05-19",
@@ -17,6 +19,14 @@ describe('Test module aku.analytics.model', function() {
           "datestring":"2010-05-19",
           "id":185,
           "course_name":"algebra",
+          "student_id":"A003"}]
+        );
+
+      // STUDENTS
+      $httpBackend.when('GET', '/analytics/students').respond(
+        [{"id":"1",
+          "student_id":"A002"},
+        {"id":"2",
           "student_id":"A003"}]
         );
     }));
@@ -30,9 +40,18 @@ describe('Test module aku.analytics.model', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('method "get" should return information', function(){
+    it('method "student_data" should return information', function(){
       var returnData;
-      factory.get(function(data){
+      factory.getData(function(data){
+        returnData = data;
+      });
+      $httpBackend.flush();
+      expect(returnData).toBeDefined();
+    });
+
+    it('method "students" should return information', function(){
+      var returnData;
+      factory.getStudents(function(data){
         returnData = data;
       });
       $httpBackend.flush();

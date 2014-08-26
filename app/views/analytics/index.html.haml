@@ -51,6 +51,13 @@
           .col-md-5.checkbox
             %label
               %input.onlyCourse{'type'=>'checkbox', 'ng-model'=>"only_#{course.name}"}= course.name.capitalize
+      -# test ng-repeat
+      .title_student
+        Student Ng-repeat
+      %ul
+        %li{'ng-repeat' => 'student in students'}
+          .student
+            {{student.id}}
   -# analytics visual
   .col-md-9
     %div{"d3-bars" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data"}

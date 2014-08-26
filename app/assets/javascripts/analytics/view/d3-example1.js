@@ -135,8 +135,8 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
                .attr("stroke-width", 2);
           },
           getHeight = function(){
-            //return scope.data.length * (barHeight + padding);
-            return d3.select(ele[0])[0][0].offsetHeight - getMargin();
+            //return d3.select(ele[0])[0][0].offsetHeight - getMargin();
+            return 200;
           },
           getWidth = function(){
             return d3.select(ele[0])[0][0].offsetWidth - getMargin();
@@ -239,8 +239,13 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
       }};
 }])
 .controller('MainCtrl', ['factoryAnalytics', '$scope', function(factoryAnalytics, $scope) {
-  $scope.testData = factoryAnalytics.get(function(data){
+  factoryAnalytics.getData(function(data){
     // set the data after received
     $scope.data = data;
+  });
+
+  factoryAnalytics.getStudents(function(data){
+    // set the data after received
+    $scope.students = data;
   });
 }]);

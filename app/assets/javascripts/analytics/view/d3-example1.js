@@ -1,4 +1,13 @@
 angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
+.directive('studentControl', function(){
+  return {
+    restrict: 'E',
+    scope: {
+      data: "="
+    },
+    template: 'Name: {{data.name}}'
+  };
+})
 .directive('d3Bars', ['$window', '$timeout', 'd3Service',
   function($window, $timeout, d3Service) {
     return {
@@ -239,6 +248,7 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model'])
       }};
 }])
 .controller('MainCtrl', ['factoryAnalytics', '$scope', function(factoryAnalytics, $scope) {
+  $scope.person = {name:'Koko'};
   factoryAnalytics.getData(function(data){
     // set the data after received
     $scope.data = data;

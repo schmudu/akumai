@@ -8,6 +8,10 @@
 4) Install Postgres and set the owner of the database to be ruby_user by running the line:
     ALTER DATABASE trio_dev OWNER TO ruby_user;
 
+== DEVELOPMENT
+* Javascript Templates
+Javascript templates for AngularJS are located in app/assets/javascripts/templates folder.  In order to be served up to the user, use the command "rake assets:precompile" and then the file will be made available via the Rails Asset pipeline.
+
 == TESTING
 To run Jasmine gem run the following command:
   rake jasmine

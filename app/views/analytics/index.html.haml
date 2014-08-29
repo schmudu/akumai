@@ -11,6 +11,7 @@
   = javascript_include_tag "analytics/controller/d3-controller"
   = javascript_include_tag "analytics/view/d3"
   = javascript_include_tag "analytics/view/d3-example1"
+  = javascript_include_tag "analytics/view/forms"
 
 .row
   %h1 Analytics
@@ -54,11 +55,12 @@
       -# test ng-repeat
       .title_student
         Student Ng-repeat
-      %student-control{"data" => "person"}
+      %aku-student-checkbox{"data" => "person1"}
+      %aku-student-checkbox{"data" => "person2"}
       %ul
         %li{'ng-repeat' => 'student in students'}
           .student
-            {{student.id}}
+            {{student.student_id}}
   -# analytics visual
   .col-md-9
     %div{"d3-bars" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data"}

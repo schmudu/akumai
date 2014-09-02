@@ -55,8 +55,8 @@
       -# test ng-repeat
       .title_student
         Student Ng-repeat
-      %aku-student-checkbox{"data" => "person1"}
-      %aku-student-checkbox{"data" => "person2"}
+      %aku-student-checkbox{"on-click"=>"onClick()", "data" => "person1"}
+      %aku-student-checkbox{"on-click"=>"onClick()", "data" => "person2"}
       %ul
         %li{'ng-repeat' => 'student in students'}
           .student

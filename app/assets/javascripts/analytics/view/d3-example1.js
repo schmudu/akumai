@@ -241,6 +241,10 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
 .controller('MainCtrl', ['factoryAnalytics', '$scope', function(factoryAnalytics, scope) {
   scope.person1 = {name:'Koko'};
   scope.person2 = {name:'Patrick'};
+  scope.onClick = function(){
+    console.log("this is an onclick handler.");
+  };
+
   factoryAnalytics.getData(function(data){
     // set the data after received
     scope.data = data;

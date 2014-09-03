@@ -28,4 +28,9 @@ class AnalyticsController < ApplicationController
     students = Program.collect_students(programs)
     render json: students
   end
+
+  def core_courses
+    core_courses = CoreCourse.all.select(:id, :name)
+    render json: core_courses
+  end
 end

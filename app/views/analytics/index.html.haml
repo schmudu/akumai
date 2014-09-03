@@ -2,6 +2,7 @@
   = javascript_include_tag "d3"
   = javascript_include_tag "lib/namespace"
   = javascript_include_tag "lib/dispatcher-util"
+  = javascript_include_tag "lib/angular/text"
   = javascript_include_tag "analytics/model/analytics"
   = javascript_include_tag "angular/analytics/index"
   = javascript_include_tag "analytics/constants"
@@ -42,15 +43,12 @@
         .col-md-5.checkbox
           %label{"aku-student-checkbox" => "", "on-click"=>"onClick()", "student" => "student"}
       -# core courses
-      - @core_courses.each_with_index do |course, i|
-        .form-group
-          .col-md-7
-            %label.control-label
-              - if(i==0)
-                = t('terms.core_course')
-          .col-md-5.checkbox
-            %label
-              %input.onlyCourse{'type'=>'checkbox', 'ng-model'=>"only_#{course.name}"}= course.name.capitalize
+      .form-group{'ng-repeat' => 'course in courses'}
+        .col-md-7
+          %label.control-label{"ng-if" => "$index == 0"}
+            = t('terms.core_course', :count => 3)
+        .col-md-5.checkbox
+          %label{"aku-checkbox-course" => "", "on-click"=>"onClick()", "course" => "course"}
   -# analytics visual
   .col-md-9
     %div{"d3-bars" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data"}

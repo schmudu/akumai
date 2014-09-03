@@ -8,6 +8,14 @@ describe('Test module aku.analytics.model', function() {
     beforeEach(inject(function($injector){
       $httpBackend = $injector.get('$httpBackend');
 
+      // CORE_COURSES
+      $httpBackend.when('GET', '/analytics/core_courses').respond(
+        [{"id":"1",
+          "name":"algebra"},
+        {"id":"2",
+          "name":"trigonometry"}]
+        );
+
       // STUDENT DATA
       $httpBackend.when('GET', '/analytics/student_data').respond(
         [{"data":"A",
@@ -38,6 +46,15 @@ describe('Test module aku.analytics.model', function() {
     afterEach(function(){
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('method "core_courses" should return information', function(){
+      var returnData;
+      factory.getCoreCourses(function(data){
+        returnData = data;
+      });
+      $httpBackend.flush();
+      expect(returnData).toBeDefined();
     });
 
     it('method "student_data" should return information', function(){

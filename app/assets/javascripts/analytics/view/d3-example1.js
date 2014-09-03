@@ -1,4 +1,4 @@
-angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.forms'])
+angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.forms', 'aku.lib.text'])
 .directive('d3Bars', ['$window', '$timeout', 'd3Service',
   function($window, $timeout, d3Service) {
     return {
@@ -204,6 +204,11 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
   scope.onClick = function(){
     console.log("main controller: we have an on click handler from a checkbox.");
   };
+
+  factoryAnalytics.getCoreCourses(function(data){
+    // set the data after received
+    scope.courses = data;
+  });
 
   factoryAnalytics.getData(function(data){
     // set the data after received

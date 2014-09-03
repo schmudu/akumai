@@ -9,6 +9,7 @@ Trio::Application.routes.draw do
   
   match '/analytics',  to: 'analytics#index',    via: 'get'
   namespace :analytics do
+    get "core_courses"
     get "student_data"
     get "students"
   end

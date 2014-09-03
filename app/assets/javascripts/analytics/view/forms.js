@@ -4,7 +4,7 @@ angular.module('aku.analytics.view.forms', [])
   };
   return {
     link: link,
-    restrict: 'E',
+    restrict: 'A',
     scope: {
       student: "=",
       onClick: "&"

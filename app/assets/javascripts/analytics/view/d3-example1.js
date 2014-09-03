@@ -142,6 +142,10 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
             return d3.select(ele[0])[0][0].offsetWidth - getMargin();
           };
 
+          scope.$on("onApplyChanges", function(){
+            console.log("d3 controller: need to apply changes to graph.");
+          });
+
           scope.$watch(function() {
             return angular.element($window)[0].innerWidth;
           }, function() {
@@ -160,54 +164,6 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
             if (renderTimeout) clearTimeout(renderTimeout);
 
             renderTimeout = $timeout(function() {
-              /*
-              var width = d3.select(ele[0])[0][0].offsetWidth - margin,
-                  height = scope.data.length * (barHeight + barPadding),
-                  color = d3.scale.category20(),
-                  xScale = d3.scale.linear()
-                    .domain([0, d3.max(data, function(d) {
-                      return d.score;
-                    })])
-                    .range([0, width]);
-
-              svg.attr('height', height);
-
-              svg.selectAll('rect')
-                .data(data)
-                .enter()
-                  .append('rect')
-                  .on('click', function(d,i) {
-                    return scope.onClick({item: d});
-                  })
-                  .attr('height', barHeight)
-                  .attr('width', 140)
-                  .attr('x', Math.round(margin/2))
-                  .attr('y', function(d,i) {
-                    return i * (barHeight + barPadding);
-                  })
-                  .attr('fill', function(d) {
-                    return color(d.score);
-                  })
-                  .transition()
-                    .duration(1000)
-                    .attr('width', function(d) {
-                      return xScale(d.score);
-                    });
-              svg.selectAll('text')
-                .data(data)
-                .enter()
-                  .append('text')
-                  .attr('fill', '#fff')
-                  .attr('y', function(d,i) {
-                    return i * (barHeight + barPadding) + 15;
-                  })
-                  .attr('x', 15)
-                  .text(function(d) {
-                    return d.name + " (scored: " + d.score + ")";
-                  });
-                */
-              console.log("need to draw the data: " + preparedDataset);
-              //var lineFunction = createLineFunction();
               var lineFunction,
                   svg,
                   xScale,
@@ -239,10 +195,14 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
       }};
 }])
 .controller('MainCtrl', ['factoryAnalytics', '$scope', function(factoryAnalytics, scope) {
-  scope.person1 = {name:'Koko'};
-  scope.person2 = {name:'Patrick'};
+  // the apply button was pressed
+  scope.onApplyChanges = function(){
+    scope.$broadcast("onApplyChanges");
+  };
+
+  // one of the checkboxes was clicked
   scope.onClick = function(){
-    console.log("this is an onclick handler.");
+    console.log("main controller: we have an on click handler from a checkbox.");
   };
 
   factoryAnalytics.getData(function(data){

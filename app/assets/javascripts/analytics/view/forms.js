@@ -6,7 +6,7 @@ angular.module('aku.analytics.view.forms', [])
     link: link,
     restrict: 'E',
     scope: {
-      data: "=",
+      student: "=",
       onClick: "&"
     },
     templateUrl: '/assets/templates/student-checkbox.html'

@@ -131,12 +131,23 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
           },
           drawLineGraph = function(lineFunction){
             // iterate through first students classes
-            for(var i=0; i<preparedDataset[0].values.length; i++){
-              svg.append("path")
-                 .attr("d", lineFunction(preparedDataset[0].values[i].values))
-                 .attr("stroke", color(1))
-                 .attr("fill", "none")
-                 .attr("stroke-width", 2);
+            for(var studentIndex=0; studentIndex<scope.students.list.length; studentIndex++){
+              var student = scope.students.list[studentIndex];
+              // if student is checked then draw this student
+              // or if all students need to be drawn
+              // TODO: iterating by indices however it doesn't match up with preparedDataset!!
+              if((student.checked === true) || (scope.students.allStudents)){
+                for(var courseIndex=0; courseIndex<scope.courses.list.length; courseIndex++){
+                  var course = scope.courses.list[courseIndex];
+                  if((course.checked === true) || (scope.courses.allCourses)){
+                    svg.append("path")
+                       .attr("d", lineFunction(preparedDataset[studentIndex].values[courseIndex].values))
+                       .attr("stroke", color(1))
+                       .attr("fill", "none")
+                       .attr("stroke-width", 2);
+                  }
+                }
+              }
             }
           },
           getHeight = function(){

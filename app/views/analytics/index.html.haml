@@ -18,8 +18,7 @@
     -# = link_to 'New Invitation', new_invitation_path, :class => 'btn btn-primary btn-large'
 %br/
 
--#.row{'ng-app' => 'analyticsIndex', 'ng-controller' => 'analyticsCtrl'}
-.row{'ng-app' => 'd3AngularApp', 'ng-controller' => 'MainCtrl'}
+.row{'ng-app' => 'aku.analytics.view.index', 'ng-controller' => 'mainController'}
   -# analytics filter
   .col-md-3
     %form.form-horizontal{'role' => 'form'}
@@ -46,4 +45,4 @@
           %label{"aku-checkbox-course" => "", "on-click"=>"onClickCourse()", "course" => "course"}
   -# analytics visual
   .col-md-9
-    %div{"d3-bars" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data", "students" => "students", "courses" => "courses"}
+    %div{"analytics-graph" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data", "students" => "students", "courses" => "courses"}

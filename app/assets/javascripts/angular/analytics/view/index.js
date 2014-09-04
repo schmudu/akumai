@@ -1,5 +1,5 @@
-angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.forms', 'aku.lib.text'])
-.directive('d3Bars', ['$window', '$timeout', 'd3Service',
+angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.analytics.view.forms', 'aku.lib.text'])
+.directive('analyticsGraph', ['$window', '$timeout', 'd3Service',
   function($window, $timeout, d3Service) {
     return {
       restrict: 'A',
@@ -199,7 +199,7 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
         });
       }};
 }])
-.controller('MainCtrl', ['factoryAnalytics', '$scope', function(factoryAnalytics, scope) {
+.controller('mainController', ['factoryAnalytics', '$scope', function(factoryAnalytics, scope) {
   // the apply button was pressed
   scope.onApplyChanges = function(){
     scope.$broadcast("onApplyChanges");

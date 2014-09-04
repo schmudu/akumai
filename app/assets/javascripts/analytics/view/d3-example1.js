@@ -4,9 +4,11 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
     return {
       restrict: 'A',
       scope: {
+        courses: '=',
         data: '=',
         label: '@',
-        onClick: '&'
+        onClick: '&',
+        students: '='
       },
       link: function(scope, ele, attrs) {
         d3Service.d3().then(function(d3) {
@@ -128,11 +130,14 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
                .attr("r", 5);
           },
           drawLineGraph = function(lineFunction){
-            svg.append("path")
-               .attr("d", lineFunction(preparedDataset[0].values[0].values))
-               .attr("stroke", color(1))
-               .attr("fill", "none")
-               .attr("stroke-width", 2);
+            // iterate through first students classes
+            for(var i=0; i<preparedDataset[0].values.length; i++){
+              svg.append("path")
+                 .attr("d", lineFunction(preparedDataset[0].values[i].values))
+                 .attr("stroke", color(1))
+                 .attr("fill", "none")
+                 .attr("stroke-width", 2);
+              }
           },
           getHeight = function(){
             //return d3.select(ele[0])[0][0].offsetHeight - getMargin();
@@ -143,7 +148,7 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
           };
 
           scope.$on("onApplyChanges", function(){
-            console.log("d3 controller: need to apply changes to graph.");
+            scope.render(data);
           });
 
           scope.$watch(function() {

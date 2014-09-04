@@ -48,31 +48,37 @@ describe('Test module aku.analytics.model', function() {
       $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('method "core_courses" should return information', function(){
-      var returnData;
-      factory.getCoreCourses(function(data){
-        returnData = data;
+    describe('method "core_courses"', function (){
+      it('should return information', function(){
+        var returnData;
+        factory.getCoreCourses(function(data){
+          returnData = data;
+        });
+        $httpBackend.flush();
+        expect(returnData).toBeDefined();
       });
-      $httpBackend.flush();
-      expect(returnData).toBeDefined();
     });
 
-    it('method "student_data" should return information', function(){
-      var returnData;
-      factory.getData(function(data){
-        returnData = data;
+    describe('method "getData()"', function (){
+      it('should return information', function(){
+        var returnData;
+        factory.getData(function(data){
+          returnData = data;
+        });
+        $httpBackend.flush();
+        expect(returnData).toBeDefined();
       });
-      $httpBackend.flush();
-      expect(returnData).toBeDefined();
     });
 
-    it('method "students" should return information', function(){
-      var returnData;
-      factory.getStudents(function(data){
-        returnData = data;
+    describe('method "getStudents()"', function (){
+      it('should return information', function(){
+        var returnData;
+        factory.getStudents(function(data){
+          returnData = data;
+        });
+        $httpBackend.flush();
+        expect(returnData).toBeDefined();
       });
-      $httpBackend.flush();
-      expect(returnData).toBeDefined();
     });
   });
 });

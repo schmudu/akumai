@@ -31,14 +31,14 @@
       -# apply changes - submit
       %input{"type" => "button", "value" => "Apply Changes", "ng-click" => "onApplyChanges()"}
       -# student ids
-      .form-group{'ng-repeat' => 'student in students'}
+      .form-group{'ng-repeat' => 'student in students.list'}
         .col-md-7
           %label.control-label{"ng-if" => "$index == 0"}
             = t('terms.student_id', :count => 3)
         .col-md-5.checkbox
           %label{"aku-student-checkbox" => "", "on-click"=>"onClick()", "student" => "student"}
       -# core courses
-      .form-group{'ng-repeat' => 'course in courses'}
+      .form-group{'ng-repeat' => 'course in courses.list'}
         .col-md-7
           %label.control-label{"ng-if" => "$index == 0"}
             = t('terms.core_course', :count => 3)

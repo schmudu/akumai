@@ -5,7 +5,12 @@ moduleAkuAnalytics.factory('factoryAnalytics',['$http',function($http){
   return {
     getCoreCourses: function(callback){
       $http.get('/analytics/core_courses').success(function(data){
-        callback(data);
+        var returnObj = {
+          allCourses: true,
+          list: data
+        };
+
+        callback(returnObj);
       });
     },
     getData: function(callback){
@@ -15,7 +20,12 @@ moduleAkuAnalytics.factory('factoryAnalytics',['$http',function($http){
     },
     getStudents: function(callback){
       $http.get('/analytics/students').success(function(data){
-        callback(data);
+        var returnObj = {
+          allStudents: true,
+          list: data
+        };
+
+        callback(returnObj);
       });
     }
   };

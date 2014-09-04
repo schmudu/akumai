@@ -137,7 +137,7 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
                  .attr("stroke", color(1))
                  .attr("fill", "none")
                  .attr("stroke-width", 2);
-              }
+            }
           },
           getHeight = function(){
             //return d3.select(ele[0])[0][0].offsetHeight - getMargin();
@@ -148,7 +148,7 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
           };
 
           scope.$on("onApplyChanges", function(){
-            scope.render(data);
+            scope.render(scope.data);
           });
 
           scope.$watch(function() {

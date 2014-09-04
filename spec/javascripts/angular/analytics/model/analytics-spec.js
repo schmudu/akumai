@@ -57,6 +57,26 @@ describe('Test module aku.analytics.model', function() {
         $httpBackend.flush();
         expect(returnData).toBeDefined();
       });
+
+      it('should return an object with an "allCourses" property set to true', function(){
+        var returnData;
+        factory.getCoreCourses(function(data){
+          returnData = data;
+        });
+        $httpBackend.flush();
+        expect(returnData.allCourses).toBeDefined();
+        expect(returnData.allCourses).toBeTruthy();
+      });
+
+      it('should return an object with a "list" property that has behavior like an array', function(){
+        var returnData;
+        factory.getCoreCourses(function(data){
+          returnData = data;
+        });
+        $httpBackend.flush();
+        expect(returnData.list).toBeDefined();
+        expect(returnData.list.length).toBeDefined();
+      });
     });
 
     describe('method "getData()"', function (){
@@ -78,6 +98,26 @@ describe('Test module aku.analytics.model', function() {
         });
         $httpBackend.flush();
         expect(returnData).toBeDefined();
+      });
+
+      it('should return an object with an "allStudents" property set to true', function(){
+        var returnData;
+        factory.getStudents(function(data){
+          returnData = data;
+        });
+        $httpBackend.flush();
+        expect(returnData.allStudents).toBeDefined();
+        expect(returnData.allStudents).toBeTruthy();
+      });
+
+      it('should return an object with a "list" property that has behavior like an array', function(){
+        var returnData;
+        factory.getStudents(function(data){
+          returnData = data;
+        });
+        $httpBackend.flush();
+        expect(returnData.list).toBeDefined();
+        expect(returnData.list.length).toBeDefined();
       });
     });
   });

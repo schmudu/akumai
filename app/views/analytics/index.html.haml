@@ -36,14 +36,14 @@
           %label.control-label{"ng-if" => "$index == 0"}
             = t('terms.student_id', :count => 3)
         .col-md-5.checkbox
-          %label{"aku-student-checkbox" => "", "on-click"=>"onClick()", "student" => "student"}
+          %label{"aku-student-checkbox" => "", "on-click"=>"onClickStudent()", "student" => "student"}
       -# core courses
       .form-group{'ng-repeat' => 'course in courses.list'}
         .col-md-7
           %label.control-label{"ng-if" => "$index == 0"}
             = t('terms.core_course', :count => 3)
         .col-md-5.checkbox
-          %label{"aku-checkbox-course" => "", "on-click"=>"onClick()", "course" => "course"}
+          %label{"aku-checkbox-course" => "", "on-click"=>"onClickCourse()", "course" => "course"}
   -# analytics visual
   .col-md-9
     %div{"d3-bars" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data", "students" => "students", "courses" => "courses"}

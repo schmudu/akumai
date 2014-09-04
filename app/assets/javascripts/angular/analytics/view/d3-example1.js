@@ -205,9 +205,12 @@ angular.module('d3AngularApp', ['d3', 'aku.analytics.model','aku.analytics.view.
     scope.$broadcast("onApplyChanges");
   };
 
-  // one of the checkboxes was clicked
-  scope.onClick = function(){
-    console.log("main controller: we have an on click handler from a checkbox.");
+  scope.onClickCourse = function(){
+    scope.courses.allCourses = false;
+  };
+
+  scope.onClickStudent = function(){
+    scope.students.allStudents = false;
   };
 
   factoryAnalytics.getCoreCourses(function(data){

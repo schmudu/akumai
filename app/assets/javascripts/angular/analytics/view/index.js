@@ -94,6 +94,12 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
           getMargin = function(){
             return (parseInt(attrs.margin) || 20);
           },
+          nodeFunctionCx = function(d){
+            return xScale(d.date);
+          };
+          nodeFunctionCy = function(d){
+            return yScale(d.data);
+          };
           prepareDate = function(){
             preparedDataset.forEach(function(element, index, array){
               element.date = new Date(element.datestring);
@@ -141,8 +147,8 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                .append("circle")
                .attr("stroke", color(2))
                .attr("fill", "none")
-               .attr("cx", function(d){ return xScale(d.date); })
-               .attr("cy", function(d){ return yScale(d.data); })
+               .attr("cx", nodeFunctionCx(d))
+               .attr("cy", nodeFunctionCy(d))
                .attr("r", 5);
           },
           drawLineGraph = function(lineFunction){
@@ -153,11 +159,9 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
             // iterate through first students classes
             for(var studentIndex=0; studentIndex<preparedDataset.length; studentIndex++){
               var currentStudent = preparedDataset[studentIndex];
-              //var checkbox_student = scope.students.list.find(findStudent, current_student.key);
               var checkboxStudent = findStudent(students, currentStudent.key);
               // if student is checked then draw this student
               // or if all students need to be drawn
-              // TODO: iterating by indices however it doesn't match up with preparedDataset!!
               if((checkboxStudent.checked === true) || (allStudents === true)){
                 for(var courseIndex=0; courseIndex<preparedDataset[studentIndex].values.length; courseIndex++){
                   var currentCourse = preparedDataset[studentIndex].values[courseIndex];
@@ -171,6 +175,17 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                        .attr("stroke", color(1))
                        .attr("fill", "none")
                        .attr("stroke-width", 2);
+
+                    // draw nodes
+                    //svg.selectAll("circle")
+                    svg.data(currentCourse.values)
+                       .enter()
+                       .append("circle")
+                       .attr("stroke", color(2))
+                       .attr("fill", "none")
+                       .attr("cx", function(d){ return xScale(d.date); })
+                       .attr("cy", function(d){ return yScale(d.data); })
+                       .attr("r", 5);
                   }
                 }
               }
@@ -224,7 +239,7 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
               // draw graphs
               lineFunction = createLineFunction();
               drawLineGraph(lineFunction);
-              drawCircleNodes();
+              //drawCircleNodes();
 
               // axes
               axisX = createXAxis();

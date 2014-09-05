@@ -75,6 +75,22 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                .attr("transform", "translate(" + getMargin() + ", 0)")
                .call(axisY);
           },
+          findCourse = function(formArrayCourses, course_name){
+            for (var i=0; i<formArrayCourses.length; i++){
+              if (formArrayCourses[i].name === course_name){
+                return formArrayCourses[i];
+              }
+            }
+            return null;
+          },
+          findStudent = function(formArrayStudents, student_id){
+            for (var i=0; i<formArrayStudents.length; i++){
+              if (formArrayStudents[i].student_id === student_id){
+                return formArrayStudents[i];
+              }
+            }
+            return null;
+          },
           getMargin = function(){
             return (parseInt(attrs.margin) || 20);
           },
@@ -130,18 +146,28 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                .attr("r", 5);
           },
           drawLineGraph = function(lineFunction){
+            var allStudents = scope.students.allStudents;
+            var allCourses = scope.courses.allCourses;
+            var students = scope.students.list;
+            var courses = scope.courses.list;
             // iterate through first students classes
-            for(var studentIndex=0; studentIndex<scope.students.list.length; studentIndex++){
-              var student = scope.students.list[studentIndex];
+            for(var studentIndex=0; studentIndex<preparedDataset.length; studentIndex++){
+              var currentStudent = preparedDataset[studentIndex];
+              //var checkbox_student = scope.students.list.find(findStudent, current_student.key);
+              var checkboxStudent = findStudent(students, currentStudent.key);
               // if student is checked then draw this student
               // or if all students need to be drawn
               // TODO: iterating by indices however it doesn't match up with preparedDataset!!
-              if((student.checked === true) || (scope.students.allStudents)){
-                for(var courseIndex=0; courseIndex<scope.courses.list.length; courseIndex++){
-                  var course = scope.courses.list[courseIndex];
-                  if((course.checked === true) || (scope.courses.allCourses)){
+              if((checkboxStudent.checked === true) || (allStudents === true)){
+                for(var courseIndex=0; courseIndex<preparedDataset[studentIndex].values.length; courseIndex++){
+                  var currentCourse = preparedDataset[studentIndex].values[courseIndex];
+                  var checkboxCourse = findCourse(courses, currentCourse.key);
+
+                  if(((checkboxCourse !== null) && (checkboxCourse.checked === true)) ||
+                      (allCourses === true)){
+                    // draw path
                     svg.append("path")
-                       .attr("d", lineFunction(preparedDataset[studentIndex].values[courseIndex].values))
+                       .attr("d", lineFunction(currentCourse.values))
                        .attr("stroke", color(1))
                        .attr("fill", "none")
                        .attr("stroke-width", 2);

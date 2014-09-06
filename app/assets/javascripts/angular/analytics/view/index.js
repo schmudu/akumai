@@ -140,6 +140,7 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
               }
             });
           },
+          /*
           drawCircleNodes = function(){
             svg.selectAll("circle")
                .data(preparedDataset[0].values[0].values)
@@ -150,8 +151,8 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                .attr("cx", nodeFunctionCx(d))
                .attr("cy", nodeFunctionCy(d))
                .attr("r", 5);
-          },
-          drawLineGraph = function(lineFunction){
+          },*/
+          drawLineGraphs = function(lineFunction){
             var allStudents = scope.students.allStudents;
             var allCourses = scope.courses.allCourses;
             var students = scope.students.list;
@@ -177,8 +178,8 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                        .attr("stroke-width", 2);
 
                     // draw nodes
-                    //svg.selectAll("circle")
-                    svg.data(currentCourse.values)
+                    svg.selectAll("node")
+                       .data(currentCourse.values)
                        .enter()
                        .append("circle")
                        .attr("stroke", color(2))
@@ -238,7 +239,7 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
 
               // draw graphs
               lineFunction = createLineFunction();
-              drawLineGraph(lineFunction);
+              drawLineGraphs(lineFunction);
               //drawCircleNodes();
 
               // axes

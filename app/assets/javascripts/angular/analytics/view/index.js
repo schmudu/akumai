@@ -56,21 +56,18 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
           createXScale = function(){
             xScale = d3.time.scale()
                       .domain([dateMin, dateMax])
-                      //.range([0, getWidth()]);
-                      //.range([0 + getMargin(), getWidth() - (2 * getMargin())]);
                       .range([0 + getMargin(), getWidth()]);
             return xScale;
           },
           createYScale = function(){
             yScale = d3.scale.ordinal()
                       .domain(['A', 'B', 'C', 'D', 'F'])
-                      //.rangeRoundBands([0, getHeight()], 0.2);
-                      .rangeRoundBands([0 + getMargin(), getHeight() - (2 * getMargin())], 0.2);
+                      //.rangeRoundBands([0 + getMargin(), getHeight() - (2 * getMargin())], 0.2);
+                      .rangeRoundBands([0 + getMargin(), getHeight() - (2 * getMargin())], 1.0);
             return yScale;
           },
           drawXAxis = function(){
             svg.append("g")
-               //.attr("transform", "translate(" + getMargin() + "," + (getHeight() - getMargin()) + ")")
                .attr("transform", "translate(0," + (getHeight() - (2 * getMargin())) + ")")
                .call(axisX);
           },
@@ -144,18 +141,6 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
               }
             });
           },
-          /*
-          drawCircleNodes = function(){
-            svg.selectAll("circle")
-               .data(preparedDataset[0].values[0].values)
-               .enter()
-               .append("circle")
-               .attr("stroke", color(2))
-               .attr("fill", "none")
-               .attr("cx", nodeFunctionCx(d))
-               .attr("cy", nodeFunctionCy(d))
-               .attr("r", 5);
-          },*/
           drawLineGraphs = function(lineFunction){
             var allStudents = scope.students.allStudents;
             var allCourses = scope.courses.allCourses;
@@ -177,7 +162,7 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                     // draw path
                     svg.append("path")
                        .attr("d", lineFunction(currentCourse.values))
-                       .attr("stroke", color(1))
+                       .attr("stroke", color(currentCourse.key))
                        .attr("fill", "none")
                        .attr("stroke-width", 2);
 
@@ -186,7 +171,7 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                        .data(currentCourse.values)
                        .enter()
                        .append("circle")
-                       .attr("stroke", color(2))
+                       .attr("stroke", color(currentCourse.key+1))
                        .attr("fill", "none")
                        .attr("cx", function(d){ return xScale(d.date); })
                        .attr("cy", function(d){ return yScale(d.data); })

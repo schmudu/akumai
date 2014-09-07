@@ -56,18 +56,22 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
           createXScale = function(){
             xScale = d3.time.scale()
                       .domain([dateMin, dateMax])
-                      .range([0 - getMargin(), getWidth() - getMargin()]);
+                      //.range([0, getWidth()]);
+                      //.range([0 + getMargin(), getWidth() - (2 * getMargin())]);
+                      .range([0 + getMargin(), getWidth()]);
             return xScale;
           },
           createYScale = function(){
             yScale = d3.scale.ordinal()
                       .domain(['A', 'B', 'C', 'D', 'F'])
-                      .rangeRoundBands([0, getHeight()], 0.2);
+                      //.rangeRoundBands([0, getHeight()], 0.2);
+                      .rangeRoundBands([0 + getMargin(), getHeight() - (2 * getMargin())], 0.2);
             return yScale;
           },
           drawXAxis = function(){
             svg.append("g")
-               .attr("transform", "translate(0," + (getHeight() - getMargin()) + ")")
+               //.attr("transform", "translate(" + getMargin() + "," + (getHeight() - getMargin()) + ")")
+               .attr("transform", "translate(0," + (getHeight() - (2 * getMargin())) + ")")
                .call(axisX);
           },
           drawYAxis = function(){
@@ -193,11 +197,10 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
             }
           },
           getHeight = function(){
-            //return d3.select(ele[0])[0][0].offsetHeight - getMargin();
-            return 200;
+            return d3.select(ele[0])[0][0].offsetHeight - (2 * getMargin());
           },
           getWidth = function(){
-            return d3.select(ele[0])[0][0].offsetWidth - getMargin();
+            return d3.select(ele[0])[0][0].offsetWidth - (2 * getMargin());
           };
 
           scope.$on("onApplyChanges", function(){

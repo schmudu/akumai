@@ -23,7 +23,8 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
               dateMax = null,
               dateMin = null,
               padding = parseInt(attrs.padding) || 5,
-              preparedDataset;
+              preparedDataset,
+              tooltip;
 
           var svg = d3.select(ele[0])
             .append('svg')
@@ -40,6 +41,15 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                             .y(function(d){ return yScale(d.data); })
                             .interpolate("linear");
             return lineFunction;
+          },
+          createToolTip = function(){
+            var tooltip = d3.select("body")
+                      .append("div")
+                      .style("position", "absolute")
+                      .style("z-index", "10")
+                      .style("visibility", "hidden")
+                      .text("a simple tooltip");
+            return tooltip;
           },
           createXAxis = function(){
             var xAxis = d3.svg.axis()
@@ -178,10 +188,21 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                     //transition
                     nodes.transition()
                        .attr("stroke", color(currentCourse.key+1))
-                       .attr("fill", "none")
+                       .attr("fill", color(currentCourse.key+1))
                        .attr("cx", function(d){ return xScale(d.date); })
                        .attr("cy", function(d){ return yScale(d.data); })
                        .attr("r", 5);
+
+
+                    // tooltip
+                    nodes.on("mouseover", function(d){ 
+                        tooltip.style("visibility", "visible");
+                        tooltip.text(d.course_name + " | " + d.student_id + " | " + d.data);
+                      })
+                         .on("mousemove", function(){ tooltip.style("top",
+                             (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+                         .on("mouseout", function(){ tooltip.style("visibility", "hidden");});
+
                   }
                 }
               }
@@ -226,6 +247,8 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
               prepareDate();
               getMinMaxDates();
               prepareNest();
+
+              tooltip = createToolTip();
 
               // create scales
               createXScale();

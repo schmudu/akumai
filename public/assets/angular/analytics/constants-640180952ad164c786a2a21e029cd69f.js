@@ -1,0 +1,1 @@
+angular.module("aku.analytics.constants",[]).factory("factoryConstants",[function(){var a={};return a.d3Width=5,a}]);

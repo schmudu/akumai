@@ -160,17 +160,23 @@ angular.module('aku.analytics.view.index', ['d3', 'aku.analytics.model','aku.ana
                   if(((checkboxCourse !== null) && (checkboxCourse.checked === true)) ||
                       (allCourses === true)){
                     // draw path
-                    svg.append("path")
-                       .attr("d", lineFunction(currentCourse.values))
+                    var lines = svg.append("path")
+                       .attr("d", lineFunction(currentCourse.values));
+
+                    // transition
+                    lines.transition()
                        .attr("stroke", color(currentCourse.key))
                        .attr("fill", "none")
                        .attr("stroke-width", 2);
 
                     // draw nodes
-                    svg.selectAll("node")
+                    var nodes = svg.selectAll("nonExistingTag")
                        .data(currentCourse.values)
                        .enter()
-                       .append("circle")
+                       .append("circle");
+
+                    //transition
+                    nodes.transition()
                        .attr("stroke", color(currentCourse.key+1))
                        .attr("fill", "none")
                        .attr("cx", function(d){ return xScale(d.date); })

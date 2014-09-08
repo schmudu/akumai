@@ -22,13 +22,12 @@
   -# analytics filter
   .col-md-3
     %form.form-horizontal{'role' => 'form'}
-      .form-group
-        .col-sm-5
-          %label.control-label Filter 
-        .col-sm-7
-          %input.form-control{'ng-model'=>'query'}
-      -# apply changes - submit
-      %input{"type" => "button", "value" => "Apply Changes", "ng-click" => "onApplyChanges()"}
+      -# Comment out filter
+        .form-group
+          .col-sm-5
+            %label.control-label Filter 
+          .col-sm-7
+            %input.form-control{'ng-model'=>'query'}
       -# student ids
       .form-group{'ng-repeat' => 'student in students.list'}
         .col-md-7
@@ -43,6 +42,8 @@
             = t('terms.core_course', :count => 3)
         .col-md-5.checkbox
           %label{"aku-checkbox-course" => "", "on-click"=>"onClickCourse()", "course" => "course"}
+      -# apply changes - submit
+      %input{"type" => "button", "value" => "Apply Changes", "ng-click" => "onApplyChanges()"}
   -# analytics visual
   .col-md-9
     %div{"analytics-graph" => "", "bar-height" => "20", "margin" => "30","padding" => "30", "data"=>"data", "students" => "students", "courses" => "courses"}

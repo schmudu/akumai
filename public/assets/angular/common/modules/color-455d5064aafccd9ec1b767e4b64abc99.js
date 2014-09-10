@@ -1,0 +1,1 @@
+var moduleAkuColor=angular.module("aku.common.color",[]);moduleAkuColor.factory("factoryColor",[function(){return{getColor:function(){return{}}}}]);

@@ -151,3 +151,12 @@ d.save  #check for errors if save is not successful
 
 # Importing file into Roo
 s = Roo::CSV.new(d.attachment.url(:original, false))
+
+
+== Deployment Notes
+* For some reason when pre-compiling assets, I had to remove the minified AngularJS file (Sept 9, 2014)
+* List of commands for resetting application
+  1) heroku pg:reset DATABASE_URL
+  2) heroku run rake db:migrate
+  3) heroku run rake db:populate_core_courses
+  4) heroku ps:scale generalworker=1

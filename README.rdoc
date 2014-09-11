@@ -155,6 +155,7 @@ s = Roo::CSV.new(d.attachment.url(:original, false))
 
 == Deployment Notes
 * For some reason when pre-compiling assets, I had to remove the minified AngularJS file (Sept 9, 2014)
+* If there is an error with the Redis base, I believe it has to be restarted if it has not been used for a while.
 * List of commands for resetting application
   1) heroku pg:reset DATABASE_URL
   2) heroku run rake db:migrate

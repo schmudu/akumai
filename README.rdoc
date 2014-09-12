@@ -155,7 +155,9 @@ s = Roo::CSV.new(d.attachment.url(:original, false))
 
 == Deployment Notes
 * For some reason when pre-compiling assets, I had to remove the minified AngularJS file (Sept 9, 2014)
-* If there is an error with the Redis base, I believe it has to be restarted if it has not been used for a while.
+* If you recieve the following error with when a Resque worker is supposed to complete a job:
+    "SocketError: getaddrinfo: Name or service not known"
+  The Rediscloud service needs to be removed and then re-added because if it's inactive for more than 30 days the service is shutdown.
 * List of commands for resetting application
   1) heroku pg:reset DATABASE_URL
   2) heroku run rake db:migrate

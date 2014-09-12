@@ -161,3 +161,4 @@ s = Roo::CSV.new(d.attachment.url(:original, false))
   2) heroku run rake db:migrate
   3) heroku run rake db:populate_core_courses
   4) heroku ps:scale generalworker=1
+  5) heroku run rake assets:precompile

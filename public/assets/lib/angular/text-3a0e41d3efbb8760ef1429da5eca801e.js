@@ -1,1 +1,0 @@
-angular.module("aku.lib.text",[]).filter("capitalize",function(){return function(t){return t?t.replace(/([^\W_]+[^\s-]*) */g,function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase()}):""}});

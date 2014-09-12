@@ -1,1 +1,0 @@
-angular.module("aku.users",[]).filter("filterUserLevel",function(){return function(E){return E===LEVEL_ROLE_ADMIN?LEVEL_ROLE_ADMIN_STRING:E===LEVEL_ROLE_STAFF?LEVEL_ROLE_STAFF_STRING:E===LEVEL_ROLE_STUDENT?LEVEL_ROLE_STUDENT_STRING:void 0}});

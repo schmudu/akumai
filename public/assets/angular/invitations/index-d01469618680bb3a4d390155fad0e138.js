@@ -1,1 +1,0 @@
-angular.module("invitationsIndex",["aku.users","aku.invitations"]).controller("invitationsCtrl",["$scope","$http","factoryInvitations",function(t,n,i){i.get(function(n){t.invitations=n}),t.orderProp="created_at"}]);

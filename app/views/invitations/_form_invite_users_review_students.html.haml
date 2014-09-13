@@ -45,7 +45,7 @@
             %thead
               %tr
                 %th= t('terms.student_email')
-                %th= t('terms.student_id')
+                %th= t('terms.student_id', :count => 2)
             - @invitation.student_entries.each do |entry| 
               %tr
                 %td= entry.email

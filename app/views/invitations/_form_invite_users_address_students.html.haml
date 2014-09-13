@@ -39,7 +39,7 @@
             %thead
               %tr
                 %th= t('terms.student_email')
-                %th= t('terms.student_id')
+                %th= t('terms.student_id', :count => 2)
             = f.fields_for :student_entries do |se_form| 
               %tr
                 %td= se_form.text_field :email, :value => (se_form.object.email.blank? ? ConstantsHelper::INVITATION_DEFAULT_STUDENT_EMAIL : se_form.object.email), :class => (se_form.object.email.blank? ? "form_default_entry email_entry" : "email_entry")

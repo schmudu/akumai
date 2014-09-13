@@ -14,13 +14,13 @@ src_files:
   - app/assets/javascripts/lib/namespace.js
   - app/assets/javascripts/lib/*.js
   - app/assets/javascripts/d3/d3.min.js
-  - app/assets/javascripts/angular/angular.min.js
+  - app/assets/javascripts/angular/angular.js
   - spec/javascripts/helpers/angular-mocks.js
   - app/assets/javascripts/analytics/*.js
   - app/assets/javascripts/angular/analytics/*.js
   - app/assets/javascripts/angular/analytics/**/*.js
   - app/assets/javascripts/**/*.js
-  - app/assets/javascripts/lib/angular/text.js
+  - app/assets/javascripts/lib/angular/*.js
 
 # stylesheets
 #

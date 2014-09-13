@@ -22,6 +22,13 @@ Trio::Application.routes.draw do
       get :index_helper
     end
   end
+
+  # templates for angular
+  namespace :templates do
+    get "core_course_checkbox"
+    get "student_checkbox"
+  end
+
   resources :programs
   resources :core_courses
   resources :mapped_courses

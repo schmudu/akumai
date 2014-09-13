@@ -159,9 +159,10 @@ s = Roo::CSV.new(d.attachment.url(:original, false))
     "SocketError: getaddrinfo: Name or service not known"
   The Rediscloud service needs to be removed and then re-added because if it's inactive for more than 30 days the service is shutdown.
 * List of commands for resetting application
+  Do the asset steps on the local computer, not on heroku.  For some reason it doesn't update the assets pipeline.
+  1) rake assets:clobber
+  2) rake assets:precompile
   1) heroku pg:reset DATABASE_URL
   2) heroku run rake db:migrate
   3) heroku run rake db:populate_core_courses
   4) heroku ps:scale generalworker=1
-  5) heroku run rake assets:clobber
-  6) heroku run rake assets:precompile

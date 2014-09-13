@@ -1,0 +1,22 @@
+form#invite_signup div#email_group ul {
+  margin: 0 0 0 20px; }
+form#invite_signup div#email_group div.span8 {
+  margin-left: 0px; }
+
+div#invite_instructions {
+  text-align: center;
+  font-weight: bold;
+  /*color: #ff0000;*/ }
+
+ul {
+  margin: 0px; }
+
+#invite_action {
+  text-align: right; }
+
+form.single_action input[type="submit"] {
+  margin-left: 210px !important; }
+
+#student_entries td {
+  text-align: left;
+  font-weight: normal; }

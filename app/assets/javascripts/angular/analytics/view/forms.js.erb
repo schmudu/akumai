@@ -9,7 +9,8 @@ angular.module('aku.analytics.view.forms', [])
       student: "=",
       onClick: "&"
     },
-    templateUrl: '/assets/templates/student-checkbox.html'
+    //templateUrl: '/assets/templates/student-checkbox.html'
+    templateUrl: '<%= path_to_asset("assets/templates/student-checkbox.html") %>'
   };
 })
 .directive('akuCheckboxCourse', function(){
